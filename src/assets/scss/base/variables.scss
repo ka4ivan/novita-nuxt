@@ -1,0 +1,35 @@
+//colors
+$primary-color: #42250B;
+$white: white;
+$black: #151515;
+$yellow: rgb(214 255 52);
+$blue: rgb(93 52 255);
+
+//fonts
+:root{
+
+  //--font-mar-reg-p: normal 500 200rem/100% "Mariupol-Medium", sans-serif;
+}
+
+//transition
+$transition: 0.2s ease;
+
+//container size
+$container-xl: 1170px;
+$container-md: 735px;
+$container-sm: 330px;
+
+//media screen size
+$extraLarge: "screen and (min-width: 1920px)";
+$large: "(max-width: 1920px)";
+$laptop: "(max-width: 1440px)";
+$tablet: "(max-width: 1024px)";
+$mobile: "(max-width: 767px)";
+
+//adaptive
+@function wsm($value) {
+  @return ($value * 100vw)/768;
+}
+@function wxs($value) {
+  @return ($value * 100vw)/360;
+} ;

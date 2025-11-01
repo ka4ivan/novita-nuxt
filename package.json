@@ -10,8 +10,18 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.20.0",
+    "@fancyapps/ui": "^6.1.2",
+    "@vueuse/components": "^14.0.0",
+    "@vueuse/core": "^14.0.0",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@nuxt/image": "^1.11.0",
+    "@pinia/nuxt": "^0.11.2",
+    "nuxt": "^3.20.0",
+    "nuxt-schema-org": "^5.0.9",
+    "sass": "^1.93.3",
+    "scss-reset": "^1.4.6"
   }
 }

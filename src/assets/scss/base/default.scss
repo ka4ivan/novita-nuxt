@@ -1,0 +1,24 @@
+@use "sass:math";
+
+html {
+  //font-size: calc(1vw / 19.2);
+}
+
+body {
+  font-family: Quicksand, sans-serif;
+  line-height: 1.35;
+  font-size: 16px;
+  color: $primary-color;
+  transition: .2s;
+
+
+  // TODO Видалити
+  background-color: black;
+}
+
+.container {
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+  padding-inline: 5%;
+}
