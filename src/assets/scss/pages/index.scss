@@ -150,4 +150,108 @@
       }
     }
   }
+  &__tools {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    position: relative;
+    background-color: $white;
+    z-index: 20;
+    &-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    &-card {
+      background-color: $light-gray;
+      border-radius: .5rem;
+      padding: 4rem;
+      color: $black;
+      &-badge {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        opacity: .6;
+        gap: .25rem;
+        &-text {
+          color: rgb(32 32 46 / 1);
+          letter-spacing: -.015em;
+          line-height: 1.3;
+          font-size: 14px;
+        }
+        &-icon {
+          font-size: 14px;
+          color: $black;
+        }
+      }
+      &-title {
+        font-size: 32px;
+        margin-bottom: 1rem;
+      }
+      &-text {
+        font-size: 16px;
+        opacity: .6;
+        margin-bottom: 1.5rem;
+      }
+      &-bottom {
+        gap: .25rem;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+      &-tag {
+        color: $black;
+        transition: $transition;
+        text-decoration: none;
+        padding: .5rem 1rem;
+        background: $white;
+        border-radius: 9999px;
+        &:hover {
+          background: $yellow;
+        }
+      }
+      &-button {
+        display: flex;
+        align-items: center;
+        color: $white;
+        fill: $white;
+        stroke: $white;
+        transition: $transition;
+        text-decoration: none;
+        padding: .5rem 1.5rem;
+        background: $black;
+        border-radius: 9999px;
+        &:hover {
+          color: $black;
+          fill: $black;
+          background: $yellow;
+          .main__tools-card-button-icon {
+            stroke: $black;
+          }
+        }
+        &-icon {
+          margin-left: 5px;
+          stroke: $white;
+        }
+      }
+    }
+    &-card-last {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      grid-column: span 2 / span 2;
+      gap: 1rem;
+      .main__tools-card-info {
+        width: 33.333333%;
+      }
+      .main__tools-card-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem;
+        height: fit-content;
+        justify-content: flex-end;
+        width: 50%;
+        opacity: .7;
+      }
+    }
+  }
 }
