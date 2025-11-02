@@ -1,9 +1,25 @@
 <script setup>
+import { useHeaderState } from '~/composables/useHeaderState'
+import { ref, onMounted, onUnmounted } from 'vue'
 
+const { isCustom } = useHeaderState()
+const isScrolled = ref(false)
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 0
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
-  <header class="header">
+  <header :class="['header', { 'header--custom': isCustom && !isScrolled }]">
     <div class="header__container container">
       <div class="header__links">
         <NuxtLink to="/" class="header__logo">

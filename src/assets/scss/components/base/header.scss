@@ -4,12 +4,35 @@
   left: 0;
   width: 100%;
   z-index: 100;
+  transition: 0.3s ease;
+  background-color: $white;
+
+  &--custom {
+    background-color: rgba(0, 0, 0, 0);
+
+    .header {
+      &__logo {
+        color: $white;
+      }
+
+      &__menu {
+        &-link-primary {
+          color: $white;
+          &:hover {
+            background-color: $yellow;
+            color: $black;
+          }
+        }
+      }
+    }
+  }
 
   &__container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    min-height: 80px;
   }
 
   &__links {
@@ -18,9 +41,9 @@
   }
 
   &__logo {
-    color: $white;
-    :hover {
-      transition: $transition;
+    color: $black;
+    transition: $transition;
+    &:hover {
       opacity: 0.8;
     }
   }
@@ -29,38 +52,34 @@
     margin-left: 25px;
     display: flex;
     gap: .5rem;
-    &-item-primary {
-      :hover {
-        background-color: $yellow;
-        transition: $transition;
-        color: $black;
-      }
-    }
     &-link-primary {
       display: flex;
       align-items: center;
-      color: $white;
+      color: $black;
       padding: .5rem 1rem;
       text-decoration: none;
       border-radius: 9999px;
-    }
-    &-item-secondary {
-      :hover {
-        background-color: $blue;
-        color: $white;
-        fill: $white;
+      transition: $transition;
+      &:hover {
+        background-color: $yellow;
+        color: $black;
       }
     }
     &-link-secondary {
       display: flex;
       align-items: center;
       background-color: $yellow;
-      transition: $transition;
       color: $black;
       fill: $black;
       padding: .5rem 1rem;
       text-decoration: none;
       border-radius: 9999px;
+      transition: $transition;
+      &:hover {
+        background-color: $blue;
+        color: $white;
+        fill: $white;
+      }
     }
     .icon-circle-dots {
       margin-left: .5rem;

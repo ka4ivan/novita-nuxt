@@ -1,8 +1,11 @@
 //base
 @import "./base/index";
+
 //pages
-//@use "./pages/index" as *;
+@import "./pages/index";
+
 //components
 @import "./components/index";
+
 //media
 //@use "./media/index" as *;
