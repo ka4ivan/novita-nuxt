@@ -1,5 +1,23 @@
 <script setup>
+import { useModalStore } from "~/store/modal";
+import { useProfileStore } from "~/store/profile";
 
+const modalStore = useModalStore(),
+    profileStore = useProfileStore(),
+    config = useRuntimeConfig(),
+    route = useRoute();
+
+profileStore.getUserProfile();
+
+// SEO
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: config.public.FRONT_DOMAIN + route.path,
+    },
+  ],
+});
 </script>
 
 <template>
@@ -9,9 +27,9 @@
       <NuxtPage />
       <BaseFooter />
 <!--      <WrapperLoader v-model="modalStore.loader" fixed />-->
-<!--      <ModalWrapper v-model="modalStore.modalSignIn" title="Вхід">-->
-<!--        <ModalContentSignIn />-->
-<!--      </ModalWrapper>-->
+      <ModalWrapper v-model="modalStore.modalSignIn" title="Вхід">
+        <ModalContentSignIn />
+      </ModalWrapper>
 <!--      <ModalWrapper v-model="modalStore.modalSignUp" title="Реєстрація">-->
 <!--        <ModalContentSignUp />-->
 <!--      </ModalWrapper>-->

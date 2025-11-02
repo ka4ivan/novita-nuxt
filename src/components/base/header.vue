@@ -1,9 +1,11 @@
 <script setup>
 import { useHeaderState } from '~/composables/useHeaderState'
+import { useModalStore } from "~/store/modal";
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const { isCustom } = useHeaderState()
 const isScrolled = ref(false)
+const modalStore = useModalStore();
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 0
@@ -58,7 +60,12 @@ onUnmounted(() => {
         <nav class="header__nav">
           <ul class="header__menu">
             <li class="header__menu-item-primary">
-              <NuxtLink class="header__menu-link-primary" to="/sign-in">Увійти</NuxtLink>
+              <button class="header__menu-link-primary"
+                      aria-label="Увійти"
+                      @click="modalStore.toggleSignInModal()"
+              >
+                Увійти
+              </button>
             </li>
             <li class="header__menu-item-secondary">
               <NuxtLink class="header__menu-link-secondary" to="/sign-up">Створити акаунт</NuxtLink>

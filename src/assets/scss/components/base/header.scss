@@ -51,6 +51,7 @@
   &__menu {
     margin-left: 25px;
     display: flex;
+    align-items: center;
     gap: .5rem;
     &-link-primary {
       display: flex;
