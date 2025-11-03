@@ -46,10 +46,15 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/image',
     "nuxt-schema-org",
+    "nuxt-vue3-google-signin",
   ],
 
   pinia: {
     autoImports: ["defineStore", ["defineStore", "definePiniaStore"]],
+  },
+
+  googleSignIn: {
+    clientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID,
   },
 
   //-- SEO

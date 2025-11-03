@@ -13,7 +13,6 @@ type T = {};
 
 export function defaultOptions() {
   const authToken = useCookie("auth_token"),
-    cart_id = useCookie("cart_id"),
     rawHeaders = useRequestHeaders();
 
   const config = useRuntimeConfig();
@@ -24,8 +23,6 @@ export function defaultOptions() {
       Accept: "application/json",
       "Cache-Control": "no-cache",
       Authorization: `Bearer ${authToken.value || ""}`,
-      sCart: cart_id.value || "",
-      sHost: "vovna",
       "X-Forwarded-For": rawHeaders["x-forwarded-for"],
       "X-Real-Ip": rawHeaders["x-real-ip"],
     },
