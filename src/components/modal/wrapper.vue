@@ -42,33 +42,7 @@ const previousModal = () => {
     <transition name="modal">
       <div class="modal" v-if="modelValue" @click.self="closeModal">
         <div class="modal__dialog">
-          <div class="modal__header">
-            <h2 v-if="title" class="title title--s">
-                {{ title }}
-            </h2>
-            <div v-if="subtitle" class="modal__header-wrapper">
-              <button class="modal__btn" @click="previousModal">
-                <BaseIconSvg
-                  icon-name="arrow-dropdown"
-                  customClass="icon-arrow-dropdown"
-                  width="30rem"
-                  height="30rem"
-                />
-              </button>
-              <h3 class="title title--s">{{ subtitle }}</h3>
-            </div>
-            <button v-if="showCloseBtn" class="btn_close" @click="closeModal">
-                <BaseIconSvg
-                width="20rem"
-                height="20rem"
-                icon-name="close"
-                customClass="icon-primary"
-                />
-            </button>
-          </div>
-          <div class="modal__content">
-            <slot :modalState="modelValue"/>
-          </div>
+          <slot :modalState="modelValue"/>
         </div>
       </div>
     </transition>

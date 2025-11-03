@@ -52,13 +52,28 @@ function signIn() {
 </script>
 <template>
   <div class="sign-in">
-    asdf
+    <div class="sign-in__img"></div>
+    <div class="sign-in__content">
+      <h3 class="sign-in__content-title">Привіт! Раді вітати! 👋</h3>
+      <form action="#" class="sign-in__content-form">
+        <button class="sign-in__content-form-button" name="provider" type="submit" value="google" title="Sign in with Google">
+          Sign in with Google
+          <BaseIconSvg
+              icon-name="google"
+              width="1.2rem"
+              height="1.2rem"
+              customClass="sign-in__content-form-button-icon"
+          />
+        </button>
+      </form>
+      <div class="sign-in__content-bottom">
+        <span class="sign-in__content-bottom-text">Не маєте акаунта?
+          <NuxtLink class="sign-in__content-bottom-link" to="/sign-up">Реєстрація</NuxtLink>
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.sign-in {
-  background: #d6d3ff;
-  padding: 100px;
-}
 </style>

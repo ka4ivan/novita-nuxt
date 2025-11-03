@@ -27,7 +27,7 @@ useHead({
       <NuxtPage />
       <BaseFooter />
 <!--      <WrapperLoader v-model="modalStore.loader" fixed />-->
-      <ModalWrapper v-model="modalStore.modalSignIn" title="Вхід">
+      <ModalWrapper v-model="modalStore.modalSignIn">
         <ModalContentSignIn />
       </ModalWrapper>
 <!--      <ModalWrapper v-model="modalStore.modalSignUp" title="Реєстрація">-->
