@@ -12,9 +12,7 @@ type ErrObjType = {
 type T = {};
 
 export function defaultOptions() {
-  const authToken = useCookie("auth_token"),
-    rawHeaders = useRequestHeaders();
-
+  const rawHeaders = useRequestHeaders();
   const config = useRuntimeConfig();
 
   const defaults: UseFetchOptions<T> = {
@@ -22,7 +20,10 @@ export function defaultOptions() {
     headers: {
       Accept: "application/json",
       "Cache-Control": "no-cache",
-      Authorization: `Bearer ${authToken.value || ""}`,
+      get Authorization() {
+        const authToken = useCookie("auth_token");
+        return `Bearer ${authToken.value || ""}`;
+      },
       "X-Forwarded-For": rawHeaders["x-forwarded-for"],
       "X-Real-Ip": rawHeaders["x-real-ip"],
     },

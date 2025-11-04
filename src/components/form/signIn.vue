@@ -3,7 +3,6 @@ import { useModalStore } from '~/store/modal'
 import { useProfileStore } from '~/store/profile'
 import { useTokenClient, type AuthCodeFlowSuccessResponse, type AuthCodeFlowErrorResponse } from "vue3-google-signin"
 
-const emit = defineEmits(['update:modelValue'])
 const modalStore = useModalStore()
 const profileStore = useProfileStore()
 
@@ -11,14 +10,19 @@ const handleOnSuccess = async (response: AuthCodeFlowSuccessResponse) => {
   try {
     const accessToken = response.access_token
 
-    const resApi = await $api().auth.socialite('google', accessToken)
+    await $api().auth.socialite('google', accessToken, {
+      method: 'POST',
+      onResponse({ response }) {
+        const authToken = useCookie('auth_token', {
+          expires: response._data.token_expires_in
+              ? new Date(response._data.token_expires_in)
+              : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 рік
+        });
 
-    const expiresIn = resApi.token_expires_in
-        ? new Date(resApi.token_expires_in)
-        : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 365 днів
-
-    const authToken = useCookie('auth_token', { expires: expiresIn })
-    authToken.value = resApi.token
+        authToken.value = response._data.token;
+        console.log(authToken.value);
+      },
+    });
 
     await profileStore.getUserProfile()
 
