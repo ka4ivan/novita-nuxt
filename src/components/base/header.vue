@@ -6,7 +6,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const { isCustom } = useHeaderState()
 const isScrolled = ref(false)
 const modalStore = useModalStore();
-
+const authToken = useCookie("auth_token");
+const store = $store();
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 0
 }
@@ -58,7 +59,9 @@ onUnmounted(() => {
 
       <div class="header__profile">
         <nav class="header__nav">
-          <ul class="header__menu">
+          <ul class="header__menu"
+              v-if="!authToken"
+          >
             <li class="header__menu-item-primary">
               <button class="header__menu-link-primary"
                       aria-label="Увійти"
@@ -71,6 +74,31 @@ onUnmounted(() => {
               <NuxtLink class="header__menu-link-secondary" to="/sign-up">Створити акаунт</NuxtLink>
             </li>
           </ul>
+          <div class="header__profile"
+               v-else
+          >
+            <NuxtLink class="header__profile-link" to="/profile">
+              <div class="header__profile-link-text">
+                <span class="header__profile-link-text-name">
+                  {{ store.profile.userProfile?.name || "Profile" }}
+                </span>
+                <span class="header__profile-link-text-email">
+                  {{ store.profile.userProfile?.email || "" }}
+                </span>
+              </div>
+              <nuxt-img
+                  format="webp"
+                  densities="x1 x1"
+                  placeholder="/images/noImg.webp"
+                  :src="store.profile.userProfile?.avatar?.url"
+                  alt="profile"
+                  width="36"
+                  height="36"
+                  class="header__profile-link-img"
+              >
+              </nuxt-img>
+            </NuxtLink>
+          </div>
         </nav>
       </div>
     </div>

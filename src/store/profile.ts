@@ -4,6 +4,7 @@ export const useProfileStore = defineStore('profile', () => {
         lastname: "",
         email: "",
         balance: "",
+        avatar: {},
     })
     async function getUserProfile() {
         const { data: profile } = await $api().profile.getProfile()
@@ -11,7 +12,9 @@ export const useProfileStore = defineStore('profile', () => {
             userProfile.value.email = profile?.value?.data?.email;
             userProfile.value.lastname = profile?.value?.data?.lastname;
             userProfile.value.balance = profile?.value?.data?.balance;
-            
-    } 
+            userProfile.value.avatar = {
+                "url": profile?.value?.data?.avatar.url
+            };
+    }
     return { userProfile, getUserProfile }
 })
