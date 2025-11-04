@@ -3,6 +3,7 @@ import { useModalStore } from '~/store/modal'
 import { useProfileStore } from '~/store/profile'
 import { useTokenClient, type AuthCodeFlowSuccessResponse, type AuthCodeFlowErrorResponse } from "vue3-google-signin"
 
+const emit = defineEmits(['update:modelValue'])
 const modalStore = useModalStore()
 const profileStore = useProfileStore()
 
@@ -35,10 +36,23 @@ const { isReady, login } = useTokenClient({
   onSuccess: handleOnSuccess,
   onError: handleOnError,
 })
+
+const closeModal = () => {
+  modalStore.modalSignIn = false;
+  scrollBody(false);
+}
 </script>
 
 <template>
   <div class="sign-in">
+    <div class="sign-in__btn-close" @click="closeModal">
+      <BaseIconSvg
+          icon-name="close"
+          width="1rem"
+          height="1rem"
+          customClass="sign-in__btn-close-icon"
+      />
+    </div>
     <div class="sign-in__img"></div>
     <div class="sign-in__content">
       <h3 class="sign-in__content-title">Привіт! Раді вітати! 👋</h3>
