@@ -3,13 +3,16 @@ import { onMounted, onUnmounted } from 'vue'
 import { useHeaderState } from '~/composables/useHeaderState'
 
 const { isCustom } = useHeaderState()
+const { isFixed } = useHeaderState()
 
 onMounted(() => {
   isCustom.value = true
+  isFixed.value = true
 })
 
 onUnmounted(() => {
   isCustom.value = false
+  isFixed.value = false
 });
 </script>
 

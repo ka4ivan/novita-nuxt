@@ -4,6 +4,7 @@ import { useModalStore } from "~/store/modal";
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const { isCustom } = useHeaderState()
+const { isFixed } = useHeaderState()
 const isScrolled = ref(false)
 const modalStore = useModalStore();
 const authToken = useCookie("auth_token");
@@ -22,7 +23,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <header :class="['header', { 'header--custom': isCustom && !isScrolled }]">
+  <header :class="['header', { 'header--custom': isCustom && !isScrolled, 'header--fixed': isFixed }]">
     <div class="header__container container">
       <div class="header__links">
         <NuxtLink to="/" class="header__logo">
