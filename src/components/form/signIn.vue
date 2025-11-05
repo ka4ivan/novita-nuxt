@@ -27,6 +27,7 @@ const handleOnSuccess = async (response: AuthCodeFlowSuccessResponse) => {
     await profileStore.getUserProfile()
 
     modalStore.modalSignIn = false
+    scrollBody(false);
   } catch (e) {
     console.error('❌ Auth error:', e)
   }
