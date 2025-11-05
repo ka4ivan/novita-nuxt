@@ -1,6 +1,7 @@
 <script setup>
 import { useHeaderState } from '~/composables/useHeaderState'
 import { useModalStore } from "~/store/modal";
+import { useProfileStore } from "~/store/profile";
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const { isCustom } = useHeaderState()
@@ -8,7 +9,8 @@ const { isFixed } = useHeaderState()
 const isScrolled = ref(false)
 const modalStore = useModalStore();
 const authToken = useCookie("auth_token");
-const store = $store();
+const profileStore = useProfileStore();
+const avatarUrl = computed(() => profileStore.userProfile?.avatar?.url || '/images/noImg.webp')
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 0
 }
@@ -20,6 +22,16 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
+
+watch(
+    () => useCookie('auth_token').value,
+    async (newVal) => {
+      if (newVal) {
+        await profileStore.getUserProfile()
+      }
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
@@ -81,17 +93,17 @@ onUnmounted(() => {
             <NuxtLink class="header__profile-link" to="/profile">
               <div class="header__profile-link-text">
                 <span class="header__profile-link-text-name">
-                  {{ store.profile.userProfile?.name || "Profile" }}
+                  {{ profileStore.userProfile?.name || "Profile" }}
                 </span>
                 <span class="header__profile-link-text-email">
-                  {{ store.profile.userProfile?.email || "" }}
+                  {{ profileStore.userProfile?.email || "" }}
                 </span>
               </div>
               <nuxt-img
                   format="webp"
                   densities="x1 x1"
                   placeholder="/images/noImg.webp"
-                  :src="store.profile.userProfile?.avatar?.url"
+                  :src="avatarUrl"
                   alt="profile"
                   width="36"
                   height="36"
