@@ -1,11 +1,27 @@
+import { defineStore } from 'pinia'
+
+interface UserAvatar {
+    url: string
+}
+
+interface UserProfile {
+    name: string
+    lastname: string
+    email: string
+    balance: number
+    avatar: UserAvatar
+}
+
 export const useProfileStore = defineStore('profile', () => {
-    const userProfile = ref({
+    const userProfile = ref<UserProfile>({
         name: '',
         lastname: '',
         email: '',
-        balance: '',
+        balance: 0.0,
         avatar: { url: '' },
     })
+
+    /** Отримати дані користувача з API */
     async function getUserProfile() {
         const { data: profile } = await $api().profile.getProfile()
 
@@ -19,5 +35,21 @@ export const useProfileStore = defineStore('profile', () => {
             }
         }
     }
-    return { userProfile, getUserProfile }
+
+    /** Скинути профіль до дефолтного стану (при виході або очищенні куків) */
+    function resetProfile() {
+        userProfile.value = {
+            name: '',
+            lastname: '',
+            email: '',
+            balance: 0.0,
+            avatar: { url: '' },
+        }
+    }
+
+    return {
+        userProfile,
+        getUserProfile,
+        resetProfile,
+    }
 })

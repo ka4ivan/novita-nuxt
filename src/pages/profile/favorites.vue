@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { useProfileStore } from '~/store/profile';
+
+const profileStore = useProfileStore();
+const router = useRouter()
+
 const breadcrumbs = ref([
   {
     id: 1,
@@ -10,6 +15,31 @@ const breadcrumbs = ref([
     name: "Профіль",
   },
 ]);
+
+async function logOut() {
+  try {
+    const authToken = useCookie('auth_token')
+    if(authToken.value) {
+      await $api().auth.logOut({
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken.value || ""}`,
+        },
+      })
+    }
+    authToken.value = null;
+    router.push('/')
+    profileStore.userProfile = {
+      name: "",
+      lastname: "",
+      email: "",
+      balance: "",
+      avatar: { url: '' },
+    }
+  } catch(error) {
+    console.error(error);
+  }
+}
 </script>
 
 <template>
@@ -24,7 +54,6 @@ const breadcrumbs = ref([
           <div class="profile__content">
             <ProfileMenu />
             <div class="profile__info">
-
             </div>
           </div>
         </div>
