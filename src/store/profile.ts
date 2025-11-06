@@ -5,6 +5,7 @@ interface UserAvatar {
 }
 
 interface UserProfile {
+    id: string,
     name: string
     lastname: string
     email: string
@@ -14,6 +15,7 @@ interface UserProfile {
 
 export const useProfileStore = defineStore('profile', () => {
     const userProfile = ref<UserProfile>({
+        id: '',
         name: '',
         lastname: '',
         email: '',
@@ -27,6 +29,7 @@ export const useProfileStore = defineStore('profile', () => {
 
         if (profile.value?.data) {
             userProfile.value = {
+                id: profile.value.data.id,
                 name: profile.value.data.name,
                 lastname: profile.value.data.lastname,
                 email: profile.value.data.email,
@@ -39,6 +42,7 @@ export const useProfileStore = defineStore('profile', () => {
     /** Скинути профіль до дефолтного стану (при виході або очищенні куків) */
     function resetProfile() {
         userProfile.value = {
+            id: '',
             name: '',
             lastname: '',
             email: '',

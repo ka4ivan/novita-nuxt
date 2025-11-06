@@ -49,7 +49,7 @@ async function logOut() {
         <BaseBreadCrumbs :links="breadcrumbs" />
         <div>
           <h1 class="profile__title">
-            Профіль
+            Обрані
           </h1>
           <div class="profile__content">
             <ProfileMenu />
@@ -63,5 +63,7 @@ async function logOut() {
 </template>
 
 <style scoped>
-
+ .profile__info {
+   margin-bottom: 60vh;
+ }
 </style>

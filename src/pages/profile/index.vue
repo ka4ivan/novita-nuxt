@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useProfileStore } from "~/store/profile";
+
+const profileStore = useProfileStore();
+
 const breadcrumbs = ref([
   {
     id: 1,
@@ -24,7 +28,68 @@ const breadcrumbs = ref([
           <div class="profile__content">
             <ProfileMenu />
             <div class="profile__info">
-
+              <div class="profile__info-detail">
+                <div class="profile__info-detail-avatar">
+                  <nuxt-img
+                      format="webp"
+                      densities="x1 x1"
+                      placeholder="/images/noImg.webp"
+                      :src="profileStore.userProfile.avatar.url"
+                      alt="profile"
+                      width="90"
+                      height="90"
+                      class="profile__info-detail-avatar__img"
+                  >
+                  </nuxt-img>
+                </div>
+                <div class="profile__info-detail-text">
+                  <h4 class="profile__info-detail-text__title">
+                    {{ profileStore.userProfile?.name || "" }} {{ profileStore.userProfile?.lastname || "" }}
+                  </h4>
+                  <span class="profile__info-detail-text__subtitle">
+                    {{ profileStore.userProfile?.id || "" }}
+                  </span>
+                  <span class="profile__info-detail-text__subtitle">
+                    {{ profileStore.userProfile?.email || "" }}
+                  </span>
+                </div>
+              </div>
+              <div class="profile__info-personal">
+                <div class="profile__info-personal__title">
+                  <h4 class="profile__info-personal__title-text">
+                    Особиста інформація
+                  </h4>
+                  <div class="profile__info-personal__button">
+                    <BaseIconSvg
+                        icon-name="edit"
+                        class="profile__info-personal__button-icon"
+                        width="1rem"
+                        height="1rem"
+                    />
+                    <span class="profile__info-personal__button-text">
+                      Редагувати
+                    </span>
+                  </div>
+                </div>
+                <vee-form class="profile__form" @submit="onUpdateProfile">
+<!--                  v-model="personalForm.name"-->
+                  <FieldsInput
+                      label="Ім'я"
+                      name="name"
+                      placeholder="Ім'я"
+                  />
+                  <FieldsInput
+                      label="Прізвище"
+                      name="lastname"
+                      placeholder="Прізвище"
+                  />
+                  <FieldsInput
+                      label="Email"
+                      name="email"
+                      placeholder="Email"
+                  />
+                </vee-form>
+              </div>
             </div>
           </div>
         </div>

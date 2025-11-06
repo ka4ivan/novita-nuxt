@@ -13,6 +13,8 @@
     "@fancyapps/ui": "^6.1.2",
     "@vueuse/components": "^14.0.0",
     "@vueuse/core": "^14.0.0",
+    "maska": "^2.1.10",
+    "vee-validate": "^4.15.1",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },

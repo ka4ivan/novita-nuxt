@@ -1,0 +1,26 @@
+.input {
+  width: calc(50% - 8px);
+  gap: .75rem;
+  display: flex;
+  flex-direction: column;
+  &__label {
+    color: $secondary-color;
+    font-weight: 500;
+  }
+  &__wrapper {
+    position: relative;
+    width: 100%;
+  }
+  &__field {
+    width: 100%;
+    padding: .625rem .875rem;
+    background-color: rgb(245 245 247);
+    border-radius: .5rem;
+    border: 1px solid rgb(245 245 247);
+    appearance: none;
+    transition: $transition;
+    &:hover {
+      background-color: rgb(238 240 244);
+    }
+  }
+}
