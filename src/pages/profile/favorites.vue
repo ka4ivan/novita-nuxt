@@ -66,5 +66,7 @@ async function logOut() {
 </template>
 
 <style scoped>
-
+.favorites__wrapper {
+  margin-bottom: 60vh;
+}
 </style>
