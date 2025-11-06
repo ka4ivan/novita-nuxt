@@ -14,6 +14,13 @@ const avatarUrl = computed(() => profileStore.userProfile?.avatar?.url || '/imag
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 0
 }
+const isHoveredSubmenu = ref(false)
+const handleMouseEnter = () => {
+  isHoveredSubmenu.value = true
+}
+const handleMouseLeave = () => {
+  isHoveredSubmenu.value = false
+}
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
@@ -35,7 +42,15 @@ watch(
 </script>
 
 <template>
-  <header :class="['header', { 'header--custom': isCustom && !isScrolled, 'header--fixed': isFixed }]">
+  <header
+      :class="[
+    'header',
+    {
+      'header--fixed': isFixed,
+      'header--custom': isCustom && !isScrolled && !isHoveredSubmenu,
+    },
+  ]"
+  >
     <div class="header__container container">
       <div class="header__links">
         <NuxtLink to="/" class="header__logo">
@@ -55,7 +70,11 @@ watch(
             <li class="header__menu-item-primary">
               <NuxtLink class="header__menu-link-primary" to="/about">Про Нас</NuxtLink>
             </li>
-            <li class="header__menu-item-secondary">
+            <li
+                class="header__menu-item-secondary"
+                @mouseenter="handleMouseEnter"
+                @mouseleave="handleMouseLeave"
+            >
               <NuxtLink class="header__menu-link-secondary" to="/ai">
                 AI Generation
                 <BaseIconSvg
@@ -65,6 +84,91 @@ watch(
                     height="16px"
                 />
               </NuxtLink>
+              <ul class="header__submenu">
+                <li class="header__submenu-item">
+                  <ul class="header__submenu-list">
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/txt2img" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Текст в зображення</h4>
+                          <span class="header__submenu-badge">🔥 TOP</span>
+                        </div>
+                        <p class="header__submenu-description">
+                          Генерувати зображення на основі текстового опису
+                        </p>
+                      </a>
+                    </li>
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/img2img" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Зображення в зображення</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Генерувати зображення на основі інших зображень
+                        </p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="header__submenu-item">
+                  <ul class="header__submenu-list">
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/upscale" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Upscale</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Підвищити роздільну здатність і чіткість зображення
+                        </p>
+                      </a>
+                    </li>
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/remove-background" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Видалити фон</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Виділіть об’єкти, видаливши фон із зображення
+                        </p>
+                      </a>
+                    </li>
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/replace-background" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Замінити фон</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Вставте новий фон замість наявного
+                        </p>
+                      </a>
+                    </li>
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/replace-background" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Видалити текст</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Видаліть текст із зображення, зберігаючи його фон
+                        </p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="header__submenu-item">
+                  <ul class="header__submenu-list">
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/remove-text" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">З'єднати обличчя</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Поєднайте риси обличчя з різних зображень в одне обличчя
+                        </p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </li>
           </ul>
         </nav>
