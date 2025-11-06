@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { useProfileStore } from '~/store/profile';
+import { ref } from 'vue'
+import VueEasyLightbox from 'vue-easy-lightbox'
 
 const profileStore = useProfileStore();
 const router = useRouter()
+
+const visible = ref(false)
+const imgUrl = ref('')
 
 const breadcrumbs = ref([
   {
@@ -15,6 +20,15 @@ const breadcrumbs = ref([
     name: "Профіль",
   },
 ]);
+
+const openLightbox = (url: string) => {
+  imgUrl.value = url
+  visible.value = true
+}
+
+const onHide = () => {
+  visible.value = false
+}
 
 async function logOut() {
   try {
@@ -61,9 +75,10 @@ async function logOut() {
                       <div class="favorites__img-buttons">
                         <div class="favorites__img-buttons-top">
                           <h3 class="favorites__img-blur"></h3>
-                          <a
-                              href="https://img.eterstock.com/VWHq5h3pYsRrn6wnkM5Q7JYNJY3C-ax_CBiYEwq-UkY/watermark:0.3/czM6Ly9ldGVybml0eS9pbWFnZXMvOWJiODNiNDktODkwNy00NGM2LWJkYmItNDNlMzQ1ZTIxZmI3LmpwZw.avif"
+                          <button
                               class="favorites__img-button"
+                              type="button"
+                              @click="openLightbox('https://img.eterstock.com/VWHq5h3pYsRrn6wnkM5Q7JYNJY3C-ax_CBiYEwq-UkY/watermark:0.3/czM6Ly9ldGVybml0eS9pbWFnZXMvOWJiODNiNDktODkwNy00NGM2LWJkYmItNDNlMzQ1ZTIxZmI3LmpwZw.avif')"
                           >
                             <BaseIconSvg
                                 icon-name="zoom"
@@ -71,7 +86,7 @@ async function logOut() {
                                 width="1.25rem"
                                 height="1.25rem"
                             />
-                          </a>
+                          </button>
                         </div>
 
                         <div class="favorites__img-buttons-bottom">
@@ -98,6 +113,12 @@ async function logOut() {
                           height="90"
                           class="favorites__img-image"
                       />
+                      <VueEasyLightbox
+                          :visible="visible"
+                          :imgs="[imgUrl]"
+                          :index="0"
+                          @hide="onHide"
+                      />
                     </div>
                   </div>
                 </div>
@@ -111,5 +132,7 @@ async function logOut() {
 </template>
 
 <style scoped>
-
+  .favorites {
+    min-height: 50vh;
+  }
 </style>
