@@ -118,7 +118,7 @@ const {
       <BaseIconSvg :icon-name="iconName" width="18rem" height="17rem" />
     </button>
     <div v-if="errorMessage" class="errors">
-      <span class="input-error-text">
+      <span class="input__error-text">
         {{ errorMessage }}
       </span>
     </div>
