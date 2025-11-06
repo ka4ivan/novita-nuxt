@@ -1,0 +1,27 @@
+.main {
+  &__main {
+    padding-bottom: 6rem;
+  }
+  .profile {
+    &__content {
+      display: flex;
+      flex-direction: row;
+    }
+    &__title {
+      color: rgb(32 32 46 / 1);
+      line-height: 1.3;
+      font-size: 52px;
+      margin-bottom: 1.5rem;
+    }
+    .favorites {
+      &__wrapper {
+        margin: calc(0px * calc(1 - 0)) calc(2rem * 0) calc(0px * 0) calc(2rem * calc(1 - 0));
+        flex: 1 1 0;
+      }
+      &__list {
+        columns: 5;
+        gap: .5rem;
+      }
+    }
+  }
+}

@@ -53,7 +53,10 @@ async function logOut() {
           </h1>
           <div class="profile__content">
             <ProfileMenu />
-            <div class="profile__info">
+            <div class="favorites__wrapper">
+              <div class="favorites__list">
+
+              </div>
             </div>
           </div>
         </div>
@@ -63,7 +66,5 @@ async function logOut() {
 </template>
 
 <style scoped>
- .profile__info {
-   margin-bottom: 60vh;
- }
+
 </style>
