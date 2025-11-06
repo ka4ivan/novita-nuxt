@@ -100,6 +100,28 @@
       justify-content: space-between;
       row-gap: 1rem;
       gap: 1rem;
+      &-before__button {
+        width: calc(50% - 8px);
+        flex-basis: 100%;
+      }
+      &-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(50% - 8px);
+        padding: .75rem 1.5rem;
+        background-color: rgb(214 255 52);
+        border-radius: 9999px;
+        color: $black;
+        transition: $transition;
+        cursor: pointer;
+        text-decoration-line: none;
+        gap: .625rem;
+        &:hover {
+          color: rgb(214 255 52);
+          background: #5d34ff;
+        }
+      }
     }
   }
 }

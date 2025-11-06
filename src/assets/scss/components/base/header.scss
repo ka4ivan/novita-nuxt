@@ -105,6 +105,10 @@
       align-items: start;
       font-weight: 500;
       text-decoration: none;
+      transition: $transition;
+      &:hover {
+        opacity: 0.8;
+      }
       &-text {
         display: flex;
         flex-direction: column;

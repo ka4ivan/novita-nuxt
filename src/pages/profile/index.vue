@@ -88,6 +88,8 @@ const breadcrumbs = ref([
                       name="email"
                       placeholder="Email"
                   />
+                  <div class="profile__form-before__button"></div>
+                  <button role="button" class="profile__form-button" name="method" type="submit" value="profile">Зберегти</button>
                 </vee-form>
               </div>
             </div>
