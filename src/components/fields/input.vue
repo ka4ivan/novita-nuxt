@@ -25,6 +25,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
   className: {
     type: String,
     default: "",
@@ -95,6 +99,7 @@ const {
           :type="type"
           :placeholder="placeholder"
           :value="modelValue"
+          :disabled="disabled"
           v-maska:[optionsMask]
           class="input__field"
           :class="{ classInp, 'has-error': !meta.valid && errorMessage }"
