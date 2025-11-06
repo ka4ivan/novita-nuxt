@@ -93,7 +93,7 @@ watch(
             <NuxtLink class="header__profile-link" to="/profile">
               <div class="header__profile-link-text">
                 <span class="header__profile-link-text-name">
-                  {{ profileStore.userProfile?.name || "Profile" }}
+                  {{ profileStore.userProfile?.name || "Profile" }} {{ profileStore.userProfile?.lastname || ""}}
                 </span>
                 <span class="header__profile-link-text-email">
                   {{ profileStore.userProfile?.email || "" }}

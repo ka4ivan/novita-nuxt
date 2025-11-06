@@ -17,6 +17,10 @@ const onUpdateProfile = async () => {
   // TODO зробити збереження профілю
   isEditing.value = false;
 };
+
+onMounted(async () => {
+  await profileStore.getUserProfile();
+});
 </script>
 
 <template>
