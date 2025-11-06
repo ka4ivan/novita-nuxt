@@ -22,5 +22,13 @@
     &:hover {
       background-color: rgb(238 240 244);
     }
+    &-error {
+      background-color: rgb(254 226 226);
+      border-color: rgb(245 245 247);
+      &:hover {
+        background-color: rgb(254 226 226);
+        border-color: rgb(245 245 247);
+      }
+    }
   }
 }

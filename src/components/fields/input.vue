@@ -102,7 +102,7 @@ const {
           :disabled="disabled"
           v-maska:[optionsMask]
           class="input__field"
-          :class="{ classInp, 'has-error': !meta.valid && errorMessage }"
+          :class="{ classInp, 'input__field-error': !meta.valid && errorMessage }"
           @input="handleInput"
           @focus="handleFocus"
           :maxlength="maxLength"
