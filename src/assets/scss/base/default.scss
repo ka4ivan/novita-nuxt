@@ -4,12 +4,22 @@ html {
   //font-size: calc(1vw / 19.2);
 }
 
+::selection {
+  background-color: rgb(255 203 97);;
+  color: #000;
+}
+
 body {
   font-family: Nunito, sans-serif;
   line-height: 1.35;
   font-size: 16px;
   color: $primary-color;
   transition: .2s;
+}
+
+.main {
+  min-height: 100vh;
+  margin-top: 1.5rem;
 }
 
 .container {

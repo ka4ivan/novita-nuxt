@@ -9,14 +9,20 @@ const props = defineProps({
 <template>
   <div class="breadcrumbs">
     <template v-for="(item, index) in links" :key="item.id || index">
-      <NuxtLink
-          v-if="index < links.length - 1"
-          class="breadcrumbs__link"
-          :to="`/${item.slug}`"
-      >
+      <template v-if="item.slug && index < links.length - 1">
+        <NuxtLink
+            class="breadcrumbs__link"
+            :to="`/${item.slug}`"
+        >
+          {{ item.name }}
+        </NuxtLink>
+      </template>
+
+      <template v-else>
+      <span class="breadcrumbs__link breadcrumbs__link-current">
         {{ item.name }}
-      </NuxtLink>
-      <span v-else class="breadcrumbs__link breadcrumbs__link-current">{{ item.name }}</span>
+      </span>
+      </template>
 
       <span
           v-if="index < links.length - 1"

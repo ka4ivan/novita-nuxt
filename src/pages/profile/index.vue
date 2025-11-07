@@ -8,7 +8,7 @@ const profileStore = useProfileStore();
 const isEditing = ref(false);
 
 const breadcrumbs = ref([
-  { id: 1, name: "Головна", slug: "" },
+  { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "Профіль" },
 ]);
 

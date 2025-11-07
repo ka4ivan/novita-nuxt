@@ -13,7 +13,7 @@ const breadcrumbs = ref([
   {
     id: 1,
     name: "Головна",
-    slug: "",
+    slug: "/",
   },
   {
     id: 2,
