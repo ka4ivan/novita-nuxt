@@ -100,6 +100,9 @@
       justify-content: space-between;
       row-gap: 1rem;
       gap: 1rem;
+      .input {
+        width: calc(50% - 8px);
+      }
       &-before__button {
         width: calc(50% - 8px);
         flex-basis: 100%;

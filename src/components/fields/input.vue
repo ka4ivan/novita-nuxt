@@ -41,6 +41,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  tooltip: {
+    type: String,
+    default: "",
+  },
   iconName: {
     type: String,
     default: "",
@@ -91,7 +95,25 @@ const {
     class="input"
     :class="{ className }"
   >
-    <label :for="name" class="input__label">{{ label }}</label>
+    <label class="input__label" v-if="label || tooltip" :for="name">
+      {{ label }}
+      <span class="input__tooltip" v-if="tooltip">
+        <BaseIconSvg
+            icon-name="info"
+            customClass="input__tooltip-icon"
+            width="0.75rem"
+            height="0.75rem"
+        />
+        <span class="input__tooltip-info">
+          <span class="input__tooltip-info__wrapper">
+            <span class="input__tooltip-info__triangle"></span>
+            <span class="input__tooltip-info__text">
+              {{ tooltip}}
+            </span>
+          </span>
+        </span>
+      </span>
+    </label>
     <div class="input__wrapper">
       <input
           :name="name"

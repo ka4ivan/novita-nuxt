@@ -26,6 +26,29 @@ const breadcrumbs = ref([
         </div>
       </div>
     </section>
+    <section class="ai__generate">
+      <div class="ai__generate-container container">
+        <div class="ai__generate-settings">
+          <div class="ai__generate-form">
+            <div class="ai__generate-form__button-wrapper">
+              <button type="submit" class="ai__generate-form__button">
+                Згенерувати
+              </button>
+            </div>
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-field">
+                <FieldsInput
+                    label="Модель"
+                    name="model"
+                    placeholder="Модель"
+                    tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
