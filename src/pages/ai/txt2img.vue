@@ -61,7 +61,7 @@ const breadcrumbs = ref([
               <div class="ai__generate-form__input-cross">
                 <div class="ai__generate-form__input-field">
                   <FieldsInput
-                      label="Роздільна здатність"
+                      label="Роздільна Здатність"
                       name="width"
                       type="number"
                       placeholder="Width"
@@ -97,13 +97,67 @@ const breadcrumbs = ref([
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
                 <FieldsRange
-                    label="Кількість зображень"
+                    label="Кількість Зображень"
                     name="image_num"
                     modelValue="5"
                     min="1"
                     max="8"
                 />
               </div>
+            </div>
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-title">
+                <label class="input__label">
+                  Мої Моделі
+                  <BaseTooltip text="LoRA — це швидкий і легкий метод навчання, який вставляє та навчає значно меншу кількість параметрів замість усіх параметрів моделі. Наразі підтримується до 5 LoRA." />
+                </label>
+              </div>
+              <div class="ai__generate-form__my-model">
+                <div class="ai__generate-form__my-model__wrapper">
+                  <button role="button" class="ai__generate-form__my-model__close" type="button">
+                    <BaseIconSvg
+                        icon-name="cross"
+                        customClass="ai__generate-form__my-model__close-icon"
+                        width="2rem"
+                        height="2rem"
+                    />
+                  </button>
+                  <div class="ai__generate-form__input">
+                    <div class="ai__generate-form__input-field">
+                      <FieldsInput
+                          label="Модель"
+                          name="loras[0][model_name]"
+                          placeholder="Модель"
+                          tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
+                      />
+                    </div>
+                  </div>
+                  <div class="ai__generate-form__input">
+                    <div class="ai__generate-form__input-field">
+                      <FieldsRange
+                          label="Сила Впливу"
+                          name="loras[0][strength]"
+                          modelValue="0.7"
+                          min="0"
+                          max="1"
+                          step=0.01
+                          tooltip="Чим більше значення, тим сильніше впливає."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button role="button" class="ai__generate-form__input-button" type="button">
+                <div class="ai__generate-form__input-button-text">
+                  <BaseIconSvg
+                      icon-name="cross"
+                      customClass="ai__generate-form__input-button-icon"
+                      width="1rem"
+                      height="1rem"
+                  />
+                  Додати Власну Модель
+                </div>
+              </button>
             </div>
           </div>
         </div>
