@@ -1,0 +1,110 @@
+<script setup>
+import { useField } from "vee-validate";
+
+const emit = defineEmits(["update:modelValue"]);
+
+const props = defineProps({
+  label: {
+    type: String,
+    default: "",
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  modelValue: {
+    type: String,
+    default: "",
+  },
+  name: {
+    type: String,
+    default: "",
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  className: {
+    type: String,
+    default: "",
+  },
+  classTextarea: {
+    type: String,
+    default: "",
+  },
+  tooltip: {
+    type: String,
+    default: "",
+  },
+  maxLength: {
+    type: [String, Number],
+    default: "",
+  },
+  rows: {
+    type: [String, Number],
+    default: 4,
+  },
+});
+
+const name = toRef(props, "name");
+
+const handleInput = (e) => {
+  const target = e.target;
+  handleChange(target.value);
+  emit("update:modelValue", target.value);
+};
+
+const { value: textareaValue, errorMessage, handleChange, meta } = useField(
+    name,
+    undefined,
+    {
+      initialValue: props.modelValue || null,
+    }
+);
+</script>
+
+<template>
+  <div class="textarea" :class="{ className }">
+    <label class="textarea__label" v-if="label || tooltip" :for="name">
+      {{ label }}
+      <span class="textarea__tooltip" v-if="tooltip">
+        <BaseIconSvg
+            icon-name="info"
+            customClass="textarea__tooltip-icon"
+            width="0.75rem"
+            height="0.75rem"
+        />
+        <span class="textarea__tooltip-info">
+          <span class="textarea__tooltip-info__wrapper">
+            <span class="textarea__tooltip-info__triangle"></span>
+            <span class="textarea__tooltip-info__text">
+              {{ tooltip }}
+            </span>
+          </span>
+        </span>
+      </span>
+    </label>
+
+    <div class="textarea__wrapper">
+      <textarea
+          :name="name"
+          :id="name"
+          :placeholder="placeholder"
+          :value="modelValue"
+          :disabled="disabled"
+          class="textarea__field"
+          :class="{ classTextarea, 'textarea__field-error': !meta.valid && errorMessage }"
+          @input="handleInput"
+          :maxlength="maxLength"
+          :rows="rows"
+      />
+    </div>
+
+    <div v-if="errorMessage" class="errors">
+      <span class="textarea__error-text">{{ errorMessage }}</span>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+</style>

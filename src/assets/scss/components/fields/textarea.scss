@@ -1,0 +1,117 @@
+.textarea {
+  width: 100%;
+  gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+
+  &__label {
+    display: flex;
+    align-items: center;
+    color: $secondary-color;
+    font-weight: 500;
+    gap: 0.5rem;
+  }
+
+  &__tooltip {
+    background-color: rgb(238 240 244);
+    border-radius: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: help;
+    width: 1rem;
+    height: 1rem;
+    position: relative;
+
+    &:hover {
+      .textarea__tooltip-info {
+        display: block;
+      }
+    }
+
+    &-icon {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+
+    &-info {
+      display: none;
+      width: 20rem;
+      position: absolute;
+      bottom: 0;
+      left: -1rem;
+
+      &__wrapper {
+        position: absolute;
+        z-index: 10;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
+
+      &__triangle {
+        background-color: $white;
+        border: 1px solid rgb(238 240 244);
+        border-right-width: 0;
+        border-bottom-width: 0;
+        transform: rotate(45deg);
+        width: 1rem;
+        height: 1rem;
+        position: absolute;
+        top: 0.5rem;
+        left: 1rem;
+        z-index: 20;
+      }
+
+      &__text {
+        box-shadow: 0 1px 3px rgb(0 0 0 / 0.1),
+        0 1px 2px -1px rgb(0 0 0 / 0.1);
+        color: rgb(145 147 151);
+        line-height: 1.5rem;
+        font-size: 14px;
+        padding: 0.375rem 0.75rem;
+        background-color: $white;
+        border: 1px solid rgb(238 240 244);
+        border-radius: 0.375rem;
+        width: 100%;
+        position: absolute;
+        top: 1rem;
+        left: 0;
+      }
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  &__field {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    background-color: rgb(245 245 247);
+    border-radius: 0.5rem;
+    border: 1px solid rgb(245 245 247);
+    appearance: none;
+    min-height: 6rem;
+    resize: none;
+    transition: $transition;
+
+    &:hover {
+      background-color: rgb(238 240 244);
+    }
+
+    &-error {
+      background-color: rgb(254 226 226);
+      border-color: rgb(245 245 247);
+
+      &:hover {
+        background-color: rgb(254 226 226);
+      }
+    }
+  }
+
+  &__error-text {
+    color: $error;
+  }
+}

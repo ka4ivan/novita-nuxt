@@ -101,17 +101,35 @@
     &-form {
       display: flex;
       width: 100%;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 1rem;
       row-gap: 1rem;
 
       &__input {
-        width: calc(50% - 8px);
+        width: 100%;
+        border-bottom: 1px solid #eef0f4;
+        padding: 1.25rem 1.75rem;
+        gap: .75rem;
+        display: flex;
+        flex-direction: column;
+
+        &-cross {
+          gap: 1rem;
+          display: flex;
+          align-items: center;
+
+          &-icon {
+            margin-top: 6%;
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+        }
 
         &-field {
           width: 100%;
+          position: relative;
         }
       }
 

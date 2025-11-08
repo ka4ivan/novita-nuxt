@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Range from "~/components/fields/range.vue";
+
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "AI" },
@@ -44,6 +46,47 @@ const breadcrumbs = ref([
                     tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
                 />
               </div>
+            </div>
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-field">
+                <FieldsTextarea
+                    label="Промпт"
+                    name="prompt"
+                    placeholder="Промпт"
+                    tooltip="Ви можете використати одне слово або повне речення. Ми заповнили кілька загальних підказок, щоб згенеровані вами зображення були ближчими до обраної вами моделі."
+                />
+              </div>
+            </div>
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-cross">
+                <div class="ai__generate-form__input-field">
+                  <FieldsInput
+                      label="Роздільна здатність"
+                      name="width"
+                      type="number"
+                      placeholder="Width"
+                      tooltip="Нижча роздільна здатність може призвести до розмитих зображень із меншою кількістю деталей. Вища роздільна здатність сповільнює швидкість генерації та може спричинити відхилення від очікуваного результату. Рекомендована роздільна здатність: 1024×1024"
+                  />
+                </div>
+                  <BaseIconSvg
+                      icon-name="cross"
+                      class="ai__generate-form__input-cross-icon"
+                      width="1rem"
+                      height="1rem"
+                  />
+                <div class="ai__generate-form__input-field">
+                  <Range
+                      label="Кроки;"
+                      name="height"
+                      type="number"
+                      placeholder="Height"
+                      tooltip=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="ai__generate-form__input">
+
             </div>
           </div>
         </div>

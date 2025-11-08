@@ -1,0 +1,22 @@
+.range {
+  &__wrapper {
+    gap: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  &__flex {
+    flex: 1 1 0;
+  }
+  &__field {
+    width: 100%;
+    flex: 1 1 0;
+    accent-color: #760BFE;
+  }
+  &__text {
+    padding: .625rem .875rem;
+    background-color: rgb(245 245 247);
+    border: 1px solid rgb(245 245 247);
+    border-radius: .5rem;
+    width: 3.5rem;
+  }
+}
