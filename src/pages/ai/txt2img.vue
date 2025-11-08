@@ -1,11 +1,27 @@
 <script setup lang="ts">
-import Range from "~/components/fields/range.vue";
+import { ref } from "vue";
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "AI" },
   { id: 3, name: "Текст в зображення" },
 ]);
+
+const myModels = ref([]);
+
+const addModel = () => {
+  if (myModels.value.length < 5) {
+    myModels.value.push({
+      id: Date.now(),
+      model_name: "",
+      strength: 0.7,
+    });
+  }
+};
+
+const removeModel = (id: number) => {
+  myModels.value = myModels.value.filter((m) => m.id !== id);
+};
 </script>
 
 <template>
@@ -113,8 +129,17 @@ const breadcrumbs = ref([
                 </label>
               </div>
               <div class="ai__generate-form__my-model">
-                <div class="ai__generate-form__my-model__wrapper">
-                  <button role="button" class="ai__generate-form__my-model__close" type="button">
+                <div
+                    v-for="(model, index) in myModels"
+                    :key="model.id"
+                    class="ai__generate-form__my-model__wrapper"
+                >
+                  <button
+                      role="button"
+                      type="button"
+                      class="ai__generate-form__my-model__close"
+                      @click="removeModel(model.id)"
+                  >
                     <BaseIconSvg
                         icon-name="cross"
                         customClass="ai__generate-form__my-model__close-icon"
@@ -122,32 +147,40 @@ const breadcrumbs = ref([
                         height="2rem"
                     />
                   </button>
+
                   <div class="ai__generate-form__input">
                     <div class="ai__generate-form__input-field">
                       <FieldsInput
-                          label="Модель"
-                          name="loras[0][model_name]"
+                          :label="`Модель ${index + 1}`"
+                          :name="`loras[${index}][model_name]`"
                           placeholder="Модель"
-                          tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
                       />
                     </div>
                   </div>
+
                   <div class="ai__generate-form__input">
                     <div class="ai__generate-form__input-field">
                       <FieldsRange
                           label="Сила Впливу"
-                          name="loras[0][strength]"
-                          modelValue="0.7"
+                          :name="`loras[${index}][strength]`"
+                          :modelValue="model.strength"
                           min="0"
                           max="1"
-                          step=0.01
-                          tooltip="Чим більше значення, тим сильніше впливає."
+                          step="0.01"
                       />
                     </div>
                   </div>
                 </div>
               </div>
-              <button role="button" class="ai__generate-form__input-button" type="button">
+
+              <!-- 🔹 кнопка показується тільки якщо < 5 -->
+              <button
+                  v-if="myModels.length < 5"
+                  role="button"
+                  type="button"
+                  class="ai__generate-form__input-button"
+                  @click="addModel"
+              >
                 <div class="ai__generate-form__input-button-text">
                   <BaseIconSvg
                       icon-name="cross"
