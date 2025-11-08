@@ -10,69 +10,6 @@
     font-weight: 500;
     gap: .5rem;
   }
-  &__tooltip {
-    background-color: rgb(238 240 244);
-    border-radius: .25rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: help;
-    width: 1rem;
-    height: 1rem;
-    position: relative;
-    &:hover {
-      .input__tooltip-info {
-        display: block;
-      }
-    }
-    &-icon {
-      width: .75rem;
-      height: .75rem;
-    }
-    &-info {
-      display: none;
-      width: 20rem;
-      position: absolute;
-      bottom: 0;
-      left: -1rem;
-      &__wrapper {
-        position: absolute;
-        z-index: 10;
-        right: 0;
-        left: 0;
-        bottom: 0;
-      }
-      &__triangle {
-        background-color: $white;
-        border: 1px solid rgb(238 240 244);
-        border-right-width: 0;
-        border-bottom-width: 0;
-        transform: translate(0, 0) rotate(45deg) skew(0) skewY(0) scaleX(1) scaleY(1);
-        width: 1rem;
-        height: 1rem;
-        z-index: 20;
-        position: absolute;
-        top: .5rem;
-        left: 1rem;
-      }
-      &__text {
-        --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);
-        --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-        color: rgb(145 147 151);
-        line-height: 1.5rem;
-        font-size: 14px;
-        padding: .375rem .75rem;
-        background-color: $white;
-        border: 1px solid rgb(238 240 244);
-        border-radius: .375rem;
-        width: 100%;
-        position: absolute;
-        top: 1rem;
-        left: 0;
-      }
-    }
-  }
   &__wrapper {
     position: relative;
     width: 100%;

@@ -97,22 +97,7 @@ const {
   >
     <label class="input__label" v-if="label || tooltip" :for="name">
       {{ label }}
-      <span class="input__tooltip" v-if="tooltip">
-        <BaseIconSvg
-            icon-name="info"
-            customClass="input__tooltip-icon"
-            width="0.75rem"
-            height="0.75rem"
-        />
-        <span class="input__tooltip-info">
-          <span class="input__tooltip-info__wrapper">
-            <span class="input__tooltip-info__triangle"></span>
-            <span class="input__tooltip-info__text">
-              {{ tooltip}}
-            </span>
-          </span>
-        </span>
-      </span>
+      <BaseTooltip v-if="tooltip" :text="tooltip" />
     </label>
     <div class="input__wrapper">
       <input

@@ -67,22 +67,7 @@ const { value: textareaValue, errorMessage, handleChange, meta } = useField(
   <div class="textarea" :class="{ className }">
     <label class="textarea__label" v-if="label || tooltip" :for="name">
       {{ label }}
-      <span class="textarea__tooltip" v-if="tooltip">
-        <BaseIconSvg
-            icon-name="info"
-            customClass="textarea__tooltip-icon"
-            width="0.75rem"
-            height="0.75rem"
-        />
-        <span class="textarea__tooltip-info">
-          <span class="textarea__tooltip-info__wrapper">
-            <span class="textarea__tooltip-info__triangle"></span>
-            <span class="textarea__tooltip-info__text">
-              {{ tooltip }}
-            </span>
-          </span>
-        </span>
-      </span>
+      <BaseTooltip v-if="tooltip" :text="tooltip" />
     </label>
 
     <div class="textarea__wrapper">

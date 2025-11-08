@@ -75,18 +75,35 @@ const breadcrumbs = ref([
                       height="1rem"
                   />
                 <div class="ai__generate-form__input-field">
-                  <Range
-                      label="Кроки;"
+                  <FieldsInput
+                      label="&nbsp;"
                       name="height"
                       type="number"
                       placeholder="Height"
-                      tooltip=""
                   />
                 </div>
               </div>
             </div>
             <div class="ai__generate-form__input">
-
+              <div class="ai__generate-form__input-field">
+                <FieldsRange
+                    label="Кроки"
+                    name="steps"
+                    modelValue="20"
+                    tooltip="Більше кроків, тонші деталі. Після 20 - обмежене покращення."
+                />
+              </div>
+            </div>
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-field">
+                <FieldsRange
+                    label="Кількість зображень"
+                    name="image_num"
+                    modelValue="5"
+                    min="1"
+                    max="8"
+                />
+              </div>
             </div>
           </div>
         </div>
