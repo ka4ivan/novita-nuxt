@@ -150,12 +150,12 @@ watch(searchQuery, () => {
         <span class="select_model__field-preview">
           <img
               class="select_model__field-preview-img"
-              :src="selectedModel?.image || 'https://next-app-static.s3.amazonaws.com/images-prod/xG1nkqKTMzGDvpLrqFT7WA/f291a219-4a86-45ab-96eb-c53446b3e4df/width=450/1495044.jpeg'"
-              :alt="selectedModel?.title || 'V4.0-inpainting (VAE)'"
+              :src="selectedModel?.image || 'https://next-app-static.s3.amazonaws.com/images-prod/xG1nkqKTMzGDvpLrqFT7WA/550b1030-0a5a-4ac0-b601-4e91940c99f4/width=450/1288918.jpeg'"
+              :alt="selectedModel?.title || 'Classic V1.4'"
           />
         </span>
         <span class="select_model__field-text" :title="selectedModel?.title || ''">
-          {{ selectedModel?.title || 'V4.0-inpainting (VAE)' }}
+          {{ selectedModel?.title || 'Classic V1.4' }}
         </span>
         <span class="select_model__field-arrow">
           <BaseIconSvg

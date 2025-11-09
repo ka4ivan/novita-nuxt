@@ -29,11 +29,12 @@ const presets = ref([
 ]);
 
 const myModels = ref([]);
+const generatedImages = ref<Array<{id: string, url: string}>>([]);
 const showAdvanced = ref(false);
 const isGenerating = ref(false);
 
 const form = ref({
-  model_name: "realisticVisionV40_v40VAE-inpainting_81543.safetensors",
+  model_name: "cyberrealistic_classicV14_73029.safetensors",
   prompt: "",
   negative_prompt: "",
   width: 1024,
@@ -66,13 +67,22 @@ const toggleAdvanced = () => {
 
 function listenSocket(ai_job_id: string) {
   window.Echo.channel(`ai.${ai_job_id}`)
-      .listen('.ai.succeed', (e: any) => {
+      .listen('.ai.succeed', (data: any) => {
+        isGenerating.value = false;
         console.log("🟢 AIJob in Sockets:", ai_job_id);
-        console.log(e)
+        console.log(data)
+        console.log(data.media && Array.isArray(data.media))
+        customToast("Зображення успішно згенеровані!", 'success');
+
+        if (data.media && Array.isArray(data.media)) {
+          generatedImages.value = [...data.media, ...generatedImages.value];
+        }
       })
   window.Echo.channel(`ai.${ai_job_id}`)
-      .listen('ai.failed', (e: any) => {
-        console.log(e)
+      .listen('ai.failed', (data: any) => {
+        isGenerating.value = false;
+        console.log(data)
+        customToast("Помилка при генерації зображень!", 'error');
       })
 }
 
@@ -451,7 +461,7 @@ const generateImages = async (val, action) => {
             </h3>
           </div>
         </div>
-        <div class="ai__generate-presets" v-show="!isGenerating">
+        <div class="ai__generate-presets" v-show="!isGenerating && generatedImages.length <= 0">
           <h4 class="ai__generate-presets__title">
             Надихайтеся!
           </h4>
@@ -471,6 +481,21 @@ const generateImages = async (val, action) => {
                     :alt="`Preset ${preset.id}`"
                 />
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
+          <div class="ai__generate-results__list">
+            <div
+                class="ai__generate-results__item"
+                v-for="(image, index) in generatedImages"
+                :key="image.id"
+            >
+              <img
+                  class="ai__generate-results__item-img"
+                  :src="image.url"
+                  :alt="`Result ${index + 1}`"
+              />
             </div>
           </div>
         </div>
