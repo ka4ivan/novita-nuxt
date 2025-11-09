@@ -4,6 +4,9 @@ export default defineNuxtConfig({
     public: {
       API_BASE_URL: process.env.NUXT_APP_API_URL || "",
       FRONT_DOMAIN: process.env.NUXT_FRONT_DOMAIN || "",
+      API_URL: process.env.NUXT_APP_API_URL || "",
+      REVERB_KEY: process.env.REVERB_KEY || "",
+      REVERB_HOST: process.env.REVERB_HOST || "",
     },
   },
 
@@ -47,6 +50,10 @@ export default defineNuxtConfig({
     '@nuxt/image',
     "nuxt-schema-org",
     "nuxt-vue3-google-signin",
+  ],
+
+  plugins: [
+    '~/plugins/laravel-echo.client'
   ],
 
   pinia: {

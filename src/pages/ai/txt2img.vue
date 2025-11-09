@@ -64,6 +64,18 @@ const toggleAdvanced = () => {
   showAdvanced.value = !showAdvanced.value;
 };
 
+function listenSocket(ai_job_id: string) {
+  window.Echo.channel(`ai.${ai_job_id}`)
+      .listen('.ai.succeed', (e: any) => {
+        console.log("🟢 AIJob in Sockets:", ai_job_id);
+        console.log(e)
+      })
+  window.Echo.channel(`ai.${ai_job_id}`)
+      .listen('ai.failed', (e: any) => {
+        console.log(e)
+      })
+}
+
 const generateImages = async (val, action) => {
   try {
     isGenerating.value = true;
@@ -90,6 +102,11 @@ const generateImages = async (val, action) => {
       onResponse({ response }) {
         if (response.status === 200 ||response.status === 201 || response.status === 202) {
           customToast(response._data?.message || "Задача створена успішно!", 'success');
+
+          if (response._data?.ai_job_id) {
+            console.log("🟢 AIJob:", response._data.ai_job_id);
+            listenSocket(response._data.ai_job_id);
+          }
 
           console.log("🟢 Task created:", response._data);
         }
