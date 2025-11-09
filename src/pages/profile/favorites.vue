@@ -47,7 +47,7 @@ async function logOut() {
       name: "",
       lastname: "",
       email: "",
-      balance: "",
+      balance: 0.0,
       avatar: { url: '' },
     }
   } catch(error) {
@@ -393,13 +393,6 @@ async function logOut() {
       </div>
     </section>
   </main>
-
-  <VueEasyLightbox
-      :visible="visible"
-      :imgs="[imgUrl]"
-      :index="0"
-      @hide="onHide"
-  />
 </template>
 
 <style scoped>

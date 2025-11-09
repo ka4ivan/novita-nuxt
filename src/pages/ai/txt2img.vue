@@ -3,6 +3,7 @@ import { ref } from "vue";
 import SelectModel from "~/components/fields/selectModel.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import VueEasyLightbox from "vue-easy-lightbox";
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
@@ -46,6 +47,17 @@ const form = ref({
   sampler_name: "Euler a",
   loras: [],
 });
+
+const visible = ref(false)
+const imgUrl = ref('')
+const openLightbox = (url: string) => {
+  imgUrl.value = url
+  visible.value = true
+}
+
+const onHide = () => {
+  visible.value = false
+}
 
 const addModel = () => {
   if (myModels.value.length < 5) {
@@ -486,16 +498,50 @@ const generateImages = async (val, action) => {
         </div>
         <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
           <div class="ai__generate-results__list">
-            <div
-                class="ai__generate-results__item"
-                v-for="(image, index) in generatedImages"
-                :key="image.id"
+            <div class="ai__generate-results__item"
+                 v-for="(image, index) in generatedImages"
+                 :key="image.id"
             >
-              <img
-                  class="ai__generate-results__item-img"
-                  :src="image.url"
-                  :alt="`Result ${index + 1}`"
-              />
+              <div class="ai__generate-results__img">
+                <div class="ai__generate-results__img-buttons">
+                  <div class="ai__generate-results__img-buttons-top">
+                    <h3 class="ai__generate-results__img-blur"></h3>
+                    <button
+                        class="ai__generate-results__img-button"
+                        type="button"
+                        @click="openLightbox(image.url)"
+                    >
+                      <BaseIconSvg
+                          icon-name="zoom"
+                          customClass="ai__generate-results__img-button-icon"
+                          width="1.25rem"
+                          height="1.25rem"
+                      />
+                    </button>
+                  </div>
+
+                  <div class="ai__generate-results__img-buttons-bottom">
+                    <button class="ai__generate-results__img-button">
+                      <BaseIconSvg
+                          icon-name="heart-stroke"
+                          customClass="ai__generate-results__img-button-icon"
+                          width="1.25rem"
+                          height="1.25rem"
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                <nuxt-img
+                    densities="x1 x1"
+                    placeholder="/images/noImg.webp"
+                    :src="image.url"
+                    :alt="`Result ${index + 1}`"
+                    width="90"
+                    height="90"
+                    class="ai__generate-results__img-image"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -647,6 +693,13 @@ const generateImages = async (val, action) => {
       </div>
     </section>
   </main>
+
+  <VueEasyLightbox
+      :visible="visible"
+      :imgs="[imgUrl]"
+      :index="0"
+      @hide="onHide"
+  />
 </template>
 
 <style scoped>

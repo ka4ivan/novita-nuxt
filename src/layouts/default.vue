@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useModalStore } from "~/store/modal";
 import { useProfileStore } from "~/store/profile";
 
