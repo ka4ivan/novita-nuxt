@@ -51,10 +51,12 @@ const selectedModel = ref<any>(null);
 const cursor = ref<string | null>(null);
 const loadingMore = ref(false);
 const searchQuery = ref("");
+const isSearching = ref(false);
 
 async function fetchModels(reset = false) {
   if (loadingMore.value) return;
   loadingMore.value = true;
+  if (reset) isSearching.value = true;
 
   try {
     const res = await axios.get(`${config.public.API_BASE_URL}${props.route}`, {
@@ -75,7 +77,6 @@ async function fetchModels(reset = false) {
 
     cursor.value = res.data.next_cursor || null;
 
-    // Якщо ще нічого не вибрано — беремо перший елемент
     if (!selectedModel.value && models.value.length > 0) {
       selectedModel.value = models.value[0];
       handleChange(selectedModel.value.name);
@@ -85,6 +86,7 @@ async function fetchModels(reset = false) {
     console.error("Error fetching AI models:", e);
   } finally {
     loadingMore.value = false;
+    isSearching.value = false;
   }
 }
 
@@ -190,7 +192,8 @@ watch(searchQuery, (val) => {
 
             <div class="model-selector__body">
               <div class="model-selector__overflow" @scroll="handleScroll">
-                <div v-if="!models.length && loadingMore" class="select_model__loader">
+                <!-- Лоадер при першому завантаженні або пошуку -->
+                <div v-if="(!models.length && loadingMore) || isSearching" class="select_model__loader">
                   <div class="select_model__loader-ripple">
                     <div class="select_model__loader-ripple-item"></div>
                     <div class="select_model__loader-ripple-item"></div>
@@ -216,8 +219,9 @@ watch(searchQuery, (val) => {
                     <span class="model-selector__item-name">{{ model.title }}</span>
                   </button>
 
+                  <!-- Лоадер при догрузці -->
                   <div
-                      v-if="models.length && loadingMore"
+                      v-if="models.length && loadingMore && !isSearching"
                       class="select_model__loader select_model__loader_more"
                   >
                     <div class="select_model__loader-ripple">
