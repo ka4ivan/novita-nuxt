@@ -15,8 +15,7 @@ const props = defineProps({
     <span class="tooltip-info">
       <span class="tooltip-info__wrapper">
         <span class="tooltip-info__triangle"></span>
-        <span class="tooltip-info__text">
-          {{ text }}
+        <span class="tooltip-info__text" v-html="text">
         </span>
       </span>
     </span>

@@ -1,0 +1,47 @@
+.select {
+  width: 100%;
+  gap: 0.75rem;
+  display: flex;
+
+  flex-direction: column;
+  &__wrapper {
+    position: relative;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    color: $secondary-color;
+    font-weight: 500;
+    gap: 0.5rem;
+  }
+
+  &__field {
+    padding: .625rem .875rem;
+    transition: $transition;
+    background-color: rgb(245 245 247);
+    border: 1px solid rgb(245 245 247);
+    border-radius: .5rem;
+    width: 100%;
+    appearance: none;
+  }
+
+  &__arrow {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    &-icon {
+      width: 1rem;
+      height: 0.75rem;
+      transform: translate(0, 0) rotate(90deg) skew(0) skewY(0) scaleX(1) scaleY(1);
+      fill: $black;
+    }
+  }
+}
