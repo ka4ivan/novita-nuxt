@@ -312,5 +312,83 @@
         }
       }
     }
+    &-instructions {
+      width: 100%;
+      &-wrapper {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        grid-column: span 2 / span 2;
+      }
+      &-info {
+        &__title {
+          margin-bottom: 1rem;
+          font-size: 28px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: .05em;
+          &-strong {
+            font-weight: 800;
+          }
+        }
+        &__text {
+          font-size: 16px;
+          margin-bottom: .375rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+      &-step {
+        border-bottom: 1px solid #ccc;
+        padding: 16px 0;
+        &-title {
+          margin-top: 1.25rem;
+          margin-bottom: 1rem;
+          font-size: 21px;
+          font-weight: 500;
+          text-transform: none;
+        }
+        &-subtitle {
+          margin-top: 1.25rem;
+          margin-bottom: 1rem;
+          font-size: 18px;
+          font-weight: 500;
+          text-transform: none;
+        }
+        &-text {
+          margin-bottom: .375rem;
+          font-size: 16px;
+          &-strong {
+            font-weight: 700;
+          }
+        }
+        &-list {
+          list-style-type: disc;
+          font-size: 16px;
+          margin: 1em 0;
+          padding-left: 1.5em;
+          list-style-position: outside;
+          line-height: 1.6;
+        }
+        &-item {
+          font-size: 16px;
+          margin-bottom: .5em;
+          &-sublist {
+            padding-left: 1.5em;
+            list-style-type: circle;
+            font-size: 16px;
+            margin: .5em 0 1em;
+            list-style-position: outside;
+            line-height: 1.6;
+            &-item {
+              margin-bottom: .5em;
+              font-size: 16px;
+
+            }
+          }
+        }
+      }
+    }
   }
 }
