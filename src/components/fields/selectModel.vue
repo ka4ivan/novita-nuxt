@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useField } from "vee-validate";
-import { useRuntimeConfig } from "#app";
-import axios from "axios";
 import debounce from "lodash/debounce";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -59,31 +59,40 @@ async function fetchModels(reset = false) {
   if (reset) isSearching.value = true;
 
   try {
-    const res = await axios.get(`${config.public.API_BASE_URL}${props.route}`, {
+    await $api().ai.getModels({
       params: {
         type: "checkpoint",
         amount: 100,
         cursor: reset ? undefined : cursor.value,
         q: searchQuery.value?.trim() || undefined,
       },
+      onResponse({ response }) {
+        if (response.status === 200) {
+          const data = response._data.data || [];
+          if (reset) models.value = data;
+          else models.value.push(...data);
+
+          cursor.value = response._data.next_cursor || null;
+
+          // Вибір дефолтної моделі
+          if (!selectedModel.value && models.value.length > 0) {
+            selectedModel.value = models.value[0];
+            handleChange(selectedModel.value.name);
+            emit("update:modelValue", selectedModel.value.name);
+          }
+        }
+      },
+      onResponseError({ response }) {
+        const message =
+            response._data?.message || "Помилка при завантаженні моделей";
+        toast.error(message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+          hideProgressBar: true,
+          transition: "slide",
+        });
+      },
     });
-
-    const data = res.data.data || [];
-    if (reset) {
-      models.value = data;
-    } else {
-      models.value.push(...data);
-    }
-
-    cursor.value = res.data.next_cursor || null;
-
-    if (!selectedModel.value && models.value.length > 0) {
-      selectedModel.value = models.value[0];
-      handleChange(selectedModel.value.name);
-      emit("update:modelValue", selectedModel.value.name);
-    }
-  } catch (e) {
-    console.error("Error fetching AI models:", e);
   } finally {
     loadingMore.value = false;
     isSearching.value = false;
@@ -116,14 +125,12 @@ function selectModel(model: any) {
   selectedModel.value = model;
   handleChange(model.name);
   emit("update:modelValue", model.name);
-  closeModelSelector();
+  isModelSelectorOpen.value = false;
 }
 
 const debouncedSearch = debounce(() => fetchModels(true), 400);
-watch(searchQuery, (val) => {
-  if (isModelSelectorOpen.value) {
-    debouncedSearch();
-  }
+watch(searchQuery, () => {
+  if (isModelSelectorOpen.value) debouncedSearch();
 });
 </script>
 

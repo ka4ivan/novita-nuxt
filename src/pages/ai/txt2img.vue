@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import SelectModel from "~/components/fields/selectModel.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
@@ -30,6 +32,20 @@ const myModels = ref([]);
 const showAdvanced = ref(false);
 const isGenerating = ref(false);
 
+const form = ref({
+  model_name: "realisticVisionV40_v40VAE-inpainting_81543.safetensors",
+  prompt: "",
+  negative_prompt: "",
+  width: 1024,
+  height: 1024,
+  image_num: 5,
+  steps: 20,
+  guidance_scale: 7.5,
+  seed: -1,
+  sampler_name: "Euler a",
+  loras: [],
+});
+
 const addModel = () => {
   if (myModels.value.length < 5) {
     myModels.value.push({
@@ -48,10 +64,47 @@ const toggleAdvanced = () => {
   showAdvanced.value = !showAdvanced.value;
 };
 
-const generateImages = () => {
-  isGenerating.value = true;
+const generateImages = async (val, action) => {
+  try {
+    isGenerating.value = true;
 
-  // TODO логіка генерування фото
+    const payload = {
+      model_name: form.value.model_name,
+      prompt: form.value.prompt,
+      negative_prompt: form.value.negative_prompt || undefined,
+      width: Number(form.value.width),
+      height: Number(form.value.height),
+      image_num: Number(form.value.image_num),
+      steps: Number(form.value.steps),
+      guidance_scale: Number(form.value.guidance_scale),
+      seed: Number(form.value.seed),
+      sampler_name: form.value.sampler_name,
+      loras: myModels.value.map((m) => ({
+        model_name: m.model_name,
+        strength: Number(m.strength),
+      })),
+    };
+
+    await $api().ai.txt2img({
+      body: payload,
+      onResponse({ response }) {
+        if (response.status === 200 ||response.status === 201 || response.status === 202) {
+          customToast(response._data?.message || "Задача створена успішно!", 'success');
+
+          console.log("🟢 Task created:", response._data);
+        }
+      },
+      onResponseError({ response }) {
+        if (response._data?.errors) {
+          action?.setErrors(response._data.errors);
+        }
+
+        const message = response._data?.message || "Сталася помилка при генерації";
+        customToast(message, 'error');
+        isGenerating.value = false;
+      },
+    });
+  } finally {}
 };
 </script>
 
@@ -95,6 +148,7 @@ const generateImages = () => {
                     name="model_name"
                     placeholder="Модель"
                     tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
+                    v-model="form.model_name"
                 />
               </div>
             </div>
@@ -105,6 +159,7 @@ const generateImages = () => {
                     name="prompt"
                     placeholder="Промпт"
                     tooltip="Ви можете використати одне слово або повне речення. Ми заповнили кілька загальних підказок, щоб згенеровані вами зображення були ближчими до обраної вами моделі."
+                    v-model="form.prompt"
                 />
               </div>
             </div>
@@ -116,7 +171,7 @@ const generateImages = () => {
                       name="width"
                       type="number"
                       placeholder="Width"
-                      modelValue="1024"
+                      v-model="form.width"
                       tooltip="Нижча роздільна здатність може призвести до розмитих зображень із меншою кількістю деталей. Вища роздільна здатність сповільнює швидкість генерації та може спричинити відхилення від очікуваного результату. <br><br> Рекомендована роздільна здатність: 1024×1024"
                   />
                 </div>
@@ -132,7 +187,7 @@ const generateImages = () => {
                       name="height"
                       type="number"
                       placeholder="Height"
-                      modelValue="1024"
+                      v-model="form.height"
                   />
                 </div>
               </div>
@@ -142,8 +197,8 @@ const generateImages = () => {
                 <FieldsRange
                     label="Кроки"
                     name="steps"
-                    modelValue="20"
                     tooltip="Більше кроків, тонші деталі. Після 20 - обмежене покращення."
+                    v-model="form.steps"
                 />
               </div>
             </div>
@@ -152,7 +207,7 @@ const generateImages = () => {
                 <FieldsRange
                     label="Кількість Зображень"
                     name="image_num"
-                    modelValue="5"
+                    v-model="form.image_num"
                     min="1"
                     max="8"
                 />
@@ -251,10 +306,10 @@ const generateImages = () => {
                 <FieldsRange
                     label="Шкала Орієнтування"
                     name="guidance_scale"
-                    modelValue="7.5"
                     min="1"
                     max="30"
                     tooltip="Ступінь дотримання підказки: Вищі числа вказують на більшу відповідність наданим підказкам, обмежуючи творчі можливості ШІ. <br><br> Рекомендований діапазон: 7~12."
+                    v-model="form.guidance_scale"
                 />
               </div>
             </div>
@@ -264,9 +319,9 @@ const generateImages = () => {
                     label="Сід"
                     name="seed"
                     type="number"
-                    modelValue="-1"
                     min="-1"
                     tooltip="Контролювання сіда дозволяє досягти відтворюваності генерованих зображень, експериментування з параметрами та варіацій підказок. <br><br> Рекомендований діапазон: від -1 до ∞. <br><br> Значення сіда -1 вказує на випадковість, що означає, що результати кожного запуску будуть різними. Якщо ж вибрати фіксоване значення в діапазоні від 0 до ∞, це дозволяє зберегти основну послідовність між кількома генераціями зображень, при цьому з’являються лише незначні варіації в деталях."
+                    v-model="form.seed"
                 />
               </div>
             </div>
@@ -278,6 +333,7 @@ const generateImages = () => {
                     placeholder="Негативний Промпт"
                     max-length="1024"
                     tooltip="Напишіть, які деталі ви не хочете бачити на зображенні. Ми вже додали кілька загальних негативних підказок, які змінюються залежно від вибраної моделі."
+                    v-model="form.negative_prompt"
                 />
               </div>
             </div>
@@ -288,6 +344,7 @@ const generateImages = () => {
                     name="sampler_name"
                     placeholder="Оберіть семплер"
                     tooltip="Конкретний алгоритм, що використовується ШІ для генерації зображень. Рекомендується використовувати алгоритми, позначені знаком '+' (плюс), оскільки вони більш стабільні. До поширених варіантів належать:<code>DPM++ 2S a Karras</code>,<code>Euler a</code> та<code>DPM++ 2M Karras</code> <br><br>Якщо автори моделі рекомендують конкретні алгоритми, бажано дотримуватися їхніх порад."
+                    v-model="form.sampler_name"
                     :options="[
                       'Euler a', 'Euler', 'LMS', 'Heun',
                       'DPM2', 'DPM2 a', 'DPM++ 2S a', 'DPM++ 2M',

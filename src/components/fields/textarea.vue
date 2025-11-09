@@ -1,5 +1,6 @@
 <script setup>
 import { useField } from "vee-validate";
+import Input from "~/components/fields/input.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -75,7 +76,7 @@ const { value: textareaValue, errorMessage, handleChange, meta } = useField(
           :name="name"
           :id="name"
           :placeholder="placeholder"
-          :value="modelValue"
+          v-model="textareaValue"
           :disabled="disabled"
           class="textarea__field"
           :class="{ classTextarea, 'textarea__field-error': !meta.valid && errorMessage }"

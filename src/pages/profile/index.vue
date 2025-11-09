@@ -36,12 +36,7 @@ const onUpdateProfile = async (val, action) => {
     await $api().profile.updateProfile(profileForm.value, {
       onResponse({ response }) {
         if (response.status === 200 || response.status === 202) {
-          toast.success(`${response._data.message}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 4000,
-            hideProgressBar: true,
-            transition: "slide",
-          });
+          customToast(`${response._data.message}`, "success")
 
           profileStore.getUserProfile();
           isEditing.value = false;
@@ -52,6 +47,10 @@ const onUpdateProfile = async (val, action) => {
     if (error?.data?.errors) {
       action?.setErrors(error.data.errors);
     }
+
+    const message = error.response?._data?.message || "Сталася помилка";
+
+    customToast(message, "error");
   }
 };
 </script>
