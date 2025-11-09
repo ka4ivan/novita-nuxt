@@ -44,23 +44,57 @@ const isModelSelectorOpen = ref(false);
 const models = ref<any[]>([]);
 const selectedModel = ref<any>(null);
 
+const cursor = ref<string | null>(null);
+const loadingMore = ref(false);
+
+async function fetchModels(reset = false) {
+  if (loadingMore.value) return;
+  loadingMore.value = true;
+
+  try {
+    const res = await axios.get(`${config.public.API_BASE_URL}/ai/models`, {
+      params: {
+        type: "checkpoint",
+        amount: 100,
+        cursor: reset ? undefined : cursor.value,
+      },
+    });
+
+    if (reset) {
+      models.value = res.data.data || [];
+    } else {
+      models.value.push(...(res.data.data || []));
+    }
+
+    cursor.value = res.data.next_cursor || null;
+
+    if (!selectedModel.value && models.value.length > 0) {
+      selectedModel.value = models.value[0];
+      handleChange(selectedModel.value.name);
+      emit("update:modelValue", selectedModel.value.name);
+    }
+  } catch (e) {
+    console.error("Error fetching AI models:", e);
+  } finally {
+    loadingMore.value = false;
+  }
+}
+
+// Виклик при відкритті модалки
 async function toggleModelSelector() {
   isModelSelectorOpen.value = !isModelSelectorOpen.value;
-
   if (isModelSelectorOpen.value && models.value.length === 0) {
-    try {
-      const res = await axios.get(`${config.public.API_BASE_URL}/ai/models`, {
-        params: { type: "checkpoint", amount: 100 },
-      });
-      models.value = res.data.data || [];
-      if (models.value.length > 0) {
-        selectedModel.value = models.value[0];
-        handleChange(selectedModel.value.name);
-        emit("update:modelValue", selectedModel.value.name);
-      }
-    } catch (e) {
-      console.error("Error fetching AI models:", e);
-    }
+    await fetchModels(true);
+  }
+}
+
+// Обробка скролу
+function handleScroll(e: Event) {
+  const target = e.target as HTMLElement;
+  if (!cursor.value || loadingMore.value) return;
+
+  if (target.scrollTop + target.clientHeight >= target.scrollHeight - 50) {
+    fetchModels();
   }
 }
 
@@ -73,15 +107,6 @@ function selectModel(model: any) {
   handleChange(model.name);
   emit("update:modelValue", model.name);
   closeModelSelector();
-}
-
-function handleScroll() {
-  if (!scrollRef.value || isLoading.value || !nextCursor.value) return;
-
-  const el = scrollRef.value;
-  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
-    fetchModels(nextCursor.value);
-  }
 }
 </script>
 
@@ -144,7 +169,7 @@ function handleScroll() {
             </div>
 
             <div class="model-selector__body">
-              <div class="model-selector__overflow">
+              <div class="model-selector__overflow" @scroll="handleScroll">
                 <div class="model-selector__list">
                   <button
                       v-for="model in models"
@@ -154,12 +179,7 @@ function handleScroll() {
                   >
                     <span class="model-selector__item-overlay"></span>
                     <span class="model-selector__item-preview">
-                      <img
-                          class="model-selector__item-img"
-                          :src="model.image"
-                          :alt="model.title"
-                          loading="lazy"
-                      />
+                      <img :src="model.image" :alt="model.title" class="model-selector__item-img" loading="lazy" />
                     </span>
                     <span class="model-selector__item-name">{{ model.title }}</span>
                   </button>
