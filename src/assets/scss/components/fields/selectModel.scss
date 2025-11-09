@@ -1,0 +1,220 @@
+.select_model {
+  width: 100%;
+  gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+
+  &__wrapper {
+    position: relative;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    color: $secondary-color;
+    font-weight: 500;
+    gap: 0.5rem;
+  }
+
+  &__overlay {
+    //display: none; МОбілка
+    opacity: .5;
+    //background-color: rgb(0 0 0); // Мобілка
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  &__field {
+    transition: $transition;
+    background-color: rgb(245 245 247);
+    border: 1px solid rgb(245 245 247);
+    border-radius: .5rem;
+    width: 100%;
+    appearance: none;
+    text-align: left;
+    display: flex;
+    align-items: center;
+
+    &-active {
+      background-color: rgb(238 240 244);
+      border: 1px solid rgb(118 11 254);
+    }
+
+    &-preview {
+      border-radius: .375rem;
+      overflow: hidden;
+      width: 2rem;
+      height: 2rem;
+      margin: .25rem 0 .25rem .25rem;
+
+      &-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &-text {
+      flex: 1 1 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: .625rem 1.75rem .625rem .875rem;
+    }
+
+    &-arrow {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+
+      &-icon {
+        stroke: $black;
+      }
+    }
+  }
+
+  &__arrow {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    &-icon {
+      width: 1rem;
+      height: 0.75rem;
+      fill: $black;
+    }
+  }
+
+  .model-selector {
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    &__fixed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    &__card {
+      margin-left: 2.75rem;
+      width: 400px;
+      padding: 1.25rem 1.75rem;
+      background-color: $white;
+      border-radius: .5rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1);
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    &__title {
+      font-weight: 500;
+      flex: 1 1 0;
+    }
+
+    &__close {
+      width: 1.25rem;
+      height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        stroke: $black;
+        opacity: .9;
+      }
+    }
+
+    &__search {
+      width: 100%;
+      position: relative;
+    }
+
+    &__body {
+      position: relative;
+    }
+
+    &__overflow {
+      overflow-y: scroll;
+      height: 448px;
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .5rem;
+    }
+
+    &__item {
+      position: relative;
+      user-select: none;
+
+      &-overlay {
+        box-shadow: inset 0 0 30px rgba(0,0,0,.5);
+        border-radius: .75rem;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      &-preview {
+        border-radius: .75rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 9rem;
+      }
+
+      &-img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+
+      &-name {
+        color: $white;
+        font-size: 14px;
+        padding: .625rem;
+        gap: .5rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+  }
+}

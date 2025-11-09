@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import SelectModel from "~/components/fields/selectModel.vue";
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
@@ -60,9 +61,9 @@ const toggleAdvanced = () => {
             </div>
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
-                <FieldsInput
+                <SelectModel
                     label="Модель"
-                    name="model"
+                    name="model_name"
                     placeholder="Модель"
                     tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
                 />
@@ -86,6 +87,7 @@ const toggleAdvanced = () => {
                       name="width"
                       type="number"
                       placeholder="Width"
+                      modelValue="1024"
                       tooltip="Нижча роздільна здатність може призвести до розмитих зображень із меншою кількістю деталей. Вища роздільна здатність сповільнює швидкість генерації та може спричинити відхилення від очікуваного результату. <br><br> Рекомендована роздільна здатність: 1024×1024"
                   />
                 </div>
@@ -101,6 +103,7 @@ const toggleAdvanced = () => {
                       name="height"
                       type="number"
                       placeholder="Height"
+                      modelValue="1024"
                   />
                 </div>
               </div>

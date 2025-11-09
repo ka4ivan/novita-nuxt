@@ -120,9 +120,8 @@ const {
       class="input__icon"
       v-if="iconName"
       @click="changePasswordState"
-      aria-label="Показати пароль"
     >
-      <BaseIconSvg :icon-name="iconName" width="18rem" height="17rem" />
+      <BaseIconSvg :icon-name="iconName" class="input__icon-img" width="1rem" height="1rem" />
     </button>
     <div v-if="errorMessage" class="errors">
       <span class="input__error-text">
