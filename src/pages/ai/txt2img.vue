@@ -8,6 +8,24 @@ const breadcrumbs = ref([
   { id: 3, name: "Текст в зображення" },
 ]);
 
+const presets = ref([
+  { id: 1, src: "/images/ai/presets/architecture-design-of-muslim.jpg"},
+  { id: 2, src: "/images/ai/presets/flowers-face-to-sunrise.jpg" },
+  { id: 3, src: "/images/ai/presets/woman-with-a-pink-shirt-and-red-smoke.jpeg" },
+  { id: 4, src: "/images/ai/presets/beautiful-young-woman-blowing-bubbles.jpg" },
+  { id: 5, src: "/images/ai/presets/book-on-a-beach-with-the-ocean-in-the-backgroundjpg" },
+  { id: 6, src: "/images/ai/presets/glass-filled-with-a-drink.jpeg" },
+  { id: 7, src: "/images/ai/presets/scoop-of-ice-cream.jpeg" },
+  { id: 8, src: "/images/ai/presets/bird-perched-on-top-of-a-barbed-wire.jpg" },
+  { id: 9, src: "/images/ai/presets/smiling-woman-in-a-garden-proudly-holding.jpeg" },
+  { id: 10, src: "/images/ai/presets/vibrant-and-nutritious-bowl.jpeg" },
+  { id: 11, src: "/images/ai/presets/butterflyfish.jpeg" },
+  { id: 12, src: "/images/ai/presets/wintery-scene-in-the-heart-of-the-woods.jpeg" },
+  { id: 13, src: "/images/ai/presets/adventurous-climbers-reach-the-summit.jpg" },
+  { id: 14, src: "/images/ai/presets/cocktail-drink-with-ice-and-smoke.jpeg" },
+  { id: 15, src: "/images/ai/presets/ancient-megalithic-cromlech-on-a-frosty-morning.jpg" },
+]);
+
 const myModels = ref([]);
 const showAdvanced = ref(false);
 
@@ -159,7 +177,7 @@ const toggleAdvanced = () => {
                   <div class="ai__generate-form__input">
                     <div class="ai__generate-form__input-field">
                       <FieldsInput
-                          :label="`Модель ${index + 1}`"
+                          :label="`Модель ${index + 1} TODO`"
                           :name="`loras[${index}][model_name]`"
                           placeholder="Модель"
                       />
@@ -264,6 +282,29 @@ const toggleAdvanced = () => {
                       'DPM2', 'DPM2 a', 'DPM++ 2S a', 'DPM++ 2M',
                       'DPM++ SDE', 'DDIM', 'UniPC'
                     ]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai__generate-images">
+          <h4 class="ai__generate-images__title">
+            Надихайтеся!
+          </h4>
+          <p class="ai__generate-images__subtitle">
+            Натхнення на відстані одного дотику завдяки шаблонам, які розпалюють вашу уяву.
+          </p>
+          <div class="ai__generate-images">
+            <div class="ai__generate-images__list">
+              <div
+                  v-for="preset in presets"
+                  :key="preset.id"
+                  class="ai__generate-images__item"
+              >
+                <img
+                    class="ai__generate-images__item-img"
+                    :src="preset.src"
+                    :alt="`Preset ${preset.id}`"
                 />
               </div>
             </div>

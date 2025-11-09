@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import { useField } from "vee-validate";
 import { useRuntimeConfig } from "#app";
 import axios from "axios";
+import debounce from "lodash/debounce";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -30,6 +31,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  route: {
+    type: String,
+    default: "/ai/models",
+  },
 });
 
 const config = useRuntimeConfig();
@@ -43,31 +48,34 @@ const { value: inputValue, errorMessage, handleChange } = useField(
 const isModelSelectorOpen = ref(false);
 const models = ref<any[]>([]);
 const selectedModel = ref<any>(null);
-
 const cursor = ref<string | null>(null);
 const loadingMore = ref(false);
+const searchQuery = ref("");
 
 async function fetchModels(reset = false) {
   if (loadingMore.value) return;
   loadingMore.value = true;
 
   try {
-    const res = await axios.get(`${config.public.API_BASE_URL}/ai/models`, {
+    const res = await axios.get(`${config.public.API_BASE_URL}${props.route}`, {
       params: {
         type: "checkpoint",
         amount: 100,
         cursor: reset ? undefined : cursor.value,
+        q: searchQuery.value?.trim() || undefined,
       },
     });
 
+    const data = res.data.data || [];
     if (reset) {
-      models.value = res.data.data || [];
+      models.value = data;
     } else {
-      models.value.push(...(res.data.data || []));
+      models.value.push(...data);
     }
 
     cursor.value = res.data.next_cursor || null;
 
+    // Якщо ще нічого не вибрано — беремо перший елемент
     if (!selectedModel.value && models.value.length > 0) {
       selectedModel.value = models.value[0];
       handleChange(selectedModel.value.name);
@@ -108,6 +116,13 @@ function selectModel(model: any) {
   emit("update:modelValue", model.name);
   closeModelSelector();
 }
+
+const debouncedSearch = debounce(() => fetchModels(true), 400);
+watch(searchQuery, (val) => {
+  if (isModelSelectorOpen.value) {
+    debouncedSearch();
+  }
+});
 </script>
 
 <template>
@@ -165,12 +180,24 @@ function selectModel(model: any) {
             </div>
 
             <div class="model-selector__search">
-              <FieldsInput name="q" placeholder="Пошук" iconName="search" />
+              <FieldsInput
+                  name="q"
+                  placeholder="Пошук"
+                  iconName="search"
+                  v-model="searchQuery"
+              />
             </div>
 
             <div class="model-selector__body">
               <div class="model-selector__overflow" @scroll="handleScroll">
-                <div class="model-selector__list">
+                <div v-if="!models.length && loadingMore" class="select_model__loader">
+                  <div class="select_model__loader-ripple">
+                    <div class="select_model__loader-ripple-item"></div>
+                    <div class="select_model__loader-ripple-item"></div>
+                  </div>
+                </div>
+
+                <div v-else class="model-selector__list">
                   <button
                       v-for="model in models"
                       :key="model.name"
@@ -179,10 +206,25 @@ function selectModel(model: any) {
                   >
                     <span class="model-selector__item-overlay"></span>
                     <span class="model-selector__item-preview">
-                      <img :src="model.image" :alt="model.title" class="model-selector__item-img" loading="lazy" />
+                      <img
+                          :src="model.image"
+                          :alt="model.title"
+                          class="model-selector__item-img"
+                          loading="lazy"
+                      />
                     </span>
                     <span class="model-selector__item-name">{{ model.title }}</span>
                   </button>
+
+                  <div
+                      v-if="models.length && loadingMore"
+                      class="select_model__loader select_model__loader_more"
+                  >
+                    <div class="select_model__loader-ripple">
+                      <div class="select_model__loader-ripple-item"></div>
+                      <div class="select_model__loader-ripple-item"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

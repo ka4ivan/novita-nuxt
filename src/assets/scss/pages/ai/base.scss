@@ -264,5 +264,53 @@
         }
       }
     }
+
+    &-images {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0;
+
+      &__title {
+        margin-bottom: 1rem;
+        font-size: 32px;
+        font-weight: 500;
+      }
+
+      &__subtitle {
+        margin-bottom: 1.5rem;
+        font-size: 16px;
+      }
+
+      &__list {
+        columns: 3;
+        gap: .5rem;
+        width: 100%;
+      }
+
+      &__item {
+        text-decoration-line: none;
+        border: 1px solid #fff3;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        break-inside: avoid;
+        width: 100%;
+        position: relative;
+
+        &-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: .5rem;
+          transition: $transition;
+          margin-bottom: 1rem;
+
+          &:hover {
+            opacity: .9;
+          }
+        }
+      }
+    }
   }
 }
