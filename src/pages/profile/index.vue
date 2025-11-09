@@ -32,7 +32,6 @@ const enableEditing = () => {
 };
 
 const onUpdateProfile = async (val, action) => {
-  console.log(123123123123123123);
   try {
     await $api().profile.updateProfile(profileForm.value, {
       onResponse({ response }) {

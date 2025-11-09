@@ -1,6 +1,8 @@
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import { useField } from "vee-validate";
+import { useRuntimeConfig } from "#app";
+import axios from "axios";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -30,6 +32,7 @@ const props = defineProps({
   },
 });
 
+const config = useRuntimeConfig();
 const name = toRef(props, "name");
 const { value: inputValue, errorMessage, handleChange } = useField(
     name,
@@ -38,18 +41,47 @@ const { value: inputValue, errorMessage, handleChange } = useField(
 );
 
 const isModelSelectorOpen = ref(false);
+const models = ref<any[]>([]);
+const selectedModel = ref<any>(null);
 
-function handleSelect(e) {
-  const value = e.target.value;
-  handleChange(value);
-  emit("update:modelValue", value);
-}
-
-function toggleModelSelector() {
+async function toggleModelSelector() {
   isModelSelectorOpen.value = !isModelSelectorOpen.value;
+
+  if (isModelSelectorOpen.value && models.value.length === 0) {
+    try {
+      const res = await axios.get(`${config.public.API_BASE_URL}/ai/models`, {
+        params: { type: "checkpoint", amount: 100 },
+      });
+      models.value = res.data.data || [];
+      if (models.value.length > 0) {
+        selectedModel.value = models.value[0];
+        handleChange(selectedModel.value.name);
+        emit("update:modelValue", selectedModel.value.name);
+      }
+    } catch (e) {
+      console.error("Error fetching AI models:", e);
+    }
+  }
 }
+
 function closeModelSelector() {
   isModelSelectorOpen.value = false;
+}
+
+function selectModel(model: any) {
+  selectedModel.value = model;
+  handleChange(model.name);
+  emit("update:modelValue", model.name);
+  closeModelSelector();
+}
+
+function handleScroll() {
+  if (!scrollRef.value || isLoading.value || !nextCursor.value) return;
+
+  const el = scrollRef.value;
+  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+    fetchModels(nextCursor.value);
+  }
 }
 </script>
 
@@ -69,12 +101,12 @@ function closeModelSelector() {
         <span class="select_model__field-preview">
           <img
               class="select_model__field-preview-img"
-              src="https://next-app-static.s3.amazonaws.com/images-prod/xG1nkqKTMzGDvpLrqFT7WA/f291a219-4a86-45ab-96eb-c53446b3e4df/width=450/1495044.jpeg"
-              alt="V4.0-inpainting (VAE)"
+              :src="selectedModel?.image || 'https://next-app-static.s3.amazonaws.com/images-prod/xG1nkqKTMzGDvpLrqFT7WA/f291a219-4a86-45ab-96eb-c53446b3e4df/width=450/1495044.jpeg'"
+              :alt="selectedModel?.title || 'V4.0-inpainting (VAE)'"
           />
         </span>
-        <span class="select_model__field-text" title="V4.0-inpainting (VAE)">
-          V4.0-inpainting (VAE)
+        <span class="select_model__field-text" :title="selectedModel?.title || ''">
+          {{ selectedModel?.title || 'V4.0-inpainting (VAE)' }}
         </span>
         <span class="select_model__field-arrow">
           <BaseIconSvg
@@ -92,20 +124,12 @@ function closeModelSelector() {
           @click="closeModelSelector"
       ></div>
 
-
-      <div
-          class="model-selector"
-          v-show="isModelSelectorOpen"
-      >
+      <div class="model-selector" v-show="isModelSelectorOpen">
         <div class="model-selector__fixed">
           <div class="model-selector__card">
             <div class="model-selector__header">
               <div class="model-selector__title">Моделі</div>
-              <button
-                  type="button"
-                  class="model-selector__close"
-                  @click="closeModelSelector"
-              >
+              <button type="button" class="model-selector__close" @click="closeModelSelector">
                 <BaseIconSvg
                     icon-name="cross"
                     class="model-selector__close-icon"
@@ -122,19 +146,22 @@ function closeModelSelector() {
             <div class="model-selector__body">
               <div class="model-selector__overflow">
                 <div class="model-selector__list">
-                  <button class="model-selector__item">
+                  <button
+                      v-for="model in models"
+                      :key="model.name"
+                      class="model-selector__item"
+                      @click="selectModel(model)"
+                  >
                     <span class="model-selector__item-overlay"></span>
                     <span class="model-selector__item-preview">
                       <img
                           class="model-selector__item-img"
-                          src="https://next-app-static.s3.amazonaws.com/images-prod/xG1nkqKTMzGDvpLrqFT7WA/3822f91b-5f4e-4df6-8934-2a453f13b40e/width=450/2103034.jpeg"
-                          alt="Natural Sin RC1 VAE"
+                          :src="model.image"
+                          :alt="model.title"
                           loading="lazy"
                       />
                     </span>
-                    <span class="model-selector__item-name">
-                      Natural Sin RC1 VAE
-                    </span>
+                    <span class="model-selector__item-name">{{ model.title }}</span>
                   </button>
                 </div>
               </div>
@@ -149,6 +176,7 @@ function closeModelSelector() {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 
