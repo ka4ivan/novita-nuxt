@@ -433,18 +433,27 @@
         }
 
         .ai__generate-loader__animation-img path {
-          fill: none;
-          stroke-width: 4;
+          stroke-width: 3;
           stroke-linecap: round;
           stroke-linejoin: round;
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
-          animation: ai__generate-loader__animation-img-draw 10s forwards infinite;
+          animation: ai__generate-loader__animation-img-draw 7.5s alternate infinite;
+        }
+
+        .ai__generate-loader__animation-img-line {
+          stroke-width: 1 !important;
         }
 
         @keyframes ai__generate-loader__animation-img-draw {
-          to {
+          0% {
+            stroke-dashoffset: 1000;
+          }
+          50% {
             stroke-dashoffset: 0;
+          }
+          100% {
+            stroke-dashoffset: 1000;
           }
         }
 
