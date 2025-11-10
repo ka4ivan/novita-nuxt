@@ -1,9 +1,24 @@
 <script setup lang="ts">
+import {ref} from "vue";
+import VueEasyLightbox from "vue-easy-lightbox";
+
+const visible = ref(false)
+const imgUrl = ref('')
+
 defineProps<{
   src: string
-  onZoom?: () => void
+  onZoomSrc: string
   onFavorite?: () => void
 }>()
+
+const openLightbox = (url: string) => {
+  imgUrl.value = url
+  visible.value = true
+}
+
+const onHide = () => {
+  visible.value = false
+}
 </script>
 
 <template>
@@ -11,7 +26,7 @@ defineProps<{
     <div class="image-card__buttons">
       <div class="image-card__buttons-top">
         <h3 class="image-card__blur"></h3>
-        <button class="image-card__button" type="button" @click="onZoom?.()">
+        <button class="image-card__button" type="button" @click="openLightbox(onZoomSrc)">
           <BaseIconSvg
               icon-name="zoom"
               customClass="image-card__button-icon"
@@ -44,6 +59,13 @@ defineProps<{
         class="image-card__image"
     />
   </div>
+
+  <VueEasyLightbox
+      :visible="visible"
+      :imgs="[imgUrl]"
+      :index="0"
+      @hide="onHide"
+  />
 </template>
 
 <style scoped lang="scss">

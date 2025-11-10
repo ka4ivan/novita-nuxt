@@ -3,7 +3,6 @@ import { ref } from "vue";
 import SelectModel from "~/components/fields/selectModel.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import VueEasyLightbox from "vue-easy-lightbox";
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
@@ -47,17 +46,6 @@ const form = ref({
   sampler_name: "Euler a",
   loras: [],
 });
-
-const visible = ref(false)
-const imgUrl = ref('')
-const openLightbox = (url: string) => {
-  imgUrl.value = url
-  visible.value = true
-}
-
-const onHide = () => {
-  visible.value = false
-}
 
 const addModel = () => {
   if (myModels.value.length < 5) {
@@ -502,8 +490,7 @@ const generateImages = async (val, action) => {
                 v-for="img in generatedImages"
                 :key="img.id"
                 :src="img.url"
-                :onZoom="() => openLightbox(img.url)"
-                :showFavorite="false"
+                :onZoomSrc="img.url"
             />
           </div>
         </div>
@@ -655,13 +642,6 @@ const generateImages = async (val, action) => {
       </div>
     </section>
   </main>
-
-  <VueEasyLightbox
-      :visible="visible"
-      :imgs="[imgUrl]"
-      :index="0"
-      @hide="onHide"
-  />
 </template>
 
 <style scoped>
