@@ -1,11 +1,13 @@
 import auth from "./auth";
 import profile from "./profile";
 import ai from "./ai";
+import favorites from "~/modules/favorites";
 
 export default () => {
   return {
-    auth: auth(),
-    profile: profile(),
     ai: ai(),
+    auth: auth(),
+    favorites: favorites(),
+    profile: profile(),
   };
 };

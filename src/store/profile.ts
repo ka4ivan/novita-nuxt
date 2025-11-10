@@ -25,7 +25,7 @@ export const useProfileStore = defineStore('profile', () => {
 
     /** Отримати дані користувача з API */
     async function getUserProfile() {
-        const { data: profile } = await $api().profile.getProfile()
+        const { data: profile } = await $api().profile.getProfile({})
 
         if (profile.value?.data) {
             userProfile.value = {

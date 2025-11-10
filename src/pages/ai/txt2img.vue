@@ -489,6 +489,7 @@ const generateImages = async (val, action) => {
             <BaseImageCard
                 v-for="img in generatedImages"
                 :key="img.id"
+                :id="img.id"
                 :src="img.url"
                 :onZoomSrc="img.url"
             />

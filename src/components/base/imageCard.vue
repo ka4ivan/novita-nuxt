@@ -1,24 +1,69 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 import VueEasyLightbox from "vue-easy-lightbox";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
-const visible = ref(false)
-const imgUrl = ref('')
+const visible = ref(false);
+const imgUrl = ref("");
 
-defineProps<{
-  src: string
-  onZoomSrc: string
-  onFavorite?: () => void
-}>()
+const props = defineProps<{
+  src: string;
+  onZoomSrc: string;
+  id: string;
+  isFavorite: boolean;
+}>();
 
 const openLightbox = (url: string) => {
-  imgUrl.value = url
-  visible.value = true
-}
+  imgUrl.value = url;
+  visible.value = true;
+};
 
 const onHide = () => {
-  visible.value = false
-}
+  visible.value = false;
+};
+
+const onFavorite = async () => {
+  try {
+    const response = await $api().favorites.toggle(props.id, {
+      onResponse({ response }) {
+        if (response.status === 200) {
+          const result = response._data?.result;
+
+          const message =
+              response._data?.message ||
+              (result === "added"
+                  ? "Додано в улюблені!"
+                  : "Видалено з улюблених!");
+
+          toast.success(message, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 3000,
+            hideProgressBar: true,
+            transition: "slide",
+          });
+        }
+      },
+      onResponseError({ response }) {
+        const message =
+            response._data?.message || "Не вдалося змінити статус улюбленого";
+        toast.error(message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: "slide",
+        });
+      },
+    });
+  } catch (err) {
+    toast.error("Помилка при відправці запиту", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: true,
+      transition: "slide",
+    });
+  }
+};
 </script>
 
 <template>
@@ -26,7 +71,11 @@ const onHide = () => {
     <div class="image-card__buttons">
       <div class="image-card__buttons-top">
         <h3 class="image-card__blur"></h3>
-        <button class="image-card__button" type="button" @click="openLightbox(onZoomSrc)">
+        <button
+            class="image-card__button"
+            type="button"
+            @click="openLightbox(onZoomSrc)"
+        >
           <BaseIconSvg
               icon-name="zoom"
               customClass="image-card__button-icon"
@@ -37,7 +86,7 @@ const onHide = () => {
       </div>
 
       <div class="image-card__buttons-bottom">
-        <button class="image-card__button" @click="onFavorite?.()">
+        <button :class="['image-card__button', { 'image-card__button-active': isFavorite }]" @click="onFavorite">
           <BaseIconSvg
               icon-name="heart-stroke"
               customClass="image-card__button-icon"
@@ -141,6 +190,15 @@ const onHide = () => {
     &:hover {
       background-color: #fff;
       fill: rgb(32 32 46);
+    }
+
+    &-active {
+      background-color: #fff;
+      fill: rgb(32 32 46);
+
+      &:hover {
+        opacity: .8;
+      }
     }
 
     &-icon {
