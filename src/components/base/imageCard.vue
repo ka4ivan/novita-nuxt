@@ -4,15 +4,16 @@ import VueEasyLightbox from "vue-easy-lightbox";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
-const visible = ref(false);
-const imgUrl = ref("");
-
 const props = defineProps<{
   src: string;
   onZoomSrc: string;
   id: string;
   isFavorite: boolean;
 }>();
+
+const visible = ref(false);
+const imgUrl = ref("");
+const favoriteState = ref(props.isFavorite);
 
 const openLightbox = (url: string) => {
   imgUrl.value = url;
@@ -29,6 +30,8 @@ const onFavorite = async () => {
       onResponse({ response }) {
         if (response.status === 200) {
           const result = response._data?.result;
+
+          favoriteState.value = result === "added";
 
           const message =
               response._data?.message ||
@@ -86,7 +89,10 @@ const onFavorite = async () => {
       </div>
 
       <div class="image-card__buttons-bottom">
-        <button :class="['image-card__button', { 'image-card__button-active': isFavorite }]" @click="onFavorite">
+        <button
+            :class="['image-card__button', { 'image-card__button-active': favoriteState }]"
+            @click="onFavorite"
+        >
           <BaseIconSvg
               icon-name="heart-stroke"
               customClass="image-card__button-icon"

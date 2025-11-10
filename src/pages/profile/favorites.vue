@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
-  { id: 2, name: "Профіль" },
+  { id: 2, name: "Обрані" },
 ])
 
 const favorites = ref([])

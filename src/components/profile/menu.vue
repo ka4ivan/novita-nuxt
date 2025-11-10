@@ -22,6 +22,14 @@ const menuTabs = ref([
     height: '1.25rem',
   },
   {
+    name: 'jobs',
+    label: 'Роботи',
+    icon: 'image',
+    link: '/profile/jobs',
+    width: '1.5rem',
+    height: '1.5rem',
+  },
+  {
     name: 'logout',
     label: 'Вийти',
     icon: 'logout',
