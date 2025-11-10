@@ -498,51 +498,13 @@ const generateImages = async (val, action) => {
         </div>
         <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
           <div class="ai__generate-results__list">
-            <div class="ai__generate-results__item"
-                 v-for="(image, index) in generatedImages"
-                 :key="image.id"
-            >
-              <div class="ai__generate-results__img">
-                <div class="ai__generate-results__img-buttons">
-                  <div class="ai__generate-results__img-buttons-top">
-                    <h3 class="ai__generate-results__img-blur"></h3>
-                    <button
-                        class="ai__generate-results__img-button"
-                        type="button"
-                        @click="openLightbox(image.url)"
-                    >
-                      <BaseIconSvg
-                          icon-name="zoom"
-                          customClass="ai__generate-results__img-button-icon"
-                          width="1.25rem"
-                          height="1.25rem"
-                      />
-                    </button>
-                  </div>
-
-                  <div class="ai__generate-results__img-buttons-bottom">
-                    <button class="ai__generate-results__img-button">
-                      <BaseIconSvg
-                          icon-name="heart-stroke"
-                          customClass="ai__generate-results__img-button-icon"
-                          width="1.25rem"
-                          height="1.25rem"
-                      />
-                    </button>
-                  </div>
-                </div>
-
-                <nuxt-img
-                    densities="x1 x1"
-                    placeholder="/images/noImg.webp"
-                    :src="image.url"
-                    :alt="`Result ${index + 1}`"
-                    width="90"
-                    height="90"
-                    class="ai__generate-results__img-image"
-                />
-              </div>
-            </div>
+            <BaseImageCard
+                v-for="img in generatedImages"
+                :key="img.id"
+                :src="img.url"
+                :onZoom="() => openLightbox(img.url)"
+                :showFavorite="false"
+            />
           </div>
         </div>
         <div class="ai__generate-instructions">

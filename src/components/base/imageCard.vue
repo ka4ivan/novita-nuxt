@@ -1,0 +1,146 @@
+<script setup lang="ts">
+defineProps<{
+  src: string
+  onZoom?: () => void
+  onFavorite?: () => void
+}>()
+</script>
+
+<template>
+  <div class="image-card">
+    <div class="image-card__buttons">
+      <div class="image-card__buttons-top">
+        <h3 class="image-card__blur"></h3>
+        <button class="image-card__button" type="button" @click="onZoom?.()">
+          <BaseIconSvg
+              icon-name="zoom"
+              customClass="image-card__button-icon"
+              width="1.25rem"
+              height="1.25rem"
+          />
+        </button>
+      </div>
+
+      <div class="image-card__buttons-bottom">
+        <button class="image-card__button" @click="onFavorite?.()">
+          <BaseIconSvg
+              icon-name="heart-stroke"
+              customClass="image-card__button-icon"
+              width="1.25rem"
+              height="1.25rem"
+          />
+        </button>
+      </div>
+    </div>
+
+    <nuxt-img
+        format="webp"
+        densities="x1 x1"
+        placeholder="/images/noImg.webp"
+        :src="src"
+        alt="image"
+        width="90"
+        height="90"
+        class="image-card__image"
+    />
+  </div>
+</template>
+
+<style scoped lang="scss">
+.image-card {
+  position: relative;
+  width: 100%;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  z-index: 0;
+  transition: 0.3s;
+  margin-bottom: 0.5rem;
+  break-inside: avoid;
+
+  &:hover {
+    .image-card__image {
+      transform: scale(1.1);
+    }
+    .image-card__buttons {
+      opacity: 1;
+    }
+  }
+
+  &__buttons {
+    opacity: 0;
+    transition: 0.3s;
+    padding: 0.75rem;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 30;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &-top,
+    &-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    &-bottom {
+      justify-content: flex-end;
+    }
+  }
+
+  &__blur {
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 16px;
+    padding: 0.375rem 0.75rem;
+    background-color: transparent;
+    border-radius: 9999px;
+    max-width: 80%;
+    margin: 0;
+  }
+
+  &__button {
+    backdrop-filter: blur(4px);
+    padding: 0.625rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    display: flex;
+    transition: 0.3s;
+    cursor: pointer;
+    fill: #fff;
+
+    &:hover {
+      background-color: #fff;
+      fill: rgb(32 32 46);
+    }
+
+    &-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  &__link {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    bottom: 3rem;
+    width: 100%;
+    z-index: 30;
+  }
+
+  &__image {
+    transition: 0.3s;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
