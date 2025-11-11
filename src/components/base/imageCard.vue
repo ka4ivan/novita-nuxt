@@ -67,6 +67,42 @@ const onFavorite = async () => {
     });
   }
 };
+
+const onDownload = async () => {
+  try {
+    const { data, error } = await $api().media.download(props.id, {});
+
+    if (error.value) throw new Error('Не вдалося завантажити файл');
+
+    // Створюємо blob із відповіді
+    const blob = new Blob([data.value], { type: 'image/png' });
+    const url = window.URL.createObjectURL(blob);
+
+    // Ініціюємо завантаження
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = props.onZoomSrc.split('/').pop() || 'image.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    toast.success('Файл завантажено!', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: true,
+      transition: 'slide',
+    });
+  } catch (err) {
+    console.error(err);
+    toast.error('Помилка при завантаженні файлу', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: true,
+      transition: 'slide',
+    });
+  }
+};
 </script>
 
 <template>
@@ -89,6 +125,17 @@ const onFavorite = async () => {
       </div>
 
       <div class="image-card__buttons-bottom">
+        <button
+            class="image-card__button"
+            @click="onDownload"
+        >
+          <BaseIconSvg
+              icon-name="download"
+              customClass="image-card__button-icon image-card__button-icon-download"
+              width="1.4rem"
+              height="1.4rem"
+          />
+        </button>
         <button
             :class="['image-card__button', { 'image-card__button-active': favoriteState }]"
             @click="onFavorite"
@@ -210,6 +257,11 @@ const onFavorite = async () => {
     &-icon {
       width: 1.25rem;
       height: 1.25rem;
+
+      &-download {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
     }
   }
 
