@@ -1,0 +1,52 @@
+.main {
+  .ai_model {
+    padding-bottom: 6rem;
+
+    &__title {
+      font-size: 24px;
+      padding: 1.5rem 1.5rem 1.5rem 0;
+      color: $black;
+      margin-bottom: 0;
+    }
+
+    &__empty {
+      display: flex;
+      justify-content: center;
+
+      &-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        text-align: center;
+        max-width: 20rem;
+      }
+
+      &-title {
+        font-size: 24px;
+        margin: 0;
+      }
+
+      &-link {
+        padding: .75rem 1.5rem;
+        margin-top: 0;
+        text-decoration-line: none;
+        background-color: $yellow;
+        color: $black;
+        transition: $transition;
+        font-weight: 500;
+        border-radius: 9999px;
+
+        &:hover {
+          background-color: $blue;
+          color: $yellow;
+        }
+      }
+
+      &-icon {
+        fill: none;
+      }
+    }
+  }
+}

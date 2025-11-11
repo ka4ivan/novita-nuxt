@@ -12,7 +12,7 @@ const props = defineProps({
       <template v-if="item.slug && index < links.length - 1">
         <NuxtLink
             class="breadcrumbs__link"
-            :to="`/${item.slug}`"
+            :to="`${item.slug}`"
         >
           {{ item.name }}
         </NuxtLink>

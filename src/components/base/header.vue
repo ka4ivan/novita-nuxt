@@ -75,7 +75,7 @@ watch(
                 @mouseenter="handleMouseEnter"
                 @mouseleave="handleMouseLeave"
             >
-              <NuxtLink class="header__menu-link-secondary" to="/ai">
+              <NuxtLink class="header__menu-link-secondary" to="/ai/txt2img">
                 AI Generation
                 <BaseIconSvg
                     icon-name="circle-dots"
@@ -113,16 +113,6 @@ watch(
                 <li class="header__submenu-item">
                   <ul class="header__submenu-list">
                     <li class="header__submenu-list-item">
-                      <a href="/ai/upscale" class="header__submenu-link">
-                        <div class="header__submenu-link-info">
-                          <h4 class="header__submenu-title">Upscale</h4>
-                        </div>
-                        <p class="header__submenu-description">
-                          Підвищити роздільну здатність і чіткість зображення
-                        </p>
-                      </a>
-                    </li>
-                    <li class="header__submenu-list-item">
                       <a href="/ai/remove-background" class="header__submenu-link">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Видалити фон</h4>
@@ -132,16 +122,16 @@ watch(
                         </p>
                       </a>
                     </li>
-                    <li class="header__submenu-list-item">
-                      <a href="/ai/replace-background" class="header__submenu-link">
-                        <div class="header__submenu-link-info">
-                          <h4 class="header__submenu-title">Замінити фон</h4>
-                        </div>
-                        <p class="header__submenu-description">
-                          Вставте новий фон замість наявного
-                        </p>
-                      </a>
-                    </li>
+<!--                    <li class="header__submenu-list-item">-->
+<!--                      <a href="/ai/replace-background" class="header__submenu-link">-->
+<!--                        <div class="header__submenu-link-info">-->
+<!--                          <h4 class="header__submenu-title">Замінити фон</h4>-->
+<!--                        </div>-->
+<!--                        <p class="header__submenu-description">-->
+<!--                          Вставте новий фон замість наявного-->
+<!--                        </p>-->
+<!--                      </a>-->
+<!--                    </li>-->
                     <li class="header__submenu-list-item">
                       <a href="/ai/replace-background" class="header__submenu-link">
                         <div class="header__submenu-link-info">
@@ -152,20 +142,51 @@ watch(
                         </p>
                       </a>
                     </li>
+
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/models" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Власні моделі</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Перегляньте моделі, що були створені вами
+                        </p>
+                      </a>
+                    </li>
+                    <li class="header__submenu-list-item">
+                      <a href="/ai/models/create" class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Створити власну модель</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Створіть унікальну модель відповідно до ваших потреб
+                        </p>
+                      </a>
+                    </li>
                   </ul>
                 </li>
                 <li class="header__submenu-item">
                   <ul class="header__submenu-list">
                     <li class="header__submenu-list-item">
-                      <a href="/ai/remove-text" class="header__submenu-link">
+                      <a href="/ai/upscale" class="header__submenu-link">
                         <div class="header__submenu-link-info">
-                          <h4 class="header__submenu-title">З'єднати обличчя</h4>
+                          <h4 class="header__submenu-title">Upscale</h4>
                         </div>
                         <p class="header__submenu-description">
-                          Поєднайте риси обличчя з різних зображень в одне обличчя
+                          Підвищити роздільну здатність і чіткість зображення
                         </p>
                       </a>
                     </li>
+<!--                    <li class="header__submenu-list-item">-->
+<!--                      <a href="/ai/merge-face" class="header__submenu-link">-->
+<!--                        <div class="header__submenu-link-info">-->
+<!--                          <h4 class="header__submenu-title">З'єднати обличчя</h4>-->
+<!--                        </div>-->
+<!--                        <p class="header__submenu-description">-->
+<!--                          Поєднайте риси обличчя з різних зображень в одне обличчя-->
+<!--                        </p>-->
+<!--                      </a>-->
+<!--                    </li>-->
                   </ul>
                 </li>
               </ul>
