@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, defineEmits, defineProps } from 'vue'
+
+const props = defineProps<{
+  captions: string[]
+}>()
+
+const emit = defineEmits(['update:captions'])
 
 const isActive = ref(false)
 const images = ref<File[]>([])
 const previews = ref<string[]>([])
+const localCaptions = ref<string[]>([...props.captions])
+
+watch(
+    () => props.captions,
+    (val) => {
+      localCaptions.value = [...val]
+    }
+)
+
+function updateCaptions() {
+  emit('update:captions', localCaptions.value)
+}
 
 const onDragEnter = () => (isActive.value = true)
 const onDragLeave = () => (isActive.value = false)
@@ -24,13 +42,17 @@ function handleFiles(fileList: FileList) {
   images.value.push(...newFiles)
   newFiles.forEach(file => {
     previews.value.push(URL.createObjectURL(file))
+    localCaptions.value.push('') // додаємо порожній caption
   })
+  updateCaptions()
 }
 
 function removeImage(index: number) {
   images.value.splice(index, 1)
   URL.revokeObjectURL(previews.value[index])
   previews.value.splice(index, 1)
+  localCaptions.value.splice(index, 1)
+  updateCaptions()
 }
 </script>
 
@@ -43,8 +65,8 @@ function removeImage(index: number) {
       @dragover.prevent
       @drop.prevent="onDrop"
   >
-    <label class="file-uploader__label">
-      <div class="file-uploader__content" v-if="!previews.length">
+    <label class="file-uploader__label" v-if="!previews.length">
+      <div class="file-uploader__content">
         <div class="file-uploader__icon">
           <div class="file-uploader__icon-wrapper">
             <div class="file-uploader__icon-animation">
@@ -71,7 +93,7 @@ function removeImage(index: number) {
       />
     </label>
 
-    <div v-if="previews.length" class="file-uploader__previews">
+    <div v-else class="file-uploader__previews">
       <div
           v-for="(src, index) in previews"
           :key="index"
@@ -85,7 +107,25 @@ function removeImage(index: number) {
         >
           ✕
         </button>
+        <textarea
+            v-model="localCaptions[index]"
+            class="file-uploader__caption"
+            placeholder="Підпис до фото"
+            @input="updateCaptions"
+        />
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.file-uploader__caption {
+  width: 100%;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px;
+  resize: none;
+}
+</style>

@@ -11,7 +11,8 @@ const breadcrumbs = ref([
 
 const aiModelForm = ref({
   name: "",
-  model_name: "",
+  base_model: "",
+  caption: "",
 });
 </script>
 
@@ -34,9 +35,9 @@ const aiModelForm = ref({
               />
               <FieldsSelect
                   label="Базова модель"
-                  name="model_name"
+                  name="base_model"
                   placeholder="Базова модель"
-                  v-model="aiModelForm.model_name"
+                  v-model="aiModelForm.base_model"
                   :options="[
                     'dreamshaperXL09Alpha_alpha2Xl10_91562',
                     'protovisionXLHighFidelity3D_release0630Bakedvae_154359',
@@ -49,6 +50,12 @@ const aiModelForm = ref({
                     'animagineXLV31_v31_325600'
                   ]"
               />
+<!--              <FieldsTextarea-->
+<!--                  label="Опис для фото 1"-->
+<!--                  name="caption[0]"-->
+<!--                  placeholder="Це логотип компанії у мінімалістичному стилі"-->
+<!--                  v-model="aiModelForm.caption"-->
+<!--              />-->
               <div class="ai_model__before__button"></div>
               <div class="ai_model__submit">
                 <button type="submit" class="ai_model__button">
@@ -58,7 +65,7 @@ const aiModelForm = ref({
             </VeeForm>
           </div>
           <div class="ai_model__upload">
-            <FieldsFile />
+            <FieldsFile v-model:captions="aiModelForm.caption" />
           </div>
         </div>
       </div>
