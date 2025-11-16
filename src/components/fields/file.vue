@@ -3,9 +3,10 @@ import { ref, watch, defineEmits, defineProps } from 'vue'
 
 const props = defineProps<{
   captions: string[]
+  files: File[]
 }>()
 
-const emit = defineEmits(['update:captions'])
+const emit = defineEmits(['update:captions', 'update:files'])
 
 const isActive = ref(false)
 const images = ref<File[]>([])
@@ -40,18 +41,25 @@ const onFileChange = (event: Event) => {
 function handleFiles(fileList: FileList) {
   const newFiles = Array.from(fileList)
   images.value.push(...newFiles)
+
+  emit("update:files", images.value)
+
   newFiles.forEach(file => {
     previews.value.push(URL.createObjectURL(file))
-    localCaptions.value.push('') // додаємо порожній caption
+    localCaptions.value.push('')
   })
+
   updateCaptions()
 }
 
 function removeImage(index: number) {
   images.value.splice(index, 1)
+  emit("update:files", images.value)
+
   URL.revokeObjectURL(previews.value[index])
   previews.value.splice(index, 1)
   localCaptions.value.splice(index, 1)
+
   updateCaptions()
 }
 </script>

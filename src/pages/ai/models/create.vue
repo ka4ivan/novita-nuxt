@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Form as VeeForm } from "vee-validate";
+import aiMyModelsModule from "~/modules/ai";
+
+const aiMyModels = aiMyModelsModule()
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
@@ -12,8 +15,37 @@ const breadcrumbs = ref([
 const aiModelForm = ref({
   name: "",
   base_model: "",
-  caption: "",
+  caption: [],
+  files: [],
 });
+
+async function submitForm() {
+  const formData = new FormData()
+  formData.append("name", aiModelForm.value.name)
+  formData.append("base_model", aiModelForm.value.base_model)
+
+  aiModelForm.value.caption.forEach((c, i) => {
+    formData.append(`caption[${i}]`, c)
+  })
+
+  aiModelForm.value.files.forEach((file, i) => {
+    formData.append(`files[${i}]`, file)
+  })
+
+  const { data, error } = await aiMyModels.myModelsStore(formData)
+
+  if (error.value) {
+    const backendMessage = error.value?.data?.message || "Сталася помилка при створенні моделі"
+
+    customToast(backendMessage, "error")
+    return
+  }
+
+  const message = data.value?.data?.message || "Модель створена успішно!"
+
+  customToast(message, "success")
+}
+
 </script>
 
 <template>
@@ -26,7 +58,7 @@ const aiModelForm = ref({
 
         <div class="ai_model__content">
           <div class="ai_model__settings">
-            <VeeForm class="ai_model__form" @submit="">
+            <VeeForm class="ai_model__form" @submit="submitForm">
               <FieldsInput
                   label="Назва"
                   name="name"
@@ -65,7 +97,10 @@ const aiModelForm = ref({
             </VeeForm>
           </div>
           <div class="ai_model__upload">
-            <FieldsFile v-model:captions="aiModelForm.caption" />
+            <FieldsFile
+                v-model:captions="aiModelForm.caption"
+                v-model:files="aiModelForm.files"
+            />
           </div>
         </div>
       </div>
