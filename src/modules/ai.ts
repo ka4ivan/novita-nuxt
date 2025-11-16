@@ -19,6 +19,11 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    removeBackground(options: any) {
+      return useCustomFetch(`/ai/remove-background`, {
+        method: 'POST',
+      ...options})
+    },
     myModels(options: any) {
         return useCustomFetch(`/ai/my/models`, {
             method: 'GET',
