@@ -7,47 +7,16 @@ import "vue3-toastify/dist/index.css";
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "AI" },
-  { id: 3, name: "Текст в зображення" },
+  { id: 3, name: "Зображення в зображення" },
 ]);
 
-const presets = ref([
-  { id: 1, src: "/images/ai/presets/architecture-design-of-muslim.jpg"},
-  { id: 2, src: "/images/ai/presets/flowers-face-to-sunrise.jpg" },
-  { id: 3, src: "/images/ai/presets/woman-with-a-pink-shirt-and-red-smoke.jpeg" },
-  { id: 4, src: "/images/ai/presets/beautiful-young-woman-blowing-bubbles.jpg" },
-  { id: 5, src: "/images/ai/presets/book-on-a-beach-with-the-ocean-in-the-backgroundjpg" },
-  { id: 6, src: "/images/ai/presets/glass-filled-with-a-drink.jpeg" },
-  { id: 7, src: "/images/ai/presets/scoop-of-ice-cream.jpeg" },
-  { id: 8, src: "/images/ai/presets/bird-perched-on-top-of-a-barbed-wire.jpg" },
-  { id: 9, src: "/images/ai/presets/smiling-woman-in-a-garden-proudly-holding.jpeg" },
-  { id: 10, src: "/images/ai/presets/vibrant-and-nutritious-bowl.jpeg" },
-  { id: 11, src: "/images/ai/presets/butterflyfish.jpeg" },
-  { id: 12, src: "/images/ai/presets/wintery-scene-in-the-heart-of-the-woods.jpeg" },
-  { id: 13, src: "/images/ai/presets/adventurous-climbers-reach-the-summit.jpg" },
-  { id: 14, src: "/images/ai/presets/cocktail-drink-with-ice-and-smoke.jpeg" },
-  { id: 15, src: "/images/ai/presets/ancient-megalithic-cromlech-on-a-frosty-morning.jpg" },
-]);
-
-const myModels = ref([]);
-const myLoras = ref([]);
 const generatedImages = ref<Array<{id: string, url: string}>>([]);
-const { data: myModelsData, error: myModelsError } = await $api().ai.myModels({});
 const showAdvanced = ref(false);
 const isGenerating = ref(false);
 
-if (!myModelsError.value && myModelsData.value) {
-  myLoras.value = myModelsData.value.data || [];
-}
-
-const loraOptions = computed(() =>
-    myLoras.value.map(model => ({
-      label: model.name,
-      value: model.name
-    }))
-);
-
 const form = ref({
   model_name: "cyberrealistic_classicV14_73029.safetensors",
+  image_base64: "",
   prompt: "",
   negative_prompt: "",
   width: 1024,
@@ -57,22 +26,9 @@ const form = ref({
   guidance_scale: 7.5,
   seed: -1,
   sampler_name: "Euler a",
-  loras: [],
+  files: [] as File[],
+  captions: [] as string[],
 });
-
-const addModel = () => {
-  if (myModels.value.length < 5) {
-    myModels.value.push({
-      id: Date.now(),
-      model_name: "",
-      strength: 0.7,
-    });
-  }
-};
-
-const removeModel = (id: number) => {
-  myModels.value = myModels.value.filter((m) => m.id !== id);
-};
 
 const toggleAdvanced = () => {
   showAdvanced.value = !showAdvanced.value;
@@ -105,6 +61,7 @@ const generateImages = async (val, action) => {
 
     const payload = {
       model_name: form.value.model_name,
+      image_base64: form.value.image_base64,
       prompt: form.value.prompt,
       negative_prompt: form.value.negative_prompt || undefined,
       width: Number(form.value.width),
@@ -114,13 +71,9 @@ const generateImages = async (val, action) => {
       guidance_scale: Number(form.value.guidance_scale),
       seed: Number(form.value.seed),
       sampler_name: form.value.sampler_name,
-      loras: myModels.value.map((m) => ({
-        model_name: m.model_name,
-        strength: Number(m.strength),
-      })),
     };
 
-    await $api().ai.txt2img({
+    await $api().ai.img2img({
       body: payload,
       onResponse({ response }) {
         if (response.status === 200 ||response.status === 201 || response.status === 202) {
@@ -162,7 +115,7 @@ const generateImages = async (val, action) => {
           <div class="ai__intro-inner">
             <BaseBreadCrumbs :links="breadcrumbs" />
             <h1 class="ai__intro-title">
-              Текст в зображення
+              Зображення в зображення
             </h1>
           </div>
         </div>
@@ -189,6 +142,15 @@ const generateImages = async (val, action) => {
                     placeholder="Модель"
                     tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
                     v-model="form.model_name"
+                />
+              </div>
+            </div>
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-field">
+                <FieldsFile
+                    label="Зображення"
+                    name="image_base64"
+                    v-model="form.image_base64"
                 />
               </div>
             </div>
@@ -252,78 +214,6 @@ const generateImages = async (val, action) => {
                     max="8"
                 />
               </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-title">
-                <label class="input__label">
-                  Мої Моделі
-                  <BaseTooltip text="LoRA — це швидкий і легкий метод навчання, який вставляє та навчає значно меншу кількість параметрів замість усіх параметрів моделі. Наразі підтримується до 5 LoRA." />
-                </label>
-              </div>
-              <div class="ai__generate-form__my-model">
-                <div
-                    v-for="(model, index) in myModels"
-                    :key="model.id"
-                    class="ai__generate-form__my-model__wrapper"
-                >
-                  <button
-                      role="button"
-                      type="button"
-                      class="ai__generate-form__my-model__close"
-                      @click="removeModel(model.id)"
-                  >
-                    <BaseIconSvg
-                        icon-name="cross"
-                        customClass="ai__generate-form__my-model__close-icon"
-                        width="2rem"
-                        height="2rem"
-                    />
-                  </button>
-
-                  <div class="ai__generate-form__input">
-                    <div class="ai__generate-form__input-field">
-                      <FieldsSelect
-                          :label="`Модель ${index + 1}`"
-                          :name="`loras[${index}][model_name]`"
-                          placeholder="Оберіть модель"
-                          v-model="myModels[index].model_name"
-                          :options="loraOptions"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="ai__generate-form__input">
-                    <div class="ai__generate-form__input-field">
-                      <FieldsRange
-                          label="Сила Впливу"
-                          :name="`loras[${index}][strength]`"
-                          :modelValue="model.strength"
-                          min="0"
-                          max="1"
-                          step="0.01"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                  v-if="myModels.length < 5"
-                  role="button"
-                  type="button"
-                  class="ai__generate-form__input-button"
-                  @click="addModel"
-              >
-                <div class="ai__generate-form__input-button-text">
-                  <BaseIconSvg
-                      icon-name="cross"
-                      customClass="ai__generate-form__input-button-icon"
-                      width="1rem"
-                      height="1rem"
-                  />
-                  Додати Власну Модель
-                </div>
-              </button>
             </div>
             <div
                 class="ai__generate-form__show-advanced"
@@ -476,29 +366,6 @@ const generateImages = async (val, action) => {
             </h3>
           </div>
         </div>
-        <div class="ai__generate-presets" v-show="!isGenerating && generatedImages.length <= 0">
-          <h4 class="ai__generate-presets__title">
-            Надихайтеся!
-          </h4>
-          <p class="ai__generate-presets__subtitle">
-            Натхнення на відстані одного дотику завдяки шаблонам, які розпалюють вашу уяву.
-          </p>
-          <div class="ai__generate-presets">
-            <div class="ai__generate-presets__list">
-              <div
-                  v-for="preset in presets"
-                  :key="preset.id"
-                  class="ai__generate-presets__item"
-              >
-                <img
-                    class="ai__generate-presets__item-img"
-                    :src="preset.src"
-                    :alt="`Preset ${preset.id}`"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
           <div class="ai__generate-results__list">
             <BaseImageCard
@@ -510,142 +377,137 @@ const generateImages = async (val, action) => {
             />
           </div>
         </div>
-        <div class="ai__generate-instructions">
+        <div :class="['ai__generate-instructions', { 'w-full': (!isGenerating && generatedImages.length > 0) || isGenerating }]">
           <div class="ai__generate-instructions-wrapper">
             <div class="ai__generate-instructions-info">
               <h2 class="ai__generate-instructions-info__title">
-                Як користуватися інструментом Novita <span class="ai__generate-instructions-info__title-strong">Текст-В-Зображення (Txt2Img)</span>
+                Як користуватися інструментом Novita <span class="ai__generate-instructions-info__title-strong">Image-to-Image</span>
               </h2>
               <p class="ai__generate-instructions-info__text">
-                Інструмент Novita Текст-В-Зображення (Txt2Img) дозволяє користувачам створювати вражаючі зображення, згенеровані штучним інтелектом, на основі текстових описів. Чи то концепт-арт, контент для соцмереж, чи професійні візуали — цей посібник допоможе вам ефективно використовувати можливості інструменту для досягнення найкращих результатів.
+                Інструмент Novita Image-to-Image дозволяє користувачам створювати вражаючі зображення, згенеровані штучним інтелектом, на основі вже існуючих зображень. Цей посібник допоможе вам ефективно використовувати можливості інструменту для досягнення найкращих результатів, будь то концепт-арт, контент для соцмереж чи професійні візуали.
               </p>
             </div>
             <div class="ai__generate-instructions-step">
               <h3 class="ai__generate-instructions-step-title">
-                Крок 1: Введення вашого запиту (Промпт)
-              </h3>
-              <h4 class="ai__generate-instructions-step-title">
-                Промпт (Обов'язковий):
-              </h4>
-              <p class="ai__generate-instructions-step-text">
-                Описуйте зображення, яке ви хочете створити, з максимальною кількістю деталей.
-                <br><span class="ai__generate-instructions-step-text-strong">Приклад:</span>
-                "Футуристичний силует міста на заході сонця з літаючими автомобілями та неоновими вогнями." Будьте конкретними щодо кольорів, стилів, освітлення та об'єктів, щоб отримати кращі результати.
-              </p>
-              <h4 class="ai__generate-instructions-step-title">
-                Негативний Промпт (Необов'язкоо):
-              </h4>
-              <p class="ai__generate-instructions-step-text">
-                Вкажіть елементи, які ви хочете виключити з зображення.
-                <br><span class="ai__generate-instructions-step-text-strong">Приклад:</span>
-                "Без розмиття, без тексту, без темних кольорів." Це допоможе уточнити результат і уникнути небажаних візуальних елементів.
-              </p>
-            </div>
-
-            <div class="ai__generate-instructions-step">
-              <h3 class="ai__generate-instructions-step-title">
-                Крок 2: Налаштування параметрів зображення
+                Крок 1: Завантаження початкового зображення
               </h3>
               <ul class="ai__generate-instructions-step-list">
                 <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Роздільна здатність:</span>
-                  Виберіть бажаний розмір вихідного зображення.
+                  <span class="ai__generate-instructions-step-text-strong">Завантажити зображення:</span> натисніть кнопку <strong>"Завантажити зображення"</strong> та виберіть файл у форматах JPG, PNG або WEBP.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Після завантаження, зображення відобразиться у панелі попереднього перегляду.
+                </li>
+              </ul>
+              <p class="ai__generate-instructions-step-text">
+                <span class="ai__generate-instructions-step-text-strong">Порада:</span> Використовуйте зображення високої якості для кращих трансформацій AI.
+              </p>
+            </div>
+
+            <div class="ai__generate-instructions-step">
+              <h3 class="ai__generate-instructions-step-title">
+                Крок 2: Налаштування параметрів генерації зображення
+              </h3>
+              <ul class="ai__generate-instructions-step-list">
+                <li class="ai__generate-instructions-step-item">
+                  <span class="ai__generate-instructions-step-text-strong">Вибір моделі:</span> Оберіть модель AI для досягнення бажаного художнього або реалістичного результату.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  <span class="ai__generate-instructions-step-text-strong">Промпт (Обов'язковий):</span> Описуйте трансформацію у деталях.
+                  <br><span class="ai__generate-instructions-step-text-strong">Приклад:</span> "Перетворіть на футуристичний міський ландшафт з неоновими вогнями."
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  <span class="ai__generate-instructions-step-text-strong">Негативний промпт (Необов'язковий):</span> Вкажіть елементи, яких не повинно бути у зображенні.
+                  <br><span class="ai__generate-instructions-step-text-strong">Приклад:</span> "Без розмиття, без артефактів, без спотворених країв."
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  <span class="ai__generate-instructions-step-text-strong">Роздільна здатність:</span> Виберіть роздільну здатність вихідного зображення.
                   <ul class="ai__generate-instructions-step-item-sublist">
                     <li class="ai__generate-instructions-step-item-sublist-item">
-                      <span class="ai__generate-instructions-step-text-strong">Популярні варіанти:</span> 1024x1024 (ідеально для соцмереж).
-                    </li>
-                    <li class="ai__generate-instructions-step-item-sublist-item">
-                      Вища роздільна здатність = більше деталей, але довше генерується.
+                      <span class="ai__generate-instructions-step-text-strong">Популярна опція:</span> 1024x1024 для високоякісних результатів.
                     </li>
                   </ul>
                 </li>
-
                 <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Кроки:</span> Кількість кроків обробки AI.
+                  <span class="ai__generate-instructions-step-text-strong">Кроки:</span> Налаштуйте кількість кроків обробки.
                   <ul class="ai__generate-instructions-step-item-sublist">
-                    <li>20–30 — швидше, але менш деталізовано.</li>
-                    <li>50–100 — детальніше, але довше.</li>
+                    <li>20-30 — швидше, але менш деталізовано.</li>
+                    <li>50-100 — більш детально, але довше.</li>
                   </ul>
                 </li>
-
                 <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Кількість Зображень:</span> Скільки зображень згенерувати одночасно.
-                </li>
-
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Шкала Орієнтування:</span> Наскільки точно AI слідує промпту.
+                  <span class="ai__generate-instructions-step-text-strong">Шкала Орієнтування:</span> Визначає, наскільки точно AI слідує вашому опису.
                   <ul class="ai__generate-instructions-step-item-sublist">
-                    <li>10–15 — більш точне відтворення опису.</li>
-                    <li>5–8 — більше креативності.</li>
+                    <li>10-15 — зображення, більш точно відповідне опису.</li>
+                    <li>5-8 — більше креативності у результатах.</li>
                   </ul>
                 </li>
-
                 <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Сід:</span> Випадковість генерації.
+                  <span class="ai__generate-instructions-step-text-strong">Семплер:</span> Оберіть алгоритм семплінгу AI.
                   <ul class="ai__generate-instructions-step-item-sublist">
-                    <li>-1 — випадковий результат кожного разу.</li>
-                    <li>Фіксоване число — стабільний результат.</li>
-                  </ul>
-                </li>
-
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Семплер:</span> Алгоритм семплінгу.
-                  <ul class="ai__generate-instructions-step-item-sublist">
-                    <li><span class="ai__generate-instructions-step-text-strong">DPM++ 2S a Karras (рекомендовано):</span> дає плавні, якісні зображення.</li>
-                    <li>Спробуйте інші — для різних художніх ефектів.</li>
+                    <li><span class="ai__generate-instructions-step-text-strong">DPM++ 2S a Karras (рекомендовано):</span> дає плавні та високоякісні зображення.</li>
                   </ul>
                 </li>
               </ul>
             </div>
 
             <div class="ai__generate-instructions-step">
-              <h3 class="ai__generate-instructions-step-title">Крок 3: Покращення результату</h3>
+              <h3 class="ai__generate-instructions-step-title">Крок 3: Розширене налаштування</h3>
 
-              <h4 class="ai__generate-instructions-step-title">Власні моделі</h4>
+              <h4 class="ai__generate-instructions-step-title">ControlNet</h4>
               <p class="ai__generate-instructions-step-text">
-                Використовуйте попередньо натреновані моделі, щоб досягти певного художнього стилю.
+                Покращуйте окремі аспекти вашого зображення, такі як поза, контури чи глибина.
               </p>
 
+              <h4 class="ai__generate-instructions-step-title">LoRA (Low-Rank Adaptation)</h4>
               <p class="ai__generate-instructions-step-text">
-                <span class="ai__generate-instructions-step-text-strong">Порада:</span> Експериментуйте, щоб знайти ідеальний баланс.
+                Тонке налаштування результату за допомогою попередньо натренованих моделей для конкретних стилів.
+              </p>
+
+              <h4 class="ai__generate-instructions-step-title">Refiner</h4>
+              <p class="ai__generate-instructions-step-text">
+                Покращення якості фінального результату:
+                <ul>
+                  <li><span class="ai__generate-instructions-step-text-strong">0 (Вимкнено):</span> без додаткового покращення.</li>
+                  <li><span class="ai__generate-instructions-step-text-strong">0.5 (Помірно):</span> незначне покращення деталей.</li>
+                  <li><span class="ai__generate-instructions-step-text-strong">1 (Повне):</span> покращення різкості та текстур.</li>
+                </ul>
               </p>
             </div>
 
             <div class="ai__generate-instructions-step">
               <h3 class="ai__generate-instructions-step-title">Крок 4: Генерація зображення</h3>
               <p class="ai__generate-instructions-step-text">
-                Після налаштування всіх параметрів натисніть <span class="ai__generate-instructions-step-text-strong">«Згенерувати»</span>.
-                ШІ створить зображення відповідно до введених налаштувань.
-                Час генерації залежить від складності та роздільної здатності.
+                Після налаштування всіх параметрів натисніть <strong>“Згенерувати”</strong>. ШІ створить зображення на основі вибраних налаштувань. Час обробки залежить від складності та роздільної здатності.
               </p>
             </div>
 
             <div class="ai__generate-instructions-step">
               <h3 class="ai__generate-instructions-step-title">Крок 5: Перегляд та збереження результату</h3>
               <ul class="ai__generate-instructions-step-list">
-                <li>Перегляньте результат у прев’ю-секції.</li>
-                <li>Якщо все влаштовує — натисніть <span class="ai__generate-instructions-step-text-strong">«Завантажити»</span>.</li>
-                <li>Якщо потрібно — змініть промпт або параметри й повторіть генерацію.</li>
+                <li>Перегляньте згенероване зображення в панелі попереднього перегляду.</li>
+                <li>Якщо результат влаштовує, натисніть <strong>“Завантажити”</strong>.</li>
+                <li>При необхідності, змініть налаштування та повторіть генерацію.</li>
               </ul>
             </div>
 
             <div class="ai__generate-instructions-step">
               <h3 class="ai__generate-instructions-step-title">Поради для найкращих результатів</h3>
               <ul class="ai__generate-instructions-step-list">
-                <li><span class="ai__generate-instructions-step-text-strong">Будьте конкретними:</span> вказуйте кольори, освітлення, стиль.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Експериментуйте з Шкалою Орієнтування:</span> знайдіть баланс між точністю та креативністю.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Уникайте надлишку тексту:</span> коротко, але інформативно.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Використовуйте Власні Моделі:</span> для єдиного стилю або бренду.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Будьте конкретними:</span> вказуйте кольори, освітлення та стиль.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Експериментуйте з шкалою орієнтування:</span> знайдіть баланс між точністю та креативністю.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Спробуйте різні семплери:</span> кожен з них надає унікальний художній ефект.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Почніть з базових налаштувань:</span> поступово налаштовуйте параметри залежно від результатів.</li>
               </ul>
             </div>
 
             <div class="ai__generate-instructions-step">
               <h3 class="ai__generate-instructions-step-title">Застосування AI-зображень</h3>
               <ul class="ai__generate-instructions-step-list">
-                <li><span class="ai__generate-instructions-step-text-strong">Маркетинг і соцмережі:</span> візуали для Instagram, TikTok, реклами.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Концепт-арт:</span> ідеї для дизайну, ігор, фільмів.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">E-Commerce:</span> рендери товарів і концептів.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Персональні проєкти:</span> презентації, блоги, креатив.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Маркетинг і соцмережі:</span> генеруйте унікальні візуали для Instagram, TikTok, реклами.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Концепт-арт:</span> створюйте ідеї для дизайну, ігор та фільмів.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Візуалізація продуктів:</span> покращуйте зображення товарів для e-commerce та рекламних кампаній.</li>
+                <li><span class="ai__generate-instructions-step-text-strong">Персональні проєкти:</span> підвищуйте якість презентацій, блогів та творчих робіт.</li>
               </ul>
             </div>
           </div>
@@ -660,6 +522,12 @@ const generateImages = async (val, action) => {
   </main>
 </template>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.ai {
+  &__generate {
+    &-instructions {
+      width: auto;
+    }
+  }
+}
 </style>

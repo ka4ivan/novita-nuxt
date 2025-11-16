@@ -233,7 +233,7 @@ const onDownload = async () => {
   &__button {
     backdrop-filter: blur(4px);
     padding: 0.625rem;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgb(219 219 219 / 21%);;
     border-radius: 9999px;
     display: flex;
     transition: 0.3s;

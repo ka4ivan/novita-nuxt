@@ -96,7 +96,9 @@ async function submitForm() {
             </VeeForm>
           </div>
           <div class="ai_model__upload">
-            <FieldsFile
+            <FieldsFiles
+                :multiple="true"
+                :showCaptions="true"
                 v-model:captions="aiModelForm.caption"
                 v-model:files="aiModelForm.files"
             />

@@ -14,6 +14,11 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    img2img(options: any) {
+      return useCustomFetch(`/ai/img2img`, {
+        method: 'POST',
+      ...options})
+    },
     myModels(options: any) {
         return useCustomFetch(`/ai/my/models`, {
             method: 'GET',
