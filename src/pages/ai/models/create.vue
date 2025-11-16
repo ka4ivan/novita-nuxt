@@ -45,7 +45,6 @@ async function submitForm() {
 
   customToast(message, "success")
 }
-
 </script>
 
 <template>

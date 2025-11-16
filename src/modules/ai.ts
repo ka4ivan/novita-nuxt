@@ -14,6 +14,12 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    myModels(options: any) {
+        return useCustomFetch(`/ai/my/models`, {
+            method: 'GET',
+            ...options
+        })
+    },
     myModelsStore(data: any) {
         return useCustomFetch(`/ai/my/models`, {
             method: 'POST',
