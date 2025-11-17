@@ -29,6 +29,11 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    upscale(options: any) {
+      return useCustomFetch(`/ai/upscale`, {
+        method: 'POST',
+      ...options})
+    },
     myModels(options: any) {
         return useCustomFetch(`/ai/my/models`, {
             method: 'GET',
