@@ -104,6 +104,97 @@ async function submitForm() {
             />
           </div>
         </div>
+        <div class="ai__generate-instructions">
+          <div class="ai__generate-instructions-wrapper">
+            <div class="ai__generate-instructions-info">
+              <h2 class="ai__generate-instructions-info__title">
+                Як створити модель – покрокова інструкція
+              </h2>
+              <p class="ai__generate-instructions-info__text">
+                Створення моделі – це простий процес, який дозволяє вам налаштувати модель за допомогою ваших власних зображень. Для цього вам потрібно вибрати базову модель і завантажити фотографії, кожна з яких повинна мати опис. Слідуйте цій інструкції для правильного створення моделі.
+              </p>
+            </div>
+
+            <div class="ai__generate-instructions-step">
+              <h3 class="ai__generate-instructions-step-title">
+                Крок 1: Вибір базової моделі
+              </h3>
+              <ul class="ai__generate-instructions-step-list">
+                <li class="ai__generate-instructions-step-item">
+                  Виберіть одну з базових моделей, яка найкраще підходить для ваших потреб.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Кожна базова модель має свої особливості, тому вибір залежить від типу зображень, які ви хочете використовувати.
+                </li>
+              </ul>
+            </div>
+
+            <div class="ai__generate-instructions-step">
+              <h3 class="ai__generate-instructions-step-title">
+                Крок 2: Завантаження фотографій
+              </h3>
+              <ul class="ai__generate-instructions-step-list">
+                <li class="ai__generate-instructions-step-item">
+                  Натисніть кнопку <strong>“Завантажити фотографії”</strong>, щоб вибрати зображення зі свого пристрою.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Завантажте необхідні фотографії для створення моделі. Кожне фото повинно мати опис, що пояснює, що саме на зображенні.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Переконайтесь, що фотографії мають високу якість та чітко зображують об'єкти, які ви хочете використовувати для навчання моделі.
+                </li>
+              </ul>
+              <p class="ai__generate-instructions-step-text">
+                <span class="ai__generate-instructions-step-text-strong">Порада:</span> Для досягнення найкращих результатів використовуйте різні ракурси та освітлення для кожного зображення.
+              </p>
+            </div>
+
+            <div class="ai__generate-instructions-step">
+              <h3 class="ai__generate-instructions-step-title">
+                Крок 3: Опис кожного фото
+              </h3>
+              <ul class="ai__generate-instructions-step-list">
+                <li class="ai__generate-instructions-step-item">
+                  Після завантаження кожного фото введіть детальний опис для кожного зображення.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Опис має бути чітким та точним, щоб модель могла коректно обробити інформацію і правильно асоціювати зображення з відповідними ознаками.
+                </li>
+              </ul>
+              <p class="ai__generate-instructions-step-text">
+                <span class="ai__generate-instructions-step-text-strong">Порада:</span> Опис повинен включати важливі деталі, такі як колір, форма, контекст і будь-які інші ключові характеристики зображення.
+              </p>
+            </div>
+
+            <div class="ai__generate-instructions-step">
+              <h3 class="ai__generate-instructions-step-title">
+                Крок 4: Створення моделі
+              </h3>
+              <ul class="ai__generate-instructions-step-list">
+                <li class="ai__generate-instructions-step-item">
+                  Після того як усі фотографії завантажені і описані, натисніть кнопку <strong>“Створити модель”</strong>.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Система автоматично почне обробку зображень і створення моделі на основі наданих фотографій і описів.
+                </li>
+              </ul>
+            </div>
+
+            <div class="ai__generate-instructions-step">
+              <h3 class="ai__generate-instructions-step-title">
+                Крок 5: Завершення процесу
+              </h3>
+              <ul class="ai__generate-instructions-step-list">
+                <li class="ai__generate-instructions-step-item">
+                  Коли створення моделі завершиться, ви отримаєте лист на пошту про успішне завершення процесу.
+                </li>
+                <li class="ai__generate-instructions-step-item">
+                  Модель буде доступна для подальшого використання в будь-яких проектах чи процесах.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>

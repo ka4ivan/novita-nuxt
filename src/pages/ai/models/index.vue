@@ -16,50 +16,55 @@ if (!error.value && data.value) {
 }
 </script>
 
-
 <template>
   <main class="main">
-    <section class="ai_model">
+    <section class="ai-model">
       <div class="container">
         <BaseBreadCrumbs :links="breadcrumbs" />
-        <h1 class="ai_model__title">Власні моделі</h1>
 
-        <!-- EMPTY STATE -->
-        <div v-if="models.length === 0" class="ai_model__empty">
-          <div class="ai_model__empty-wrapper">
-            <BaseIconSvg
-                icon-name="ai-unknown"
-                customClass="ai_model__empty-icon"
-                width="10rem"
-                height="10rem"
-            />
-            <h1 class="ai_model__empty-title">Ви ще не навчали моделі</h1>
-            <NuxtLink class="ai_model__empty-link" to="/ai/models/create">Створити власну модель</NuxtLink>
-          </div>
+        <div class="ai-model__header">
+          <h1 class="ai-model__title">Власні моделі</h1>
+          <NuxtLink class="ai-model__create-btn" to="/ai/models/create">
+            Створити модель
+          </NuxtLink>
         </div>
 
-        <!-- MODELS LIST -->
-        <div v-else class="ai_model__content">
-          <ul class="ai_model__list">
-            <li class="ai_model__item" v-for="model in models" :key="model.id">
-              <h2 class="ai_model__item-title">
-                {{ model.name }}
-              </h2>
+        <div v-if="models.length === 0" class="ai-model__empty">
+          <BaseIconSvg
+              icon-name="ai-unknown"
+              customClass="ai-model__empty-icon"
+              width="9rem"
+              height="9rem"
+          />
+          <h2 class="ai-model__empty-title">У вас ще немає моделей</h2>
 
-              <div class="ai_model__item-images">
-                <template v-for="group in model.data" :key="group.id">
-                  <BaseImageCard
-                      v-for="media in group.images"
-                      :key="media.id"
-                      :id="media.id"
-                      :src="media.url"
-                      :isFavorite="media.states.is_favorite"
-                      :onZoomSrc="media.url"
-                  />
-                </template>
-              </div>
-            </li>
-          </ul>
+          <NuxtLink class="ai-model__empty-link" to="/ai/models/create">
+            Створити власну модель
+          </NuxtLink>
+        </div>
+
+        <div v-else class="ai-model__grid">
+          <div
+              class="ai-model__card"
+              v-for="model in models"
+              :key="model.id"
+          >
+            <h2 class="ai-model__card-title">{{ model.name }}</h2>
+
+            <div class="ai-model__images">
+              <template v-for="group in model.data" :key="group.id">
+                <BaseImageCard
+                    v-for="media in group.images"
+                    :key="media.id"
+                    :id="media.id"
+                    :src="media.url"
+                    :isFavorite="media.states.is_favorite"
+                    :onZoomSrc="media.url"
+                    class="ai-model__image"
+                />
+              </template>
+            </div>
+          </div>
         </div>
       </div>
     </section>

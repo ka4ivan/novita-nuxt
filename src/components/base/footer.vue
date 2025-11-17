@@ -43,7 +43,6 @@
             <ul class="footer__list">
               <NuxtLink class="footer__link" to="/ai/txt2img">Текст в зображення</NuxtLink>
               <NuxtLink class="footer__link" to="/ai/img2img">Зображення в зображення</NuxtLink>
-              <NuxtLink class="footer__link" to="#">Image to image TODO</NuxtLink>
             </ul>
           </div>
 
@@ -59,7 +58,7 @@
           <div class="footer__col">
             <h4 class="footer__heading">Власні моделі</h4>
             <ul class="footer__list">
-              <NuxtLink class="footer__link" to="/ai/models/index">Список моделей</NuxtLink>
+              <NuxtLink class="footer__link" to="/ai/models">Список моделей</NuxtLink>
               <NuxtLink class="footer__link" to="/ai/models/create">Створити</NuxtLink>
             </ul>
           </div>

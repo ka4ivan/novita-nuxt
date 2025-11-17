@@ -1,65 +1,97 @@
-.main {
-  .ai_model {
-    padding-bottom: 6rem;
+.ai-model {
+  padding-bottom: 6rem;
 
-    &__title {
-      font-size: 24px;
-      padding: 1.5rem 1.5rem 1.5rem 0;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__create-btn {
+    background: $yellow;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-decoration: none;
+    color: $black;
+    transition: $transition;
+
+    &:hover {
+      background: $blue;
+      color: $yellow;
+    }
+  }
+
+  &__empty {
+    margin-top: 4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+
+    &-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    &-link {
+      padding: .75rem 1.5rem;
+      text-decoration-line: none;
+      background-color: $yellow;
       color: $black;
-      margin-bottom: 0;
-    }
+      transition: $transition;
+      font-weight: 500;
+      border-radius: 9999px;
 
-    &__empty {
-      display: flex;
-      justify-content: center;
-
-      &-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        text-align: center;
-        max-width: 20rem;
-      }
-
-      &-title {
-        font-size: 24px;
-        margin: 0;
-      }
-
-      &-link {
-        padding: .75rem 1.5rem;
-        margin-top: 0;
-        text-decoration-line: none;
-        background-color: $yellow;
-        color: $black;
-        transition: $transition;
-        font-weight: 500;
-        border-radius: 9999px;
-
-        &:hover {
-          background-color: $blue;
-          color: $yellow;
-        }
-      }
-
-      &-icon {
-        fill: none;
+      &:hover {
+        background-color: $blue;
+        color: $yellow;
       }
     }
+  }
 
-    &__list {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-    }
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
 
-    &__item {
-      &-title {
-        font-size: 1.75rem;
-        margin: 0;
-      }
-    }
+  &__card {
+    padding: 1.25rem;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__card-title {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: $black;
+  }
+
+  &__images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: .5rem;
+  }
+
+  .ai-model__image {
+    border-radius: .75rem;
+    overflow: hidden;
   }
 }
