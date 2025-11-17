@@ -24,6 +24,11 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    removeText(options: any) {
+      return useCustomFetch(`/ai/remove-text`, {
+        method: 'POST',
+      ...options})
+    },
     myModels(options: any) {
         return useCustomFetch(`/ai/my/models`, {
             method: 'GET',
