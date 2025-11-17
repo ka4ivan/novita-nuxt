@@ -45,6 +45,11 @@ export default () => ({
             method: 'POST',
             body: data
         })
+    },
+    myModelsDelete(id: string) {
+        return useCustomFetch(`/ai/my/models/${id}`, {
+            method: 'DELETE'
+        });
     }
   });
   

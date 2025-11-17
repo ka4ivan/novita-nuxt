@@ -10,9 +10,25 @@ const breadcrumbs = ref([
 const models = ref([]);
 
 const { data, error } = await $api().ai.myModels({});
-
 if (!error.value && data.value) {
   models.value = data.value?.data || [];
+}
+
+async function deleteModel(modelId: string) {
+  const confirmed = window.confirm("Ви впевнені, що хочете видалити модель?");
+
+  if (!confirmed) return;
+
+  const { data, error } = await $api().ai.myModelsDelete(modelId);
+
+  if (error.value) {
+    customToast(error.value.data?.message || "Помилка при видаленні моделі", "error");
+    return;
+  }
+
+  customToast(data.value?.message || "Модель успішно видалено!", "success");
+
+  models.value = models.value.filter(m => m.id !== modelId);
 }
 </script>
 
@@ -22,7 +38,7 @@ if (!error.value && data.value) {
       <div class="container">
         <BaseBreadCrumbs :links="breadcrumbs" />
 
-        <div class="ai-model__header">
+        <div v-if="models.length > 0" class="ai-model__header">
           <h1 class="ai-model__title">Власні моделі</h1>
           <NuxtLink class="ai-model__create-btn" to="/ai/models/create">
             Створити модель
@@ -49,7 +65,21 @@ if (!error.value && data.value) {
               v-for="model in models"
               :key="model.id"
           >
-            <h2 class="ai-model__card-title">{{ model.name }}</h2>
+            <div class="ai-model__card-header">
+              <h2 class="ai-model__card-title">{{ model.name }}</h2>
+
+              <button
+                  class="ai-model__delete-btn"
+                  @click="deleteModel(model.id)"
+              >
+                <BaseIconSvg
+                    icon-name="trash"
+                    customClass="ai-model__delete-btn-icon"
+                    width="1rem"
+                    height="1rem"
+                />
+              </button>
+            </div>
 
             <div class="ai-model__images">
               <template v-for="group in model.data" :key="group.id">

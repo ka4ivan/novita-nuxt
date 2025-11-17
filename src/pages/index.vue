@@ -181,11 +181,11 @@ onUnmounted(() => {
             <NuxtLink class="main__tools-card-tag" to="/ai/remove-text">
               Прибрати текст
             </NuxtLink>
-            <NuxtLink class="main__tools-card-tag" to="/ai/replace-background">
-              Замінити фон
+            <NuxtLink class="main__tools-card-tag" to="/ai/remove-background">
+              Видалити фон
             </NuxtLink>
-            <NuxtLink class="main__tools-card-tag" to="/ai/merge-face">
-              Об'єднати обличчя
+            <NuxtLink class="main__tools-card-tag" to="/ai/models/create">
+              Створити власну модель
             </NuxtLink>
             <NuxtLink class="main__tools-card-tag" to="/ai/upscale">
               Покращити якість
