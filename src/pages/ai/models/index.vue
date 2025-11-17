@@ -34,9 +34,7 @@ if (!error.value && data.value) {
                 height="10rem"
             />
             <h1 class="ai_model__empty-title">Ви ще не навчали моделі</h1>
-            <a href="/ai/models/create" class="ai_model__empty-link">
-              Створити власну модель
-            </a>
+            <NuxtLink class="ai_model__empty-link" to="/ai/models/create">Створити власну модель</NuxtLink>
           </div>
         </div>
 

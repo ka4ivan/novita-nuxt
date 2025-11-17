@@ -88,7 +88,7 @@ watch(
                 <li class="header__submenu-item">
                   <ul class="header__submenu-list">
                     <li class="header__submenu-list-item">
-                      <a href="/ai/txt2img" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/txt2img">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Текст в зображення</h4>
                           <span class="header__submenu-badge">🔥 TOP</span>
@@ -96,96 +96,96 @@ watch(
                         <p class="header__submenu-description">
                           Генерувати зображення на основі текстового опису
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
                     <li class="header__submenu-list-item">
-                      <a href="/ai/img2img" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/img2img">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Зображення в зображення</h4>
                         </div>
                         <p class="header__submenu-description">
                           Генерувати зображення на основі інших зображень
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
                   </ul>
                 </li>
                 <li class="header__submenu-item">
                   <ul class="header__submenu-list">
                     <li class="header__submenu-list-item">
-                      <a href="/ai/remove-background" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/remove-background">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Видалити фон</h4>
                         </div>
                         <p class="header__submenu-description">
                           Виділіть об’єкти, видаливши фон із зображення
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
 <!--                    <li class="header__submenu-list-item">-->
-<!--                      <a href="/ai/replace-background" class="header__submenu-link">-->
+<!--                      <NuxtLink class="header__submenu-link" to="/ai/replace-background">-->
 <!--                        <div class="header__submenu-link-info">-->
 <!--                          <h4 class="header__submenu-title">Замінити фон</h4>-->
 <!--                        </div>-->
 <!--                        <p class="header__submenu-description">-->
 <!--                          Вставте новий фон замість наявного-->
 <!--                        </p>-->
-<!--                      </a>-->
+<!--                      </NuxtLink>-->
 <!--                    </li>-->
                     <li class="header__submenu-list-item">
-                      <a href="/ai/replace-background" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/remove-text">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Видалити текст</h4>
                         </div>
                         <p class="header__submenu-description">
                           Видаліть текст із зображення, зберігаючи його фон
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
 
                     <li class="header__submenu-list-item">
-                      <a href="/ai/models" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/models">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Власні моделі</h4>
                         </div>
                         <p class="header__submenu-description">
                           Перегляньте моделі, що були створені вами
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
                     <li class="header__submenu-list-item">
-                      <a href="/ai/models/create" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/models/create">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Створити власну модель</h4>
                         </div>
                         <p class="header__submenu-description">
                           Створіть унікальну модель відповідно до ваших потреб
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
                   </ul>
                 </li>
                 <li class="header__submenu-item">
                   <ul class="header__submenu-list">
                     <li class="header__submenu-list-item">
-                      <a href="/ai/upscale" class="header__submenu-link">
+                      <NuxtLink class="header__submenu-link" to="/ai/upscale">
                         <div class="header__submenu-link-info">
                           <h4 class="header__submenu-title">Upscale</h4>
                         </div>
                         <p class="header__submenu-description">
                           Підвищити роздільну здатність і чіткість зображення
                         </p>
-                      </a>
+                      </NuxtLink>
                     </li>
 <!--                    <li class="header__submenu-list-item">-->
-<!--                      <a href="/ai/merge-face" class="header__submenu-link">-->
+<!--                      <NuxtLink class="header__submenu-link" to="/ai/merge-face">-->
 <!--                        <div class="header__submenu-link-info">-->
 <!--                          <h4 class="header__submenu-title">З'єднати обличчя</h4>-->
 <!--                        </div>-->
 <!--                        <p class="header__submenu-description">-->
 <!--                          Поєднайте риси обличчя з різних зображень в одне обличчя-->
 <!--                        </p>-->
-<!--                      </a>-->
+<!--                      </NuxtLink>-->
 <!--                    </li>-->
                   </ul>
                 </li>

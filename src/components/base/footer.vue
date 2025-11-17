@@ -42,25 +42,25 @@
             <h4 class="footer__heading">Генерування зображень</h4>
             <ul class="footer__list">
               <NuxtLink class="footer__link" to="/ai/txt2img">Текст в зображення</NuxtLink>
-              <li><a href="#" class="footer__link">Text to image</a></li>
-              <li><a href="#" class="footer__link">Image to image TODO</a></li>
+              <NuxtLink class="footer__link" to="/ai/img2img">Зображення в зображення</NuxtLink>
+              <NuxtLink class="footer__link" to="#">Image to image TODO</NuxtLink>
             </ul>
           </div>
 
           <div class="footer__col">
             <h4 class="footer__heading">Редагування зображень</h4>
             <ul class="footer__list">
-              <li><a href="#" class="footer__link">Upscale TODO</a></li>
-              <li><a href="#" class="footer__link">Remove background TODO</a></li>
-              <li><a href="#" class="footer__link">Replace background TODO</a></li>
-              <li><a href="#" class="footer__link">Remove text TODO</a></li>
+              <NuxtLink class="footer__link" to="/ai/upscale">Upscale</NuxtLink>
+              <NuxtLink class="footer__link" to="/ai/remove-background">Видалити фон</NuxtLink>
+              <NuxtLink class="footer__link" to="/ai/remove-text">Видалити текст</NuxtLink>
             </ul>
           </div>
 
           <div class="footer__col">
-            <h4 class="footer__heading">Фотошоп</h4>
+            <h4 class="footer__heading">Власні моделі</h4>
             <ul class="footer__list">
-              <li><a href="#" class="footer__link">Merge face TODO</a></li>
+              <NuxtLink class="footer__link" to="/ai/models/index">Список моделей</NuxtLink>
+              <NuxtLink class="footer__link" to="/ai/models/create">Створити</NuxtLink>
             </ul>
           </div>
         </div>
@@ -73,8 +73,8 @@
           © 2025 Ka4ivan - Novita AI
         </p>
         <div class="footer__links">
-          <a href="#" class="footer__link">Правила використання</a>
-          <a href="#" class="footer__link">Політика конфіденційності</a>
+          <NuxtLink class="footer__link" to="#">Правила використання</NuxtLink>
+          <NuxtLink class="footer__link" to="#">Політика конфіденційності</NuxtLink>
         </div>
       </div>
     </div>
