@@ -1,0 +1,52 @@
+.profile {
+  &__menu {
+    width: 300px;
+    border-radius: 10px;
+    background: $white;
+    overflow: hidden;
+    height: max-content;
+    &-item {
+      font-size: 16px;
+      display: flex;
+      &:first-of-type {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+      &:last-of-type {
+        border-top-style: solid;
+        border-top-width: 1px;
+        border-color: rgb(238 240 244 / 1);
+      }
+    }
+    .router-link-exact-active {
+      background-color: rgb(32 32 46 / 1);
+      color: $white;
+      &:hover {
+        background-color: rgb(32 32 46 / 1);
+      }
+      .profile__menu-link-icon {
+        color: $white;
+        fill: $white;
+        stroke: $white;
+      }
+    }
+    &-link {
+      transition: $transition;
+      position: relative;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      padding: 1rem 2rem;
+      font-size: 18px;
+      text-decoration: none;
+      background-color: $white;
+      color: rgb(32 32 46 / 1);
+      &:hover {
+        background-color: #20202e1a;
+      }
+      &-icon {
+        margin-right: 1rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,150 @@
+<script setup lang="ts">
+import { ref, watch, defineEmits, defineProps } from 'vue'
+
+const props = defineProps<{
+  captions?: string[]
+  files?: File[]
+  multiple?: boolean
+  showCaptions?: boolean
+}>()
+
+const emit = defineEmits(['update:captions', 'update:files'])
+
+const isActive = ref(false)
+const images = ref<File[]>(props.files ? [...props.files] : [])
+const previews = ref<string[]>([])
+const localCaptions = ref<string[]>(props.captions ? [...props.captions] : [])
+
+watch(
+    () => props.captions,
+    (val) => {
+      if (val) localCaptions.value = [...val]
+    }
+)
+
+function updateCaptions() {
+  emit('update:captions', localCaptions.value)
+}
+
+const onDragEnter = () => (isActive.value = true)
+const onDragLeave = () => (isActive.value = false)
+const onDrop = (event: DragEvent) => {
+  isActive.value = false
+  if (!event.dataTransfer?.files) return
+  handleFiles(event.dataTransfer.files)
+}
+
+const onFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (!target.files) return
+  handleFiles(target.files)
+}
+
+function handleFiles(fileList: FileList) {
+  const newFiles = Array.from(fileList)
+  if (!props.multiple) {
+    images.value = []
+    previews.value = []
+    localCaptions.value = []
+  }
+
+  images.value.push(...newFiles)
+  emit('update:files', images.value)
+
+  newFiles.forEach(file => {
+    previews.value.push(URL.createObjectURL(file))
+    if (props.showCaptions) localCaptions.value.push('')
+  })
+
+  if (props.showCaptions) updateCaptions()
+}
+
+function removeImage(index: number) {
+  images.value.splice(index, 1)
+  emit('update:files', images.value)
+
+  URL.revokeObjectURL(previews.value[index])
+  previews.value.splice(index, 1)
+
+  if (props.showCaptions) {
+    localCaptions.value.splice(index, 1)
+    updateCaptions()
+  }
+}
+</script>
+
+<template>
+  <div
+      class="file-uploader"
+      :class="{ 'file-uploader--active': isActive }"
+      @dragenter.prevent="onDragEnter"
+      @dragleave.prevent="onDragLeave"
+      @dragover.prevent
+      @drop.prevent="onDrop"
+  >
+    <label class="file-uploader__label" v-if="!previews.length">
+      <div class="file-uploader__content">
+        <div class="file-uploader__icon">
+          <div class="file-uploader__icon-wrapper">
+            <div class="file-uploader__icon-animation">
+              <BaseIconSvg
+                  icon-name="download"
+                  customClass="file-uploader__icon-image"
+                  width="100px"
+                  height="100px"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="file-uploader__text">
+          Перетягніть файли сюди або натисніть, щоб вибрати
+        </div>
+      </div>
+
+      <input
+          class="file-uploader__input"
+          type="file"
+          accept="image/png,image/jpeg"
+          :multiple="props.multiple ?? true"
+          @change="onFileChange"
+      />
+    </label>
+
+    <div v-else class="file-uploader__previews">
+      <div
+          v-for="(src, index) in previews"
+          :key="index"
+          class="file-uploader__preview"
+      >
+        <img :src="src" alt="preview" class="file-uploader__preview-image" />
+        <button
+            type="button"
+            class="file-uploader__remove-btn"
+            @click="removeImage(index)"
+        >
+          ✕
+        </button>
+
+        <textarea
+            v-if="props.showCaptions"
+            v-model="localCaptions[index]"
+            class="file-uploader__caption"
+            placeholder="Підпис до фото"
+            @input="updateCaptions"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.file-uploader__caption {
+  width: 100%;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px;
+  resize: none;
+}
+</style>

@@ -1,0 +1,30 @@
+.main {
+  &__main {
+    padding-bottom: 6rem;
+  }
+  .profile {
+    &__content {
+      display: flex;
+      flex-direction: row;
+    }
+    &__title {
+      color: rgb(32 32 46 / 1);
+      line-height: 1.3;
+      font-size: 52px;
+      margin-bottom: 1.5rem;
+    }
+  }
+  .ai-jobs {
+    margin-bottom: 5rem;
+    width: 80%;
+    &__wrapper {
+      margin: 0 2rem;
+      flex: 1 1 0;
+    }
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+  }
+}

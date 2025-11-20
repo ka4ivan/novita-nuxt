@@ -1,0 +1,18 @@
+//base
+@import "./base/index";
+
+//pages
+@import "./pages/index";
+@import "./pages/profile/index";
+@import "./pages/profile/favorites";
+@import "./pages/profile/jobs";
+@import "./pages/ai/base";
+@import "./pages/ai/img2img";
+@import "./pages/ai/models/create";
+@import "./pages/ai/models/index";
+
+//components
+@import "./components/index";
+
+//media
+//@use "./media/index" as *;

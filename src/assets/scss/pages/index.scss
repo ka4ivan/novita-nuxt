@@ -1,0 +1,259 @@
+.main {
+  &__hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    &-background {
+      align-items: stretch;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      z-index: -10;
+      position: fixed;
+      top: 0;
+      &-video {
+        object-position: center;
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+    &-container {
+      padding-top: 80px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    &-title {
+      width: 60%;
+      margin-bottom: 25px;
+      &-text {
+        color: $white;
+        font-size: 64px;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        span {
+          color: $yellow;
+        }
+      }
+    }
+    &-buttons {
+      display: flex;
+      gap: 1rem;
+      width: 50%;
+      &-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        padding: 1rem 2.5rem;
+        color: $white;
+        fill: $white;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        &-arrow-right-icon {
+          font-size: 21px;
+          transition: $transition;
+        }
+      }
+      &-link-try {
+        background: rgb(93, 52, 255);
+        transition: $transition;
+        &:hover {
+          background: $yellow;
+          color: $black;
+          .main__hero-buttons-link-arrow-right-icon {
+            fill: $black;
+          }
+        }
+      }
+      &-link-library {
+        border: $white solid 2px;
+        transition: $transition;
+        &:hover {
+          background: $white;
+          color: $black;
+          fill: $black;
+        }
+      }
+    }
+    &-featured {
+      display: flex;
+      justify-content: end;
+      &-container {
+        width: 65%;
+      }
+      &-title {
+        color: $white;
+        font-size: 16px;
+        text-transform: uppercase;
+      }
+      &-links {
+        display: flex;
+        gap: 1rem;
+      }
+      &-link {
+        margin-top: 16px;
+        padding: 1rem;
+        border: 1px #fff3 solid;
+        border-radius: .5rem;
+        text-decoration: none;
+        color: $white;
+        fill: $white;
+        min-width: 250px;
+        width: 33.33%;
+        height: 180px;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        z-index: 10;
+        transition: $transition;
+        &:hover {
+          .main__hero-featured-link-description-text {
+            gap: 1.25rem;
+          }
+          .main__hero-featured-link-img {
+            transform: translate(0, 0) rotate(0) skew(0) skewY(0) scaleX(1.1) scaleY(1.1);
+          }
+        }
+        &-gradient {
+          --tw-gradient-from: #000;
+          --tw-gradient-to: rgb(0 0 0 / 0);
+          --tw-gradient-stops: #000, rgb(0 0 0 / 0);
+          background-image: linear-gradient(to top, #000 , rgb(0 0 0 / 0));
+          width: 100%;
+          height: 100%;
+          z-index: 10;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        &-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          position: absolute;
+          top: 0;
+          left: 0;
+          transition: $transition;
+        }
+        &-description {
+          z-index: 20;
+          &-text {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            transition: $transition;
+          }
+        }
+      }
+    }
+  }
+  &__tools {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    position: relative;
+    background-color: $white;
+    z-index: 20;
+    &-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    &-card {
+      background-color: $light-gray;
+      border-radius: .5rem;
+      padding: 4rem;
+      color: $black;
+      &-badge {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        opacity: .6;
+        gap: .25rem;
+        &-text {
+          color: rgb(32 32 46 / 1);
+          letter-spacing: -.015em;
+          line-height: 1.3;
+          font-size: 14px;
+        }
+        &-icon {
+          font-size: 14px;
+          color: $black;
+        }
+      }
+      &-title {
+        font-size: 32px;
+        margin-bottom: 1rem;
+      }
+      &-text {
+        font-size: 16px;
+        opacity: .6;
+        margin-bottom: 1.5rem;
+      }
+      &-bottom {
+        gap: .25rem;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+      &-tag {
+        color: $black;
+        transition: $transition;
+        text-decoration: none;
+        padding: .5rem 1rem;
+        background: $white;
+        border-radius: 9999px;
+        &:hover {
+          background: $yellow;
+        }
+      }
+      &-button {
+        display: flex;
+        align-items: center;
+        color: $white;
+        fill: $white;
+        stroke: $white;
+        transition: $transition;
+        text-decoration: none;
+        padding: .5rem 1.5rem;
+        background: $black;
+        border-radius: 9999px;
+        &:hover {
+          color: $black;
+          fill: $black;
+          background: $yellow;
+          .main__tools-card-button-icon {
+            stroke: $black;
+          }
+        }
+        &-icon {
+          margin-left: 5px;
+          stroke: $white;
+        }
+      }
+    }
+    &-card-last {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      grid-column: span 2 / span 2;
+      gap: 1rem;
+      .main__tools-card-info {
+        width: 33.333333%;
+      }
+      .main__tools-card-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem;
+        height: fit-content;
+        justify-content: flex-end;
+        width: 50%;
+        opacity: .7;
+      }
+    }
+  }
+}
