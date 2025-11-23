@@ -462,6 +462,7 @@ watch(
             </div>
           </div>
         </div>
+        <div :class="['mobile__menu-overlay', { 'mobile__menu-overlay-show': isMenuOpen }]" @click="closeMenu"></div>
       </div>
     </div>
   </header>
