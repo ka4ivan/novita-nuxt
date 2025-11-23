@@ -1,0 +1,9 @@
+@media #{$tablet} {
+  .main {
+    .profile {
+      &__content {
+        flex-direction: column;
+      }
+    }
+  }
+}

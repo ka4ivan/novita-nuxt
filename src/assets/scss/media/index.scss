@@ -1,0 +1,13 @@
+// base
+//@import './base/default.scss';
+
+//components
+//@import "./components/base/header";
+//@import "./components/base/footer";
+@import "./components/base/imageCard";
+@import "./components/profile/menu";
+
+//pages
+@import "./pages/profile/index.scss";
+@import "./pages/profile/favorites.scss";
+@import "./pages/profile/jobs.scss";

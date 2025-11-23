@@ -1,0 +1,7 @@
+@media #{$tablet} {
+  .image-card {
+    &__buttons {
+      opacity: 1;
+    }
+  }
+}
