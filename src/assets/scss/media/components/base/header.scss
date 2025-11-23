@@ -267,6 +267,12 @@
         }
       }
     }
+
+    &--custom {
+      .burger__menu-line {
+        background-color: $white;
+      }
+    }
   }
 }
 
