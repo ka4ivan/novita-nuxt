@@ -1,0 +1,7 @@
+@media #{$mobile} {
+  .breadcrumbs {
+    &__link {
+      font-size: 14px;
+    }
+  }
+}

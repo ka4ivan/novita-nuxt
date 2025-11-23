@@ -1,0 +1,29 @@
+@media #{$mobile} {
+  .ai {
+    &__intro {
+      &-title {
+        font-size: 32px;
+      }
+    }
+
+    &__generate {
+      &-settings {
+        width: 100%;
+      }
+
+      &-presets {
+        &__list {
+          columns: 2;
+        }
+      }
+
+      &-instructions {
+        &-info {
+          &__title {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+}

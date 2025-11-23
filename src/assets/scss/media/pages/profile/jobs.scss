@@ -9,3 +9,13 @@
     }
   }
 }
+
+@media #{$mobile} {
+  .main {
+    .ai-jobs {
+      &__list {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  }
+}
