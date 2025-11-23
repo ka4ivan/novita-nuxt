@@ -1,0 +1,151 @@
+.main {
+  .signup {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+
+    &__wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 950px;
+      background: $white;
+      border-radius: 20px;
+    }
+
+    &__benefits {
+      width: 50%;
+      padding: 3rem 2rem;
+      border-right: 1px solid rgb(244 246 248);
+      display: flex;
+      flex-direction: column;
+
+      @media (max-width: 992px) {
+        display: none;
+      }
+    }
+
+    &__benefits-title {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: $primary-color;
+    }
+
+    &__benefits-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.5rem 0;
+    }
+
+    &__benefits-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: rgb(145 147 151);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &__benefits-icon {
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.6rem;
+      color: rgb(145 147 151);
+      fill: rgb(145 147 151);
+    }
+
+    &__benefits-more {
+      font-size: 1rem;
+      color: $secondary-color;
+      opacity: 0.6;
+    }
+
+    &__form-block {
+      width: 50%;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+
+      @media (max-width: 992px) {
+        width: 100%;
+      }
+    }
+
+    &__title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: $primary-color;
+
+      @media (min-width: 992px) {
+        text-align: left;
+      }
+    }
+
+    &__submit {
+      margin-top: 0.5rem;
+      padding: 0.8rem 0;
+      border-radius: 30px;
+      background: $black;
+      color: $yellow;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: $transition;
+
+      &:hover {
+        background: $blue;
+        color: $white;
+      }
+    }
+
+    &__social {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    &__social-separator {
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: $secondary-color;
+      opacity: 0.7;
+    }
+
+    &__social-row {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+    }
+
+    &__social-btn {
+      background: $light-gray;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      transition: $transition;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        background: lighten($light-gray, 10%);
+      }
+    }
+
+    &__terms {
+      font-size: 0.85rem;
+      color: $secondary-color;
+      margin: 4.5rem 0;
+      text-align: center;
+      opacity: 0.7;
+
+      a {
+        color: $blue;
+        text-decoration: underline;
+      }
+    }
+  }
+}
