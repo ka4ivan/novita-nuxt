@@ -72,8 +72,8 @@
           © 2025 Ka4ivan - Novita AI
         </p>
         <div class="footer__links">
-          <NuxtLink class="footer__link" to="#">Правила використання</NuxtLink>
-          <NuxtLink class="footer__link" to="#">Політика конфіденційності</NuxtLink>
+          <NuxtLink class="footer__link" to="/terms">Правила використання</NuxtLink>
+          <NuxtLink class="footer__link" to="/policy">Політика конфіденційності</NuxtLink>
         </div>
       </div>
     </div>
