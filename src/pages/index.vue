@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
 import { useHeaderState } from '~/composables/useHeaderState'
+import {useModalStore} from "~/store/modal";
 
 const { isCustom } = useHeaderState()
 const { isFixed } = useHeaderState()
+const authToken = useCookie("auth_token");
+const modalStore = useModalStore()
 
 onMounted(() => {
   isCustom.value = true
@@ -39,9 +42,17 @@ onUnmounted(() => {
                   height="1.5rem"
               />
             </NuxtLink>
-            <NuxtLink class="main__hero-buttons-link main__hero-buttons-link-library" to="/my/library">
+            <NuxtLink class="main__hero-buttons-link main__hero-buttons-link-library" to="/profile/jobs"
+                v-if="authToken">
               Бібліотека
             </NuxtLink>
+            <button class="main__hero-buttons-link main__hero-buttons-link-library"
+                aria-label="Бібліотека"
+                @click="modalStore.toggleSignInModal()"
+                v-else
+            >
+              Бібліотека
+            </button>
           </div>
         </div>
         <div class="main__hero-featured">

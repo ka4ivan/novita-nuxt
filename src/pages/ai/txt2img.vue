@@ -132,6 +132,15 @@ const generateImages = async (val, action) => {
           }
 
           console.log("🟢 Task created:", response._data);
+
+          setTimeout(() => {
+            const el = document.getElementById('ai__generate-results');
+
+            console.log(el);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 100);
         }
       },
       onResponseError({ response }) {
@@ -499,7 +508,7 @@ const generateImages = async (val, action) => {
             </div>
           </div>
         </div>
-        <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
+        <div class="ai__generate-results" id="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
           <div class="ai__generate-results__list">
             <BaseImageCard
                 v-for="img in generatedImages"

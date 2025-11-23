@@ -1,0 +1,20 @@
+@media #{$tablet} {
+ .sign-in {
+  width: 700px;
+ }
+}
+
+@media #{$mobile} {
+ .sign-in {
+  margin: 0 auto;
+  width: 90%;
+
+  &__img {
+   display: none;
+  }
+
+  &__content {
+   width: 100%;
+  }
+ }
+}

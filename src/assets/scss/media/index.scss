@@ -1,5 +1,5 @@
 // base
-//@import './base/default.scss';
+//@import './base/default';
 
 //components
 @import "./components/base/header";
@@ -8,10 +8,14 @@
 @import "./components/base/faq";
 @import "./components/base/breadCrumbs";
 @import "./components/profile/menu";
+@import "./components/fields/selectModel";
+@import "./components/form/signIn";
 
 //pages
 @import "./pages/index";
-@import "./pages/ai/base.scss";
-@import "./pages/profile/index.scss";
-@import "./pages/profile/favorites.scss";
-@import "./pages/profile/jobs.scss";
+@import "./pages/about";
+@import "./pages/ai/base";
+@import "./pages/ai/models/create";
+@import "./pages/profile/index";
+@import "./pages/profile/favorites";
+@import "./pages/profile/jobs";

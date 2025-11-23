@@ -1,3 +1,18 @@
+@media #{$tablet} {
+  .ai {
+    &__generate {
+      &-settings {
+        width: 100%;
+      }
+
+      &-results {
+        &__list {
+          columns: 2;
+        }
+      }
+    }
+  }
+}
 @media #{$mobile} {
   .ai {
     &__intro {
@@ -7,13 +22,15 @@
     }
 
     &__generate {
-      &-settings {
-        width: 100%;
-      }
-
       &-presets {
         &__list {
           columns: 2;
+        }
+      }
+
+      &-results {
+        &__list {
+          columns: 1;
         }
       }
 
