@@ -113,7 +113,7 @@ const generateImages = async (val, action) => {
       <div class="container ai__intro-container">
         <div class="ai__intro-content">
           <div class="ai__intro-inner">
-            <BaseBreadCrumbs :links="breadcrumbs" />
+            <BaseBreadCrumbs :links="breadcrumbs" theme="light" />
             <h1 class="ai__intro-title">
               Зображення в зображення
             </h1>

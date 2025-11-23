@@ -4,10 +4,14 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  theme: {
+    type: String,
+    default: 'dark',
+  }
 });
 </script>
 <template>
-  <div class="breadcrumbs">
+  <div :class="['breadcrumbs', { 'breadcrumbs-light': props.theme === 'light' }]">
     <template v-for="(item, index) in links" :key="item.id || index">
       <template v-if="item.slug && index < links.length - 1">
         <NuxtLink

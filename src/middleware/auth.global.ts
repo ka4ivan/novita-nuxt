@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const cartId = useCookie("cart_id");
 
     if (to.path.includes('/profile') && !authToken.value) {
-        return navigateTo({ path: '/sign-in' }, { redirectCode: 301 })
+        return navigateTo({ path: '/' }, { redirectCode: 301 })
     }
     if (to.path === "/home" || to.path.includes("/home.")) {
         return navigateTo({ path: "/" }, { redirectCode: 301 });
@@ -20,8 +20,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (to.fullPath.slice(-1) === '/' && to.fullPath !== '/') {
         return navigateTo(to.fullPath.slice(0, -1), { redirectCode: 301 })
-    }
-    if (to.path.includes('/checkout') && !cartId.value) {
-        return navigateTo({ path: '/' }, { redirectCode: 301 })
     }
 })
