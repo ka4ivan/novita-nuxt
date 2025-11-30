@@ -39,8 +39,6 @@ function listenSocket(ai_job_id: string) {
       .listen('.ai.succeed', (data: any) => {
         isGenerating.value = false;
         console.log("🟢 AIJob in Sockets:", ai_job_id);
-        console.log(data)
-        console.log(data.media && Array.isArray(data.media))
         customToast("Зображення успішно згенеровані!", 'success');
 
         if (data.media && Array.isArray(data.media)) {

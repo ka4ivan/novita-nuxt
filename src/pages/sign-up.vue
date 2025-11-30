@@ -63,7 +63,7 @@ const breadcrumbs = ref([
               <div class="signup__terms">
                 Створюючи акаунт, я приймаю
                 <a href="/terms" target="_blank">Правила використання</a> та
-                <a href="/privacy" target="_blank">Політику конфіденційності</a>.
+                <a href="/policy" target="_blank">Політику конфіденційності</a>.
               </div>
             </div>
           </div>
