@@ -21,11 +21,12 @@ const form = ref({
   negative_prompt: "",
   width: 1024,
   height: 1024,
-  image_num: 5,
+  image_num: 1,
   steps: 20,
   guidance_scale: 7.5,
   seed: -1,
   sampler_name: "Euler a",
+  model_main: "qween_image_edit",
   files: [] as File[],
   captions: [] as string[],
 });
@@ -69,6 +70,7 @@ const generateImages = async (val, action) => {
       guidance_scale: Number(form.value.guidance_scale),
       seed: Number(form.value.seed),
       sampler_name: form.value.sampler_name,
+      model_main: form.value.model_main,
     };
 
     await $api().ai.img2img({
@@ -271,6 +273,19 @@ const generateImages = async (val, action) => {
                     max-length="1024"
                     tooltip="Напишіть, які деталі ви не хочете бачити на зображенні. Ми вже додали кілька загальних негативних підказок, які змінюються залежно від вибраної моделі."
                     v-model="form.negative_prompt"
+                />
+              </div>
+            </div>
+            <div class="ai__generate-form__input" v-show="showAdvanced">
+              <div class="ai__generate-form__input-field">
+                <FieldsSelect
+                    label="Надстройка"
+                    name="model_main"
+                    placeholder="Оберіть надстройку"
+                    v-model="form.model_main"
+                    :options="[
+                      'qween_image_edit',
+                    ]"
                 />
               </div>
             </div>
