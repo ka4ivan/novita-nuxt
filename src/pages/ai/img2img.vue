@@ -284,7 +284,7 @@ const generateImages = async (val, action) => {
                     placeholder="Оберіть надстройку"
                     v-model="form.model_main"
                     :options="[
-                      'qween_image_edit',
+                      'qween_image_edit', 'novita'
                     ]"
                 />
               </div>
