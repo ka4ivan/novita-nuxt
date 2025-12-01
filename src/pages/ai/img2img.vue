@@ -26,7 +26,7 @@ const form = ref({
   guidance_scale: 7.5,
   seed: -1,
   sampler_name: "Euler a",
-  model_main: "qween_image_edit",
+  model_main: "gemini_3_pro_image_edit",
   files: [] as File[],
   captions: [] as string[],
 });
@@ -284,7 +284,7 @@ const generateImages = async (val, action) => {
                     placeholder="Оберіть надстройку"
                     v-model="form.model_main"
                     :options="[
-                      'qween_image_edit', 'novita'
+                      'gemini_3_pro_image_edit', 'qween_image_edit', 'novita'
                     ]"
                 />
               </div>
