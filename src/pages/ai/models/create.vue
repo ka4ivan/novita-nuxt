@@ -44,6 +44,8 @@ async function submitForm() {
   const message = data.value?.data?.message || "Модель створена успішно!"
 
   customToast(message, "success")
+
+  return navigateTo({ path: "/ai/models" }, { redirectCode: 301 });
 }
 </script>
 
