@@ -23,5 +23,23 @@
     &__separator {
         margin-left: 10px;
         margin-right: 10px;
+        color: $black;
+        opacity: .7;
+    }
+}
+
+.breadcrumbs-light {
+    margin-bottom: 2rem;
+    padding-top: 1.5rem;
+    font-size: 14px;
+    color: rgb(145 147 151);
+
+    .breadcrumbs__link {
+        color: $white;
+    }
+
+    .breadcrumbs__separator {
+        color: $white;
+        opacity: .7;
     }
 }

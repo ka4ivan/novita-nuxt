@@ -9,6 +9,9 @@
   &--fixed {
     position: fixed;
   }
+  &__container-mobile {
+    display: none;
+  }
   &--custom {
     position: fixed;
     background-color: rgba(0, 0, 0, 0);

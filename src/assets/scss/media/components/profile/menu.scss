@@ -1,0 +1,8 @@
+@media #{$tablet} {
+  .profile {
+    &__menu {
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+  }
+}

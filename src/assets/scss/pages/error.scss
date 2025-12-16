@@ -1,0 +1,39 @@
+.error {
+  &__container {
+    text-align: center;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    min-height: 55vh;
+  }
+
+  &__title {
+    font-size: 56px;
+  }
+
+  &__subtitle {
+    font-size: 40px;
+  }
+
+  &__text {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__link {
+    color: $white;
+    transition: $transition;
+    text-decoration-line: none;
+    line-height: 1;
+    font-size: 21px;
+    padding: 1rem 2rem;
+    background-color: rgb(32 32 46);
+    border: 1px solid rgb(32 32 46);
+    border-radius: 9999px;
+    margin-top: 1.5rem;
+
+    &:hover {
+      color: rgb(32 32 46);
+      background-color: transparent;
+    }
+  }
+}

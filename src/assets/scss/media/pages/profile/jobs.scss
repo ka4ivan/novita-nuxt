@@ -1,0 +1,21 @@
+@media #{$tablet} {
+  .main {
+    .ai-jobs {
+      width: 100%;
+
+      &__list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  }
+}
+
+@media #{$mobile} {
+  .main {
+    .ai-jobs {
+      &__list {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  }
+}

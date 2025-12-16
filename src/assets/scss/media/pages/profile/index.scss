@@ -1,0 +1,43 @@
+@media #{$tablet} {
+  .main {
+    .profile {
+      &__content {
+        flex-direction: column;
+      }
+
+      &__info {
+        margin: 0;
+        padding: 1rem;
+        border-radius: 20px;
+      }
+    }
+  }
+}
+
+@media #{$mobile} {
+  .main {
+    .profile {
+      &__info {
+        &-detail {
+          flex-direction: column;
+
+          &-avatar {
+            text-align: center;
+          }
+
+          &-text {
+            text-align: center;
+          }
+        }
+      }
+
+      &__form {
+        flex-direction: column;
+
+        .input {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

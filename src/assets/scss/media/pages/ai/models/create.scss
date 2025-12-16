@@ -1,0 +1,17 @@
+@media #{$tablet} {
+  .main {
+    .ai_model {
+      &__title {
+        margin-bottom: 1rem;
+      }
+
+      &__content {
+        flex-direction: column-reverse;
+      }
+
+      &__form {
+        max-width: 100%;
+      }
+    }
+  }
+}

@@ -41,6 +41,13 @@ const generateImages = async (val, action) => {
     }
 
     customToast("Задача створена успішно!", "success");
+
+    setTimeout(() => {
+      const el = document.getElementById('ai__generate-results');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   } catch (err) {
     console.error(err);
     customToast("Помилка при обробці зображення", "error");
@@ -62,7 +69,7 @@ const generateImages = async (val, action) => {
       <div class="container ai__intro-container">
         <div class="ai__intro-content">
           <div class="ai__intro-inner">
-            <BaseBreadCrumbs :links="breadcrumbs" />
+            <BaseBreadCrumbs :links="breadcrumbs" theme="light" />
             <h1 class="ai__intro-title">
               Видалити текст
             </h1>
@@ -173,7 +180,7 @@ const generateImages = async (val, action) => {
             </h3>
           </div>
         </div>
-        <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
+        <div class="ai__generate-results" id="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
           <div class="ai__generate-results__list">
             <BaseImageCard
                 v-for="img in generatedImages"

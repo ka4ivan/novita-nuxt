@@ -21,11 +21,12 @@ const form = ref({
   negative_prompt: "",
   width: 1024,
   height: 1024,
-  image_num: 5,
+  image_num: 1,
   steps: 20,
   guidance_scale: 7.5,
   seed: -1,
   sampler_name: "Euler a",
+  model_main: "gemini_3_pro_image_edit",
   files: [] as File[],
   captions: [] as string[],
 });
@@ -39,8 +40,6 @@ function listenSocket(ai_job_id: string) {
       .listen('.ai.succeed', (data: any) => {
         isGenerating.value = false;
         console.log("🟢 AIJob in Sockets:", ai_job_id);
-        console.log(data)
-        console.log(data.media && Array.isArray(data.media))
         customToast("Зображення успішно згенеровані!", 'success');
 
         if (data.media && Array.isArray(data.media)) {
@@ -71,6 +70,7 @@ const generateImages = async (val, action) => {
       guidance_scale: Number(form.value.guidance_scale),
       seed: Number(form.value.seed),
       sampler_name: form.value.sampler_name,
+      model_main: form.value.model_main,
     };
 
     await $api().ai.img2img({
@@ -85,6 +85,13 @@ const generateImages = async (val, action) => {
           }
 
           console.log("🟢 Task created:", response._data);
+
+          setTimeout(() => {
+            const el = document.getElementById('ai__generate-results');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 100);
         }
       },
       onResponseError({ response }) {
@@ -113,7 +120,7 @@ const generateImages = async (val, action) => {
       <div class="container ai__intro-container">
         <div class="ai__intro-content">
           <div class="ai__intro-inner">
-            <BaseBreadCrumbs :links="breadcrumbs" />
+            <BaseBreadCrumbs :links="breadcrumbs" theme="light" />
             <h1 class="ai__intro-title">
               Зображення в зображення
             </h1>
@@ -272,6 +279,19 @@ const generateImages = async (val, action) => {
             <div class="ai__generate-form__input" v-show="showAdvanced">
               <div class="ai__generate-form__input-field">
                 <FieldsSelect
+                    label="Надстройка"
+                    name="model_main"
+                    placeholder="Оберіть надстройку"
+                    v-model="form.model_main"
+                    :options="[
+                      'gemini_3_pro_image_edit', 'qween_image_edit', 'novita'
+                    ]"
+                />
+              </div>
+            </div>
+            <div class="ai__generate-form__input" v-show="showAdvanced">
+              <div class="ai__generate-form__input-field">
+                <FieldsSelect
                     label="Семплер"
                     name="sampler_name"
                     placeholder="Оберіть семплер"
@@ -366,7 +386,7 @@ const generateImages = async (val, action) => {
             </h3>
           </div>
         </div>
-        <div class="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
+        <div class="ai__generate-results" id="ai__generate-results" v-show="!isGenerating && generatedImages.length > 0">
           <div class="ai__generate-results__list">
             <BaseImageCard
                 v-for="img in generatedImages"

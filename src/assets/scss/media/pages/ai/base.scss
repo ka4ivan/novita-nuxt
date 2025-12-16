@@ -1,0 +1,46 @@
+@media #{$tablet} {
+  .ai {
+    &__generate {
+      &-settings {
+        width: 100%;
+      }
+
+      &-results {
+        &__list {
+          columns: 2;
+        }
+      }
+    }
+  }
+}
+@media #{$mobile} {
+  .ai {
+    &__intro {
+      &-title {
+        font-size: 32px;
+      }
+    }
+
+    &__generate {
+      &-presets {
+        &__list {
+          columns: 2;
+        }
+      }
+
+      &-results {
+        &__list {
+          columns: 1;
+        }
+      }
+
+      &-instructions {
+        &-info {
+          &__title {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+}
