@@ -48,6 +48,7 @@ const loraOptions = computed(() =>
 
 const form = ref({
   model_name: "cyberrealistic_classicV14_73029.safetensors",
+  model_main: "gemini_3_pro_image_text_to_image",
   prompt: "",
   negative_prompt: "",
   width: 1024,
@@ -105,6 +106,7 @@ const generateImages = async (val, action) => {
 
     const payload = {
       model_name: form.value.model_name,
+      model_main: form.value.model_main,
       prompt: form.value.prompt,
       negative_prompt: form.value.negative_prompt || undefined,
       width: Number(form.value.width),
@@ -385,6 +387,19 @@ const generateImages = async (val, action) => {
                     max-length="1024"
                     tooltip="Напишіть, які деталі ви не хочете бачити на зображенні. Ми вже додали кілька загальних негативних підказок, які змінюються залежно від вибраної моделі."
                     v-model="form.negative_prompt"
+                />
+              </div>
+            </div>
+            <div class="ai__generate-form__input" v-show="showAdvanced">
+              <div class="ai__generate-form__input-field">
+                <FieldsSelect
+                    label="Надстройка"
+                    name="model_main"
+                    placeholder="Оберіть надстройку"
+                    v-model="form.model_main"
+                    :options="[
+                      'gemini_3_pro_image_text_to_image', 'novita'
+                    ]"
                 />
               </div>
             </div>
