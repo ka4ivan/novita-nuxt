@@ -24,6 +24,11 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    img2imgGemini(options: any) {
+      return useCustomFetch(`/ai/img2img/gemini`, {
+        method: 'POST',
+      ...options})
+    },
     removeBackground(options: any) {
       return useCustomFetch(`/ai/remove-background`, {
         method: 'POST',

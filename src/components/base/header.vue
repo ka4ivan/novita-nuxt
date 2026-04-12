@@ -138,6 +138,35 @@ watch(
                         </p>
                       </NuxtLink>
                     </li>
+                    <li class="header__submenu-list-item">
+                      <NuxtLink class="header__submenu-link" to="/ai/img2img-gemini">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Зображення в зображення Gemini</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Генерувати зображення на основі інших зображень за допомогою Gemini
+                        </p>
+                      </NuxtLink>
+                    </li>
+                    <li class="header__submenu-list-item" style="opacity: 0">
+                      <div class="header__submenu-link">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title"></h4>
+                        </div>
+                        <p class="header__submenu-description">
+                        </p>
+                      </div>
+                    </li>
+                    <li class="header__submenu-list-item">
+                      <NuxtLink class="header__submenu-link" to="/ai/img2img-qwen">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Зображення в зображення Qwen</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Генерувати зображення на основі інших зображень за допомогою Qwen-Image
+                        </p>
+                      </NuxtLink>
+                    </li>
                   </ul>
                 </li>
                 <li class="header__submenu-item">
