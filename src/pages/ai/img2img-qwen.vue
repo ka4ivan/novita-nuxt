@@ -7,7 +7,7 @@ import "vue3-toastify/dist/index.css";
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "AI" },
-  { id: 3, name: "Зображення в зображення Gemini" },
+  { id: 3, name: "Зображення в зображення Qwen" },
 ]);
 
 const generatedImages = ref<Array<{id: string, url: string}>>([]);
@@ -15,9 +15,10 @@ const showAdvanced = ref(false);
 const isGenerating = ref(false);
 
 const form = ref({
-  image_base64s: [] as File[],
+  image: "",
   prompt: "",
-  aspect_ratio: "",
+  seed: -1,
+  output_format: "",
 });
 
 const toggleAdvanced = () => {
@@ -47,27 +48,31 @@ const generateImages = async (val?: unknown, action?: any) => {
   try {
     isGenerating.value = true;
 
-    const formData = new FormData();
-    formData.append("prompt", form.value.prompt);
-    formData.append("aspect_ratio", form.value.aspect_ratio);
+    const payload = {
+      image: form.value.image,
+      prompt: form.value.prompt,
+      seed: Number(form.value.seed),
+      output_format: form.value.output_format,
+    };
 
-    form.value.image_base64s.forEach((file, index) => {
-      formData.append(`image_base64s[${index}]`, file);
-    });
-
-    await $api().ai.img2imgGemini({
-      body: formData,
+    await $api().ai.img2imgQwen({
+      body: payload,
       onResponse({ response }) {
-        if ([200, 201, 202].includes(response.status)) {
-          customToast(response._data?.message || "Задача створена успішно!", "success");
+        if (response.status === 200 ||response.status === 201 || response.status === 202) {
+          customToast(response._data?.message || "Задача створена успішно!", 'success');
 
           if (response._data?.ai_job_id) {
+            console.log("🟢 AIJob:", response._data.ai_job_id);
             listenSocket(response._data.ai_job_id);
           }
 
+          console.log("🟢 Task created:", response._data);
+
           setTimeout(() => {
-            const el = document.getElementById("ai__generate-results");
-            el?.scrollIntoView({ behavior: "smooth", block: "start" });
+            const el = document.getElementById('ai__generate-results');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
           }, 100);
         }
       },
@@ -76,18 +81,12 @@ const generateImages = async (val?: unknown, action?: any) => {
           action?.setErrors(response._data.errors);
         }
 
-        customToast(
-            response._data?.message || "Сталася помилка при генерації",
-            "error"
-        );
-
+        const message = response._data?.message || "Сталася помилка при генерації";
+        customToast(message, 'error');
         isGenerating.value = false;
       },
     });
-  } catch (error) {
-    isGenerating.value = false;
-    customToast("Сталася непередбачена помилка", "error");
-  }
+  } finally {}
 };
 </script>
 
@@ -105,7 +104,7 @@ const generateImages = async (val?: unknown, action?: any) => {
           <div class="ai__intro-inner">
             <BaseBreadCrumbs :links="breadcrumbs" theme="light" />
             <h1 class="ai__intro-title">
-              Зображення в зображення Gemini
+              Зображення в зображення Qwen
             </h1>
           </div>
         </div>
@@ -126,11 +125,10 @@ const generateImages = async (val?: unknown, action?: any) => {
             </div>
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
-                <FieldsFiles
+                <FieldsFile
                     label="Зображення"
-                    name="image_base64s"
-                    :multiple="true"
-                    v-model:files="form.image_base64s"
+                    name="image"
+                    v-model="form.image"
                 />
               </div>
             </div>
@@ -149,23 +147,28 @@ const generateImages = async (val?: unknown, action?: any) => {
 
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
+                <FieldsInput
+                    label="Сід"
+                    name="seed"
+                    type="number"
+                    min="-1"
+                    tooltip="Контролювання сіда дозволяє досягти відтворюваності генерованих зображень, експериментування з параметрами та варіацій підказок. <br><br> Рекомендований діапазон: від -1 до ∞. <br><br> Значення сіда -1 вказує на випадковість, що означає, що результати кожного запуску будуть різними. Якщо ж вибрати фіксоване значення в діапазоні від 0 до ∞, це дозволяє зберегти основну послідовність між кількома генераціями зображень, при цьому з’являються лише незначні варіації в деталях."
+                    v-model="form.seed"
+                />
+              </div>
+            </div>
+
+            <div class="ai__generate-form__input">
+              <div class="ai__generate-form__input-field">
                 <FieldsSelect
-                    label="Співвідношення сторін"
-                    name="aspect_ratio"
-                    placeholder="Оберіть співвідношення"
-                    tooltip="Визначає пропорції зображення. Наприклад, 1:1 – квадрат, 16:9 – горизонтальний формат, 9:16 – вертикальний формат (підходить для сторіс або Reels)."
-                    v-model="form.aspect_ratio"
+                    label="Формат зображення"
+                    name="output_format"
+                    placeholder="Оберіть формат"
+                    v-model="form.output_format"
                     :options="[
-                        { label: '1:1', value: '1:1' },
-                        { label: '3:2', value: '3:2' },
-                        { label: '2:3', value: '2:3' },
-                        { label: '3:4', value: '3:4' },
-                        { label: '4:3', value: '4:3' },
-                        { label: '4:5', value: '4:5' },
-                        { label: '5:4', value: '5:4' },
-                        { label: '9:16', value: '9:16' },
-                        { label: '16:9', value: '16:9' },
-                        { label: '21:9', value: '21:9' }
+                        { label: 'jpeg', value: 'jpeg' },
+                        { label: 'png', value: 'png' },
+                        { label: 'webp', value: 'webp' },
                       ]"
                 />
               </div>
@@ -266,7 +269,7 @@ const generateImages = async (val?: unknown, action?: any) => {
           <div class="ai__generate-instructions-wrapper">
             <div class="ai__generate-instructions-info">
               <h2 class="ai__generate-instructions-info__title">
-                Як користуватися інструментом Novita <span class="ai__generate-instructions-info__title-strong">Image-to-Image Gemini</span>
+                Як користуватися інструментом Novita <span class="ai__generate-instructions-info__title-strong">Image-to-Image Qwen</span>
               </h2>
               <p class="ai__generate-instructions-info__text">
                 Інструмент Novita Image-to-Image дозволяє користувачам створювати вражаючі зображення, згенеровані штучним інтелектом, на основі вже існуючих зображень. Цей посібник допоможе вам ефективно використовувати можливості інструменту для досягнення найкращих результатів, будь то концепт-арт, контент для соцмереж чи професійні візуали.

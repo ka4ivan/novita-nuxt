@@ -29,6 +29,11 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    img2imgQwen(options: any) {
+      return useCustomFetch(`/ai/img2img/qwen`, {
+        method: 'POST',
+      ...options})
+    },
     removeBackground(options: any) {
       return useCustomFetch(`/ai/remove-background`, {
         method: 'POST',

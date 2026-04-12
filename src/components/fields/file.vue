@@ -2,7 +2,7 @@
 import { ref, watch, defineEmits, defineProps } from 'vue'
 
 const props = defineProps<{
-  modelValue?: string // тут будемо зберігати base64
+  modelValue?: string
   accept?: string
 }>();
 
@@ -80,7 +80,7 @@ function removeFile() {
       <input
           class="file-uploader__input"
           type="file"
-          :accept="props.accept || 'image/png,image/jpeg'"
+          :accept="props.accept || 'png,jpeg,jpg'"
           @change="onFileChange"
       />
     </label>

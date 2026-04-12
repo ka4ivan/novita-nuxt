@@ -53,7 +53,7 @@ function listenSocket(ai_job_id: string) {
       })
 }
 
-const generateImages = async (val, action) => {
+const generateImages = async (val?: unknown, action?: any) => {
   try {
     isGenerating.value = true;
 
