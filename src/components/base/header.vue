@@ -128,6 +128,16 @@ watch(
                         </p>
                       </NuxtLink>
                     </li>
+                    <li class="header__submenu-list-item">
+                      <NuxtLink class="header__submenu-link" to="/ai/txt2img-gemini">
+                        <div class="header__submenu-link-info">
+                          <h4 class="header__submenu-title">Текст в зображення Gemini</h4>
+                        </div>
+                        <p class="header__submenu-description">
+                          Генерувати зображення на основі Gemini
+                        </p>
+                      </NuxtLink>
+                    </li>
                   </ul>
                 </li>
                 <li class="header__submenu-item">

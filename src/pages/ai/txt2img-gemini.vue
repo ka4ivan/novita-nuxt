@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import SelectModel from "~/components/fields/selectModel.vue";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
 
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "AI" },
-  { id: 3, name: "Текст в зображення" },
+  { id: 3, name: "Текст в зображення Gemini" },
 ]);
 
 const presets = ref([
@@ -28,126 +25,56 @@ const presets = ref([
   { id: 15, src: "/images/ai/presets/ancient-megalithic-cromlech-on-a-frosty-morning.jpg" },
 ]);
 
-const myModels = ref([]);
-const myLoras = ref([]);
 const generatedImages = ref<Array<{id: string, url: string}>>([]);
-const { data: myModelsData, error: myModelsError } = await $api().ai.myModels({});
-const showAdvanced = ref(false);
 const isGenerating = ref(false);
 
-if (!myModelsError.value && myModelsData.value) {
-  myLoras.value = myModelsData.value.data || [];
-}
-
-const loraOptions = computed(() =>
-    myLoras.value.map(model => ({
-      label: model.name,
-      value: model.name
-    }))
-);
-
 const form = ref({
-  model_name: "cyberrealistic_classicV14_73029.safetensors",
   prompt: "",
-  negative_prompt: "",
-  width: 1024,
-  height: 1024,
-  image_num: 5,
-  steps: 20,
-  guidance_scale: 7.5,
-  seed: -1,
-  sampler_name: "Euler a",
-  loras: [],
 });
-
-const addModel = () => {
-  if (myModels.value.length < 5) {
-    myModels.value.push({
-      id: Date.now(),
-      model_name: "",
-      strength: 0.7,
-    });
-  }
-};
-
-const removeModel = (id: number) => {
-  myModels.value = myModels.value.filter((m) => m.id !== id);
-};
-
-const toggleAdvanced = () => {
-  showAdvanced.value = !showAdvanced.value;
-};
 
 function listenSocket(ai_job_id: string) {
   window.Echo.channel(`ai.${ai_job_id}`)
       .listen('.ai.succeed', (data: any) => {
         isGenerating.value = false;
-        console.log("🟢 AIJob in Sockets:", ai_job_id);
-        console.log(data)
-        console.log(data.media && Array.isArray(data.media))
         customToast("Зображення успішно згенеровані!", 'success');
 
         if (data.media && Array.isArray(data.media)) {
           generatedImages.value = [...data.media, ...generatedImages.value];
         }
-      })
+      });
+
   window.Echo.channel(`ai.${ai_job_id}`)
-      .listen('ai.failed', (data: any) => {
+      .listen('ai.failed', () => {
         isGenerating.value = false;
-        console.log(data)
         customToast("Помилка при генерації зображень!", 'error');
-      })
+      });
 }
 
-const generateImages = async (val, action) => {
+const generateImages = async () => {
   try {
     isGenerating.value = true;
 
     const payload = {
-      model_name: form.value.model_name,
       prompt: form.value.prompt,
-      negative_prompt: form.value.negative_prompt || undefined,
-      width: Number(form.value.width),
-      height: Number(form.value.height),
-      image_num: Number(form.value.image_num),
-      steps: Number(form.value.steps),
-      guidance_scale: Number(form.value.guidance_scale),
-      seed: Number(form.value.seed),
-      sampler_name: form.value.sampler_name,
-      loras: myModels.value.map((m) => ({
-        model_name: m.model_name,
-        strength: Number(m.strength),
-      })),
     };
 
-    await $api().ai.txt2img({
+    await $api().ai.txt2imgGemini({
       body: payload,
       onResponse({ response }) {
-        if (response.status === 200 ||response.status === 201 || response.status === 202) {
+        if ([200, 201, 202].includes(response.status)) {
           customToast(response._data?.message || "Задача створена успішно!", 'success');
 
           if (response._data?.ai_job_id) {
-            console.log("🟢 AIJob:", response._data.ai_job_id);
             listenSocket(response._data.ai_job_id);
           }
 
-          console.log("🟢 Task created:", response._data);
-
           setTimeout(() => {
-            const el = document.getElementById('ai__generate-results');
-
-            console.log(el);
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            document.getElementById('ai__generate-results')
+                ?.scrollIntoView({ behavior: 'smooth' });
           }, 100);
         }
       },
       onResponseError({ response }) {
-        if (response._data?.errors) {
-          action?.setErrors(response._data.errors);
-        }
-
         const message = response._data?.message || "Сталася помилка при генерації";
         customToast(message, 'error');
         isGenerating.value = false;
@@ -171,7 +98,7 @@ const generateImages = async (val, action) => {
           <div class="ai__intro-inner">
             <BaseBreadCrumbs :links="breadcrumbs" theme="light" />
             <h1 class="ai__intro-title">
-              Текст в зображення
+              Текст в зображення Gemini
             </h1>
           </div>
         </div>
@@ -190,217 +117,14 @@ const generateImages = async (val, action) => {
                 Згенерувати
               </button>
             </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-field">
-                <SelectModel
-                    label="Модель"
-                    name="model_name"
-                    placeholder="Модель"
-                    tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
-                    v-model="form.model_name"
-                />
-              </div>
-            </div>
+
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
                 <FieldsTextarea
                     label="Промпт"
                     name="prompt"
-                    placeholder="Промпт"
-                    tooltip="Ви можете використати одне слово або повне речення. Ми заповнили кілька загальних підказок, щоб згенеровані вами зображення були ближчими до обраної вами моделі."
+                    placeholder="Опишіть, що хочете згенерувати..."
                     v-model="form.prompt"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-cross">
-                <div class="ai__generate-form__input-field">
-                  <FieldsInput
-                      label="Роздільна Здатність"
-                      name="width"
-                      type="number"
-                      placeholder="Width"
-                      v-model="form.width"
-                      tooltip="Нижча роздільна здатність може призвести до розмитих зображень із меншою кількістю деталей. Вища роздільна здатність сповільнює швидкість генерації та може спричинити відхилення від очікуваного результату. <br><br> Рекомендована роздільна здатність: 1024×1024"
-                  />
-                </div>
-                <BaseIconSvg
-                    icon-name="cross"
-                    class="ai__generate-form__input-cross-icon"
-                    width="1rem"
-                    height="1rem"
-                />
-                <div class="ai__generate-form__input-field">
-                  <FieldsInput
-                      label="&nbsp;"
-                      name="height"
-                      type="number"
-                      placeholder="Height"
-                      v-model="form.height"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-field">
-                <FieldsRange
-                    label="Кроки"
-                    name="steps"
-                    tooltip="Більше кроків, тонші деталі. Після 20 - обмежене покращення."
-                    v-model="form.steps"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-field">
-                <FieldsRange
-                    label="Кількість Зображень"
-                    name="image_num"
-                    v-model="form.image_num"
-                    min="1"
-                    max="8"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-title">
-                <label class="input__label">
-                  Мої Моделі
-                  <BaseTooltip text="LoRA — це швидкий і легкий метод навчання, який вставляє та навчає значно меншу кількість параметрів замість усіх параметрів моделі. Наразі підтримується до 5 LoRA." />
-                </label>
-              </div>
-              <div class="ai__generate-form__my-model">
-                <div
-                    v-for="(model, index) in myModels"
-                    :key="model.id"
-                    class="ai__generate-form__my-model__wrapper"
-                >
-                  <button
-                      role="button"
-                      type="button"
-                      class="ai__generate-form__my-model__close"
-                      @click="removeModel(model.id)"
-                  >
-                    <BaseIconSvg
-                        icon-name="cross"
-                        customClass="ai__generate-form__my-model__close-icon"
-                        width="2rem"
-                        height="2rem"
-                    />
-                  </button>
-
-                  <div class="ai__generate-form__input">
-                    <div class="ai__generate-form__input-field">
-                      <FieldsSelect
-                          :label="`Модель ${index + 1}`"
-                          :name="`loras[${index}][model_name]`"
-                          placeholder="Оберіть модель"
-                          v-model="myModels[index].model_name"
-                          :options="loraOptions"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="ai__generate-form__input">
-                    <div class="ai__generate-form__input-field">
-                      <FieldsRange
-                          label="Сила Впливу"
-                          :name="`loras[${index}][strength]`"
-                          :modelValue="model.strength"
-                          min="0"
-                          max="1"
-                          step="0.01"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                  v-if="myModels.length < 5"
-                  role="button"
-                  type="button"
-                  class="ai__generate-form__input-button"
-                  @click="addModel"
-              >
-                <div class="ai__generate-form__input-button-text">
-                  <BaseIconSvg
-                      icon-name="cross"
-                      customClass="ai__generate-form__input-button-icon"
-                      width="1rem"
-                      height="1rem"
-                  />
-                  Додати Власну Модель
-                </div>
-              </button>
-            </div>
-            <div
-                class="ai__generate-form__show-advanced"
-                :class="{ 'ai__generate-form__show-advanced-active': showAdvanced }"
-            >
-              <button
-                  type="button"
-                  class="ai__generate-form__show-advanced__button"
-                  @click="toggleAdvanced"
-              >
-                Розширенні Налаштування
-                <BaseIconSvg
-                    icon-name="cross"
-                    class="ai__generate-form__show-advanced__button-icon"
-                    width="1.33rem"
-                    height="1.33rem"
-                />
-              </button>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
-              <div class="ai__generate-form__input-field">
-                <FieldsRange
-                    label="Шкала Орієнтування"
-                    name="guidance_scale"
-                    min="1"
-                    max="30"
-                    tooltip="Ступінь дотримання підказки: Вищі числа вказують на більшу відповідність наданим підказкам, обмежуючи творчі можливості ШІ. <br><br> Рекомендований діапазон: 7~12."
-                    v-model="form.guidance_scale"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
-              <div class="ai__generate-form__input-field">
-                <FieldsInput
-                    label="Сід"
-                    name="seed"
-                    type="number"
-                    min="-1"
-                    tooltip="Контролювання сіда дозволяє досягти відтворюваності генерованих зображень, експериментування з параметрами та варіацій підказок. <br><br> Рекомендований діапазон: від -1 до ∞. <br><br> Значення сіда -1 вказує на випадковість, що означає, що результати кожного запуску будуть різними. Якщо ж вибрати фіксоване значення в діапазоні від 0 до ∞, це дозволяє зберегти основну послідовність між кількома генераціями зображень, при цьому з’являються лише незначні варіації в деталях."
-                    v-model="form.seed"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
-              <div class="ai__generate-form__input-field">
-                <FieldsTextarea
-                    label="Негативний Промпт"
-                    name="negative_prompt	"
-                    placeholder="Негативний Промпт"
-                    max-length="1024"
-                    tooltip="Напишіть, які деталі ви не хочете бачити на зображенні. Ми вже додали кілька загальних негативних підказок, які змінюються залежно від вибраної моделі."
-                    v-model="form.negative_prompt"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
-              <div class="ai__generate-form__input-field">
-                <FieldsSelect
-                    label="Семплер"
-                    name="sampler_name"
-                    placeholder="Оберіть семплер"
-                    tooltip="Конкретний алгоритм, що використовується ШІ для генерації зображень. Рекомендується використовувати алгоритми, позначені знаком '+' (плюс), оскільки вони більш стабільні. До поширених варіантів належать:<code>DPM++ 2S a Karras</code>,<code>Euler a</code> та<code>DPM++ 2M Karras</code> <br><br>Якщо автори моделі рекомендують конкретні алгоритми, бажано дотримуватися їхніх порад."
-                    v-model="form.sampler_name"
-                    :options="[
-                      'Euler a', 'Euler', 'LMS', 'Heun',
-                      'DPM2', 'DPM2 a', 'DPM++ 2S a', 'DPM++ 2M',
-                      'DPM++ SDE', 'DDIM', 'UniPC'
-                    ]"
                 />
               </div>
             </div>
