@@ -104,7 +104,7 @@ function removeImage(index: number) {
       <input
           class="file-uploader__input"
           type="file"
-          accept="image/png,image/jpeg"
+          accept="png,jpeg,jpg"
           :multiple="props.multiple ?? true"
           @change="onFileChange"
       />

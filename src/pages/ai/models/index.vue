@@ -66,7 +66,7 @@ async function deleteModel(modelId: string) {
               :key="model.id"
           >
             <div class="ai-model__card-header">
-              <h2 class="ai-model__card-title">{{ model.name }}</h2>
+              <h2 class="ai-model__card-title">{{ model.name }} <small v-if="model.progress < 100"><br>Статус навчання: {{ model.progress }}</small></h2>
 
               <button
                   class="ai-model__delete-btn"

@@ -14,8 +14,23 @@ export default () => ({
         method: 'POST',
       ...options})
     },
+    txt2imgGemini(options: any) {
+      return useCustomFetch(`/ai/txt2img/gemini`, {
+        method: 'POST',
+      ...options})
+    },
     img2img(options: any) {
       return useCustomFetch(`/ai/img2img`, {
+        method: 'POST',
+      ...options})
+    },
+    img2imgGemini(options: any) {
+      return useCustomFetch(`/ai/img2img/gemini`, {
+        method: 'POST',
+      ...options})
+    },
+    img2imgQwen(options: any) {
+      return useCustomFetch(`/ai/img2img/qwen`, {
         method: 'POST',
       ...options})
     },

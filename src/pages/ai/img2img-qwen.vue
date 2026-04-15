@@ -7,7 +7,7 @@ import "vue3-toastify/dist/index.css";
 const breadcrumbs = ref([
   { id: 1, name: "Головна", slug: "/" },
   { id: 2, name: "AI" },
-  { id: 3, name: "Зображення в зображення" },
+  { id: 3, name: "Зображення в зображення Qwen" },
 ]);
 
 const generatedImages = ref<Array<{id: string, url: string}>>([]);
@@ -15,19 +15,10 @@ const showAdvanced = ref(false);
 const isGenerating = ref(false);
 
 const form = ref({
-  model_name: "cyberrealistic_classicV14_73029.safetensors",
-  image_base64: "",
+  image: "",
   prompt: "",
-  negative_prompt: "",
-  width: 1024,
-  height: 1024,
-  image_num: 1,
-  steps: 20,
-  guidance_scale: 7.5,
   seed: -1,
-  sampler_name: "Euler a",
-  files: [] as File[],
-  captions: [] as string[],
+  output_format: "",
 });
 
 const toggleAdvanced = () => {
@@ -58,20 +49,13 @@ const generateImages = async (val?: unknown, action?: any) => {
     isGenerating.value = true;
 
     const payload = {
-      model_name: form.value.model_name,
-      image_base64: form.value.image_base64,
+      image: form.value.image,
       prompt: form.value.prompt,
-      negative_prompt: form.value.negative_prompt || undefined,
-      width: Number(form.value.width),
-      height: Number(form.value.height),
-      image_num: Number(form.value.image_num),
-      steps: Number(form.value.steps),
-      guidance_scale: Number(form.value.guidance_scale),
       seed: Number(form.value.seed),
-      sampler_name: form.value.sampler_name,
+      output_format: form.value.output_format,
     };
 
-    await $api().ai.img2img({
+    await $api().ai.img2imgQwen({
       body: payload,
       onResponse({ response }) {
         if (response.status === 200 ||response.status === 201 || response.status === 202) {
@@ -120,7 +104,7 @@ const generateImages = async (val?: unknown, action?: any) => {
           <div class="ai__intro-inner">
             <BaseBreadCrumbs :links="breadcrumbs" theme="light" />
             <h1 class="ai__intro-title">
-              Зображення в зображення
+              Зображення в зображення Qwen
             </h1>
           </div>
         </div>
@@ -141,24 +125,14 @@ const generateImages = async (val?: unknown, action?: any) => {
             </div>
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
-                <SelectModel
-                    label="Модель"
-                    name="model_name"
-                    placeholder="Модель"
-                    tooltip="Експериментуйте з різними моделями, які можна застосувати до вашого зображення"
-                    v-model="form.model_name"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-field">
                 <FieldsFile
                     label="Зображення"
-                    name="image_base64"
-                    v-model="form.image_base64"
+                    name="image"
+                    v-model="form.image"
                 />
               </div>
             </div>
+
             <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
                 <FieldsTextarea
@@ -170,87 +144,8 @@ const generateImages = async (val?: unknown, action?: any) => {
                 />
               </div>
             </div>
+
             <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-cross">
-                <div class="ai__generate-form__input-field">
-                  <FieldsInput
-                      label="Роздільна Здатність"
-                      name="width"
-                      type="number"
-                      placeholder="Width"
-                      v-model="form.width"
-                      tooltip="Нижча роздільна здатність може призвести до розмитих зображень із меншою кількістю деталей. Вища роздільна здатність сповільнює швидкість генерації та може спричинити відхилення від очікуваного результату. <br><br> Рекомендована роздільна здатність: 1024×1024"
-                  />
-                </div>
-                <BaseIconSvg
-                    icon-name="cross"
-                    class="ai__generate-form__input-cross-icon"
-                    width="1rem"
-                    height="1rem"
-                />
-                <div class="ai__generate-form__input-field">
-                  <FieldsInput
-                      label="&nbsp;"
-                      name="height"
-                      type="number"
-                      placeholder="Height"
-                      v-model="form.height"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-field">
-                <FieldsRange
-                    label="Кроки"
-                    name="steps"
-                    tooltip="Більше кроків, тонші деталі. Після 20 - обмежене покращення."
-                    v-model="form.steps"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input">
-              <div class="ai__generate-form__input-field">
-                <FieldsRange
-                    label="Кількість Зображень"
-                    name="image_num"
-                    v-model="form.image_num"
-                    min="1"
-                    max="8"
-                />
-              </div>
-            </div>
-            <div
-                class="ai__generate-form__show-advanced"
-                :class="{ 'ai__generate-form__show-advanced-active': showAdvanced }"
-            >
-              <button
-                  type="button"
-                  class="ai__generate-form__show-advanced__button"
-                  @click="toggleAdvanced"
-              >
-                Розширенні Налаштування
-                <BaseIconSvg
-                    icon-name="cross"
-                    class="ai__generate-form__show-advanced__button-icon"
-                    width="1.33rem"
-                    height="1.33rem"
-                />
-              </button>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
-              <div class="ai__generate-form__input-field">
-                <FieldsRange
-                    label="Шкала Орієнтування"
-                    name="guidance_scale"
-                    min="1"
-                    max="30"
-                    tooltip="Ступінь дотримання підказки: Вищі числа вказують на більшу відповідність наданим підказкам, обмежуючи творчі можливості ШІ. <br><br> Рекомендований діапазон: 7~12."
-                    v-model="form.guidance_scale"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
               <div class="ai__generate-form__input-field">
                 <FieldsInput
                     label="Сід"
@@ -262,31 +157,19 @@ const generateImages = async (val?: unknown, action?: any) => {
                 />
               </div>
             </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
-              <div class="ai__generate-form__input-field">
-                <FieldsTextarea
-                    label="Негативний Промпт"
-                    name="negative_prompt	"
-                    placeholder="Негативний Промпт"
-                    max-length="1024"
-                    tooltip="Напишіть, які деталі ви не хочете бачити на зображенні. Ми вже додали кілька загальних негативних підказок, які змінюються залежно від вибраної моделі."
-                    v-model="form.negative_prompt"
-                />
-              </div>
-            </div>
-            <div class="ai__generate-form__input" v-show="showAdvanced">
+
+            <div class="ai__generate-form__input">
               <div class="ai__generate-form__input-field">
                 <FieldsSelect
-                    label="Семплер"
-                    name="sampler_name"
-                    placeholder="Оберіть семплер"
-                    tooltip="Конкретний алгоритм, що використовується ШІ для генерації зображень. Рекомендується використовувати алгоритми, позначені знаком '+' (плюс), оскільки вони більш стабільні. До поширених варіантів належать:<code>DPM++ 2S a Karras</code>,<code>Euler a</code> та<code>DPM++ 2M Karras</code> <br><br>Якщо автори моделі рекомендують конкретні алгоритми, бажано дотримуватися їхніх порад."
-                    v-model="form.sampler_name"
+                    label="Формат зображення"
+                    name="output_format"
+                    placeholder="Оберіть формат"
+                    v-model="form.output_format"
                     :options="[
-                      'Euler a', 'Euler', 'LMS', 'Heun',
-                      'DPM2', 'DPM2 a', 'DPM++ 2S a', 'DPM++ 2M',
-                      'DPM++ SDE', 'DDIM', 'UniPC'
-                    ]"
+                        { label: 'jpeg', value: 'jpeg' },
+                        { label: 'png', value: 'png' },
+                        { label: 'webp', value: 'webp' },
+                      ]"
                 />
               </div>
             </div>
@@ -386,7 +269,7 @@ const generateImages = async (val?: unknown, action?: any) => {
           <div class="ai__generate-instructions-wrapper">
             <div class="ai__generate-instructions-info">
               <h2 class="ai__generate-instructions-info__title">
-                Як користуватися інструментом Novita <span class="ai__generate-instructions-info__title-strong">Image-to-Image</span>
+                Як користуватися інструментом Novita <span class="ai__generate-instructions-info__title-strong">Image-to-Image Qwen</span>
               </h2>
               <p class="ai__generate-instructions-info__text">
                 Інструмент Novita Image-to-Image дозволяє користувачам створювати вражаючі зображення, згенеровані штучним інтелектом, на основі вже існуючих зображень. Цей посібник допоможе вам ефективно використовувати можливості інструменту для досягнення найкращих результатів, будь то концепт-арт, контент для соцмереж чи професійні візуали.
@@ -415,80 +298,14 @@ const generateImages = async (val?: unknown, action?: any) => {
               </h3>
               <ul class="ai__generate-instructions-step-list">
                 <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Вибір моделі:</span> Оберіть модель AI для досягнення бажаного художнього або реалістичного результату.
-                </li>
-                <li class="ai__generate-instructions-step-item">
                   <span class="ai__generate-instructions-step-text-strong">Промпт (Обов'язковий):</span> Описуйте трансформацію у деталях.
                   <br><span class="ai__generate-instructions-step-text-strong">Приклад:</span> "Перетворіть на футуристичний міський ландшафт з неоновими вогнями."
-                </li>
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Негативний промпт (Необов'язковий):</span> Вкажіть елементи, яких не повинно бути у зображенні.
-                  <br><span class="ai__generate-instructions-step-text-strong">Приклад:</span> "Без розмиття, без артефактів, без спотворених країв."
-                </li>
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Роздільна здатність:</span> Виберіть роздільну здатність вихідного зображення.
-                  <ul class="ai__generate-instructions-step-item-sublist">
-                    <li class="ai__generate-instructions-step-item-sublist-item">
-                      <span class="ai__generate-instructions-step-text-strong">Популярна опція:</span> 1024x1024 для високоякісних результатів.
-                    </li>
-                  </ul>
-                </li>
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Кроки:</span> Налаштуйте кількість кроків обробки.
-                  <ul class="ai__generate-instructions-step-item-sublist">
-                    <li>20-30 — швидше, але менш деталізовано.</li>
-                    <li>50-100 — більш детально, але довше.</li>
-                  </ul>
-                </li>
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Шкала Орієнтування:</span> Визначає, наскільки точно AI слідує вашому опису.
-                  <ul class="ai__generate-instructions-step-item-sublist">
-                    <li>10-15 — зображення, більш точно відповідне опису.</li>
-                    <li>5-8 — більше креативності у результатах.</li>
-                  </ul>
-                </li>
-                <li class="ai__generate-instructions-step-item">
-                  <span class="ai__generate-instructions-step-text-strong">Семплер:</span> Оберіть алгоритм семплінгу AI.
-                  <ul class="ai__generate-instructions-step-item-sublist">
-                    <li><span class="ai__generate-instructions-step-text-strong">DPM++ 2S a Karras (рекомендовано):</span> дає плавні та високоякісні зображення.</li>
-                  </ul>
                 </li>
               </ul>
             </div>
 
             <div class="ai__generate-instructions-step">
-              <h3 class="ai__generate-instructions-step-title">Крок 3: Розширене налаштування</h3>
-
-              <h4 class="ai__generate-instructions-step-title">ControlNet</h4>
-              <p class="ai__generate-instructions-step-text">
-                Покращуйте окремі аспекти вашого зображення, такі як поза, контури чи глибина.
-              </p>
-
-              <h4 class="ai__generate-instructions-step-title">LoRA (Low-Rank Adaptation)</h4>
-              <p class="ai__generate-instructions-step-text">
-                Тонке налаштування результату за допомогою попередньо натренованих моделей для конкретних стилів.
-              </p>
-
-              <h4 class="ai__generate-instructions-step-title">Refiner</h4>
-              <p class="ai__generate-instructions-step-text">
-                Покращення якості фінального результату:
-                <ul>
-                  <li><span class="ai__generate-instructions-step-text-strong">0 (Вимкнено):</span> без додаткового покращення.</li>
-                  <li><span class="ai__generate-instructions-step-text-strong">0.5 (Помірно):</span> незначне покращення деталей.</li>
-                  <li><span class="ai__generate-instructions-step-text-strong">1 (Повне):</span> покращення різкості та текстур.</li>
-                </ul>
-              </p>
-            </div>
-
-            <div class="ai__generate-instructions-step">
-              <h3 class="ai__generate-instructions-step-title">Крок 4: Генерація зображення</h3>
-              <p class="ai__generate-instructions-step-text">
-                Після налаштування всіх параметрів натисніть <strong>“Згенерувати”</strong>. ШІ створить зображення на основі вибраних налаштувань. Час обробки залежить від складності та роздільної здатності.
-              </p>
-            </div>
-
-            <div class="ai__generate-instructions-step">
-              <h3 class="ai__generate-instructions-step-title">Крок 5: Перегляд та збереження результату</h3>
+              <h3 class="ai__generate-instructions-step-title">Крок 3: Перегляд та збереження результату</h3>
               <ul class="ai__generate-instructions-step-list">
                 <li>Перегляньте згенероване зображення в панелі попереднього перегляду.</li>
                 <li>Якщо результат влаштовує, натисніть <strong>“Завантажити”</strong>.</li>
@@ -500,8 +317,6 @@ const generateImages = async (val?: unknown, action?: any) => {
               <h3 class="ai__generate-instructions-step-title">Поради для найкращих результатів</h3>
               <ul class="ai__generate-instructions-step-list">
                 <li><span class="ai__generate-instructions-step-text-strong">Будьте конкретними:</span> вказуйте кольори, освітлення та стиль.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Експериментуйте з шкалою орієнтування:</span> знайдіть баланс між точністю та креативністю.</li>
-                <li><span class="ai__generate-instructions-step-text-strong">Спробуйте різні семплери:</span> кожен з них надає унікальний художній ефект.</li>
                 <li><span class="ai__generate-instructions-step-text-strong">Почніть з базових налаштувань:</span> поступово налаштовуйте параметри залежно від результатів.</li>
               </ul>
             </div>
