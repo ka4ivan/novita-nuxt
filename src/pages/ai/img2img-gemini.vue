@@ -17,7 +17,7 @@ const isGenerating = ref(false);
 const form = ref({
   image_base64s: [] as File[],
   prompt: "",
-  aspect_ratio: "",
+  aspect_ratio: "1:1",
 });
 
 const toggleAdvanced = () => {
